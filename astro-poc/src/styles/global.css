@@ -11193,12 +11193,25 @@ button:disabled, button.busy {
    ╚═══════════════════════════════════════════════════════════╝ */
 html, body {
     overscroll-behavior: none;          /* mata el rebote/rubber-band y el pull-to-refresh del navegador */
-    overflow-x: hidden;                 /* nada de movimiento horizontal raro */
+    overflow-x: clip;                   /* `clip` recorta hasta elementos position:fixed (los cajones off-canvas) */
+    max-width: 100%;
 }
 @media (max-width: 720px) {
     /* manipulation = sin doble-tap-zoom ni delay de 300ms; el scroll sigue normal.
        (Leaflet/lightbox ponen su propio touch-action, así que el mapa sigue con pinch) */
     body { touch-action: manipulation; }
+}
+/* Cajones laterales off-canvas (foros/amigos): cuando están CERRADOS los sacamos
+   del layout con display:none → NO generan scroll horizontal. Al abrirlos (con
+   su botón) se muestran. (display:none es lo único que de verdad quita un fixed
+   del área desplazable; visibility/transform no bastan.) */
+@media (max-width: 1100px) {
+    .disc-rightbar { display: none; }
+    .disc-layout.show-friends .disc-rightbar { display: flex; flex-direction: column; }
+}
+@media (max-width: 740px) {
+    .disc-sidebar { display: none; }
+    .disc-layout.show-forums .disc-sidebar { display: flex; flex-direction: column; }
 }
 
 /* ── App NATIVA (Capacitor) · respeta notch / barra de estado ── */
