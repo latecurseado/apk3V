@@ -2,12 +2,19 @@ name: Build Android APK
 
 # Compila el APK de Tres Valles en la nube (sin instalar nada en tu PC).
 # Se dispara al hacer push o manualmente (Actions -> Build Android APK -> Run workflow).
-# El APK queda en la pestaña Actions -> el run -> "Artifacts" -> tresvalles-debug-apk.
+# El APK queda en DOS sitios:
+#   1) Actions -> el run -> "Artifacts" -> tresvalles-debug-apk (para ti).
+#   2) Releases -> un link FIJO para compartir (siempre la última versión):
+#      https://github.com/latecurseado/apk3V/releases/latest/download/tresvalles.apk
+#      (ese link funciona sin cuenta SOLO si el repo es público.)
 
 on:
   push:
     branches: [ main, master ]
   workflow_dispatch:
+
+permissions:
+  contents: write          # necesario para crear/actualizar el Release
 
 jobs:
   build-apk:
@@ -55,9 +62,26 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon
 
+      - name: Renombrar APK (link limpio)
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk android/app/build/outputs/apk/debug/tresvalles.apk
+
       - name: Subir APK como artifact
         uses: actions/upload-artifact@v4
         with:
           name: tresvalles-debug-apk
-          path: astro-poc/android/app/build/outputs/apk/debug/app-debug.apk
+          path: astro-poc/android/app/build/outputs/apk/debug/tresvalles.apk
           if-no-files-found: error
+
+      - name: Publicar en Releases (link fijo para compartir)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Tres Valles · última versión
+          body: |
+            APK más reciente de Tres Valles. Descárgalo e instálalo en Android
+            (activa "instalar de orígenes desconocidos" la primera vez).
+
+            **Link directo (siempre la última):**
+            https://github.com/latecurseado/apk3V/releases/latest/download/tresvalles.apk
+          files: astro-poc/android/app/build/outputs/apk/debug/tresvalles.apk
+          make_latest: true
