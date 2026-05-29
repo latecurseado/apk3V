@@ -13,6 +13,35 @@ interface IncomingState {
     callerPfp: string;
 }
 
+/** Tono de marcado tipo teléfono ("biip biip" cada ~2.5s) con Web Audio. */
+function startRingback(): { stop: () => void } {
+    try {
+        const AC: typeof AudioContext = (window as any).AudioContext || (window as any).webkitAudioContext;
+        const ctx = new AC();
+        let stopped = false;
+        const pair = () => {
+            if (stopped) return;
+            [0, 0.4].forEach((offset) => {
+                const osc = ctx.createOscillator();
+                const g = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = 480;
+                osc.connect(g); g.connect(ctx.destination);
+                const t = ctx.currentTime + offset;
+                g.gain.setValueAtTime(0.0001, t);
+                g.gain.exponentialRampToValueAtTime(0.18, t + 0.02);
+                g.gain.exponentialRampToValueAtTime(0.0001, t + 0.28);
+                osc.start(t); osc.stop(t + 0.32);
+            });
+        };
+        pair();
+        const iv = window.setInterval(pair, 2500);
+        return { stop: () => { stopped = true; clearInterval(iv); try { ctx.close(); } catch { /* */ } } };
+    } catch {
+        return { stop: () => { /* */ } };
+    }
+}
+
 /**
  * Host global de llamadas WebRTC.
  * - Escucha llamadas entrantes (subscribeIncomingCalls)
@@ -32,8 +61,12 @@ export default function CallHost() {
     const remoteAudioRef = useRef<HTMLAudioElement>(null);
     const [muted, setMuted] = useState(false);
     const [videoOff, setVideoOff] = useState(false);
+    const [minimized, setMinimized] = useState(false);
+    const [isCaller, setIsCaller] = useState(false);
+    const [connected, setConnected] = useState(false);
     const [elapsed, setElapsed] = useState(0);
     const tickRef = useRef<number | null>(null);
+    const ringbackRef = useRef<{ stop: () => void } | null>(null);
 
     /* ───── Llamada entrante ───── */
     useEffect(() => {
@@ -77,6 +110,9 @@ export default function CallHost() {
             if (ctrl) {
                 setActive(ctrl);
                 setCallerLabel(label || 'Llamada');
+                setIsCaller(true);       // soy quien llama → tono de marcado + "Llamando…"
+                setConnected(false);
+                setMinimized(false);
             }
         };
         window.addEventListener('callStarted', onStart);
@@ -99,13 +135,32 @@ export default function CallHost() {
         }
     }, [active]);
 
-    /* ───── Cronómetro ───── */
+    /* ───── Estado de conexión (para "Llamando…" vs cronómetro) ───── */
     useEffect(() => {
-        if (!active) { setElapsed(0); return; }
+        if (!active) { setConnected(false); return; }
+        const pc = active.pc;
+        const onState = () => { if (pc.connectionState === 'connected') setConnected(true); };
+        pc.addEventListener('connectionstatechange', onState);
+        onState();
+        return () => pc.removeEventListener('connectionstatechange', onState);
+    }, [active]);
+
+    /* ───── Cronómetro · arranca al conectar ───── */
+    useEffect(() => {
+        if (!active || !connected) { setElapsed(0); return; }
         setElapsed(0);
         tickRef.current = window.setInterval(() => setElapsed(e => e + 1), 1000);
         return () => { if (tickRef.current) clearInterval(tickRef.current); };
-    }, [active]);
+    }, [active, connected]);
+
+    /* ───── Tono de marcado (ringback "biip biip") mientras llama y aún no conecta ───── */
+    useEffect(() => {
+        const stop = () => { try { ringbackRef.current?.stop(); } catch { /* */ } ringbackRef.current = null; };
+        if (active && isCaller && !connected) {
+            if (!ringbackRef.current) ringbackRef.current = startRingback();
+        } else { stop(); }
+        return stop;
+    }, [active, isCaller, connected]);
 
     const accept = async () => {
         if (!incoming) return;
@@ -114,6 +169,9 @@ export default function CallHost() {
         if (ctrl) {
             setActive(ctrl);
             setCallerLabel(incoming.callerName);
+            setIsCaller(false);      // yo contesto → sin tono de marcado
+            setConnected(false);
+            setMinimized(false);
         } else {
             toast.error('No se pudo aceptar la llamada');
         }
@@ -133,8 +191,13 @@ export default function CallHost() {
             setActive(null);
         }
         if (tickRef.current) { clearInterval(tickRef.current); tickRef.current = null; }
+        try { ringbackRef.current?.stop(); } catch { /* */ }
+        ringbackRef.current = null;
         setMuted(false);
         setVideoOff(false);
+        setMinimized(false);
+        setIsCaller(false);
+        setConnected(false);
     };
 
     const onToggleMute = () => {
@@ -193,10 +256,33 @@ export default function CallHost() {
 
             {/* ── Ventana de llamada activa ── */}
             {active && (
-                <div class={`call-window ${active.session.kind === 'video' ? 'video' : 'audio'}`}>
+                <div
+                    class={`call-window ${active.session.kind === 'video' ? 'video' : 'audio'} ${minimized ? 'minimized' : ''} ${connected ? 'connected' : 'ringing'}`}
+                    onClick={minimized ? () => setMinimized(false) : undefined}
+                >
                     <header class="call-window-head">
+                        <button
+                            class="call-min-btn"
+                            onClick={(e: any) => { e.stopPropagation(); setMinimized(m => !m); }}
+                            title={minimized ? 'Expandir' : 'Minimizar'}
+                            aria-label={minimized ? 'Expandir llamada' : 'Minimizar llamada'}
+                        >
+                            <i class={`fas ${minimized ? 'fa-up-right-and-down-left-from-center' : 'fa-chevron-down'}`}></i>
+                        </button>
                         <strong>{callerLabel}</strong>
-                        <span class="call-timer">{fmtTime(elapsed)}</span>
+                        <span class="call-timer">
+                            {connected ? fmtTime(elapsed) : (isCaller ? 'Llamando…' : 'Conectando…')}
+                        </span>
+                        {minimized && (
+                            <button
+                                class="call-min-end"
+                                onClick={(e: any) => { e.stopPropagation(); end(); }}
+                                title="Colgar"
+                                aria-label="Colgar"
+                            >
+                                <i class="fas fa-phone-slash"></i>
+                            </button>
+                        )}
                     </header>
 
                     {active.session.kind === 'video' ? (

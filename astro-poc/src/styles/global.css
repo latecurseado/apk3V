@@ -7111,7 +7111,7 @@ body:has(.owner-maint-banner) main { padding-top: 60px; }
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.7);
     backdrop-filter: blur(8px);
-    z-index: 200;
+    z-index: 650;   /* por encima de la ventana de llamada (600), chat (500) y barra (400) */
     display: flex; align-items: center; justify-content: center;
 }
 .call-incoming {
@@ -7170,9 +7170,43 @@ body:has(.owner-maint-banner) main { padding-top: 60px; }
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-    z-index: 95;
+    z-index: 600;   /* por encima del chat a pantalla completa (500) y la barra inferior (400) */
     display: flex; flex-direction: column;
 }
+.call-min-btn {
+    width: 32px; height: 32px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.12);
+    border: none; color: #fff;
+    border-radius: 50%; cursor: pointer; flex-shrink: 0;
+}
+.call-min-btn:hover { background: rgba(255,255,255,0.22); }
+.call-min-end {
+    width: 32px; height: 32px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: #ef4444; border: none; color: #fff;
+    border-radius: 50%; cursor: pointer; flex-shrink: 0;
+}
+.call-window-head strong { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── Minimizado · ventanita flotante (sigues en llamada navegando) ── */
+.call-window.minimized {
+    top: auto; left: auto;
+    bottom: calc(80px + env(safe-area-inset-bottom));
+    right: 14px;
+    width: 200px !important;
+    height: auto;
+    cursor: pointer;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.55);
+}
+.call-window.minimized .call-window-controls { display: none; }
+.call-window.minimized .call-local-video { display: none; }
+.call-window.minimized .call-video-area { aspect-ratio: 4 / 3; }
+.call-window.minimized .call-audio-area { aspect-ratio: auto; height: 92px; gap: 8px; }
+.call-window.minimized .call-audio-avatar { width: 48px; height: 48px; font-size: 1.3rem; }
+.call-window.minimized .call-window-head { padding: 7px 9px; }
+.call-window.minimized .call-window-head strong { font-size: 0.78rem; }
+.call-window.minimized .call-timer { font-size: 0.72rem; }
 .call-window.video { width: 480px; }
 @media (max-width: 720px) {
     .call-window { right: 10px; bottom: 90px; width: calc(100vw - 20px); }
