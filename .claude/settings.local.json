@@ -84,7 +84,21 @@
       "Bash(node scripts/gen-app-icon.cjs)",
       "Bash(npx @capacitor/assets generate --iconBackgroundColor '#c2410c' --iconBackgroundColorDark '#17150f' --splashBackgroundColor '#f7f3ec' --splashBackgroundColorDark '#17150f')",
       "Bash(git init *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git -c user.name=\"rcrizallid02\" -c user.email=\"rcrizallid02@gmail.com\" commit -q -m \"Tres Valles · PWA + app móvil \\(Capacitor\\) + CI APK\")",
+      "WebFetch(domain:api.github.com)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never git push -u origin main)",
+      "Bash(GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never git pull origin main --allow-unrelated-histories --no-edit)",
+      "Bash(git -c user.name=\"rcrizallid02\" -c user.email=\"rcrizallid02@gmail.com\" commit -q -m \"CI: Node 22 \\(WebSocket nativo para Supabase Realtime\\)\")",
+      "Bash(GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never git push origin main)",
+      "Bash(gh --version)",
+      "Bash(gh auth *)",
+      "Bash(git -c user.name=\"rcrizallid02\" -c user.email=\"rcrizallid02@gmail.com\" commit -q -m \"App: sesión persistente nativa \\(Capacitor Preferences\\) · arregla que saque al entrar\")",
+      "Bash(npm uninstall *)",
+      "Bash(git -c user.name=\"rcrizallid02\" -c user.email=\"rcrizallid02@gmail.com\" commit -q -m \"Fix crash al inicio: quitar push nativo \\(sin Firebase reventaba la app\\)\")",
+      "Bash(grep -oE 'class=\"[a-zA-Z0-9_ -]+\"' __TRACKED_VAR__.tsx)"
     ]
   }
 }

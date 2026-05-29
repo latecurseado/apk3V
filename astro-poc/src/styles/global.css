@@ -5174,8 +5174,19 @@ main.wide {
     gap: 2px;
 }
 .mob-item:hover, .mob-item.active { color: var(--accent); }
-.mob-item i { font-size: 1.25rem; }
-.mob-item span { display: block; }
+.mob-item i { font-size: 1.25rem; transition: transform 0.18s var(--ease-out, ease); }
+.mob-item.active i { transform: translateY(-1px) scale(1.06); }
+.mob-item span { display: block; font-size: 0.64rem; }
+/* Indicador de pestaña activa (línea superior, estilo app). El "+" no lo lleva. */
+.mob-item:not(.mob-create).active::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    width: 26px; height: 3px;
+    transform: translateX(-50%);
+    background: var(--accent);
+    border-radius: 0 0 4px 4px;
+}
 .mob-create-btn {
     width: 44px; height: 44px;
     display: inline-flex; align-items: center; justify-content: center;
@@ -11229,32 +11240,43 @@ html.is-native .create-fab {
 }
 
 /* ╔═══════════════════════════════════════════════════════════╗
-   ║  MÓVIL · limpieza de flotantes + contenido visible          ║
-   ║  (corrige: bot tapado, doble botón crear, scroll cortado,   ║
-   ║   buscador inusable). !important para ganar a reglas previas)║
+   ║  MÓVIL · layout global (chrome)                             ║
+   ║  Topbar limpia · un solo botón crear · contenido sin tapar  ║
+   ║  Una sola fuente de verdad para márgenes/espaciado móvil.   ║
    ╚═══════════════════════════════════════════════════════════╝ */
 @media (max-width: 720px) {
-    /* Un SOLO botón de crear: el "+" del bottom-nav. Fuera el FAB flotante (duplicado). */
+    /* — Topbar mínima — logo + clima + notificaciones + ajustes + cuenta.
+       Quitamos lo redundante: chat vive en el bottom-nav ("El Recado"),
+       buscar en "Buscar", e instalar-PWA no aplica dentro de la app. */
+    .topbar .gs-wrap,
+    .topbar .chat-icon-btn,
+    .topbar .pwa-install-btn { display: none !important; }
+
+    /* Un SOLO botón de crear: el "+" del bottom-nav (fuera el FAB duplicado). */
     .create-fab { display: none !important; }
 
-    /* El bot (chibi) solo, por ENCIMA del bottom-nav, sin tapar nada */
+    /* Espaciado de contenido cómodo. Usamos body>main para NO doblar el padding
+       en el <main> anidado del feed (.disc-main). El clearance del bottom-nav lo
+       da body.padding-bottom (protege también el footer). */
+    body { padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
+    body > main      { padding: 14px 14px 20px; }
+    body > main.wide { padding: 12px 12px 20px; }
+    /* El chat ocupa toda la altura y reserva su propio hueco (-60px) para la barra. */
+    body:has(.chat-layout) { padding-bottom: 0; }
+    body > main:has(.chat-layout) { padding-bottom: 0; }
+
+    /* El bot (chibi) por ENCIMA del bottom-nav, sin tapar nada. */
     .ai-bubble {
-        bottom: calc(92px + env(safe-area-inset-bottom)) !important;
+        bottom: calc(72px + env(safe-area-inset-bottom)) !important;
         right: 14px !important;
     }
     .ai-greeting {
-        bottom: calc(160px + env(safe-area-inset-bottom)) !important;
+        bottom: calc(138px + env(safe-area-inset-bottom)) !important;
         right: 14px !important;
         left: auto !important;
         max-width: calc(100vw - 80px);
     }
 
-    /* El contenido ya no queda tapado por el bottom-nav flotante */
-    main { padding-bottom: calc(98px + env(safe-area-inset-bottom)) !important; }
-    /* El chat tiene su propio alto · no le metas el padding (rompería el composer) */
-    main:has(.chat-layout) { padding-bottom: 0 !important; }
-
-    /* Búsqueda: en móvil se usa "Buscar" del bottom-nav. El buscador del topbar
-       se colapsaba a un icono con el input display:none → no se podía abrir. */
-    .topbar .gs-wrap { display: none !important; }
+    /* Cabeceras/hero más compactas en pantalla chica (menos aire desperdiciado). */
+    .hero, .hub-hero { padding: 32px 16px 26px; margin-bottom: 22px; }
 }
