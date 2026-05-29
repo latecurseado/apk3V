@@ -1,6 +1,7 @@
 import { useEffect } from 'preact/hooks';
 import { Capacitor } from '@capacitor/core';
 import { supabase } from '../lib/supabase';
+import { toast } from '../lib/toast';
 
 /**
  * Puente nativo (Capacitor). NO hace nada en web (gateado por isNativePlatform).
@@ -27,12 +28,33 @@ export default function NativeBridge() {
         (async () => {
             const { App } = await import('@capacitor/app');
 
-            // 1) OAuth deep-link
+            // 1) OAuth deep-link (Google). Supabase nos devuelve a
+            //    mx.tresvalles.app://login-callback?code=... (o ?error=...).
             const urlSub = await App.addListener('appUrlOpen', async ({ url }) => {
-                if (url.includes('login-callback') || url.includes('code=')) {
-                    try { await supabase.auth.exchangeCodeForSession(url); } catch (e) { console.warn('[native] oauth:', e); }
-                    try { const { Browser } = await import('@capacitor/browser'); await Browser.close(); } catch { /* */ }
-                }
+                if (!(url.includes('login-callback') || url.includes('code=') || url.includes('error='))) return;
+
+                // Cierra el navegador del sistema cuanto antes.
+                try { const { Browser } = await import('@capacitor/browser'); await Browser.close(); } catch { /* */ }
+
+                // Extrae los parámetros del deep-link.
+                let code: string | null = null;
+                let errDesc: string | null = null;
+                try {
+                    const u = new URL(url);
+                    code = u.searchParams.get('code');
+                    errDesc = u.searchParams.get('error_description') || u.searchParams.get('error');
+                } catch { /* esquema raro → regex de respaldo abajo */ }
+                if (!code) { const m = url.match(/[?&#]code=([^&]+)/); if (m) code = decodeURIComponent(m[1]); }
+                if (!errDesc) { const m = url.match(/[?&#]error_description=([^&]+)/); if (m) errDesc = decodeURIComponent(m[1].replace(/\+/g, ' ')); }
+
+                if (errDesc) { toast.error('Google: ' + errDesc); return; }
+                if (!code) { toast.error('No llegó el código de Google. Revisa la Redirect URL en Supabase.'); return; }
+
+                // IMPORTANTE: se pasa SOLO el `code`, NO la URL completa.
+                // exchangeCodeForSession manda el argumento tal cual como auth_code.
+                const { error } = await supabase.auth.exchangeCodeForSession(code);
+                if (error) toast.error('No se pudo iniciar sesión: ' + error.message);
+                else toast.success('¡Sesión iniciada!');
             });
             subs.push(urlSub);
 

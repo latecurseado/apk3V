@@ -101,7 +101,10 @@
       "Bash(grep -oE 'class=\"[a-zA-Z0-9_ -]+\"' __TRACKED_VAR__.tsx)",
       "Bash(cd /c/Users/USER/Desktop/pagina/astro-poc/src/styles && grep -nE '^\\\\.thread-card|^\\\\.forum-list|^\\\\.disc-main|^\\\\.thread-content|^\\\\.thread-body|^\\\\.thread-text|^\\\\.shorts-strip|^\\\\.short-card' global.css | head -40)",
       "Read(//c/c/Users/USER/Desktop/pagina/astro-poc/src/styles/**)",
-      "Bash(grep -nE '^\\\\.seg-control|^\\\\.stories-bar|^\\\\.story-|^\\\\.shorts-strip-section|^\\\\.shorts-strip\\\\b|^\\\\.short-card|^\\\\.inline-composer|^\\\\.create-bar|^\\\\.create-fab|^\\\\.disc-main >|^\\\\.disc-main \\\\{|^\\\\.disc-main,' global.css)"
+      "Bash(grep -nE '^\\\\.seg-control|^\\\\.stories-bar|^\\\\.story-|^\\\\.shorts-strip-section|^\\\\.shorts-strip\\\\b|^\\\\.short-card|^\\\\.inline-composer|^\\\\.create-bar|^\\\\.create-fab|^\\\\.disc-main >|^\\\\.disc-main \\\\{|^\\\\.disc-main,' global.css)",
+      "Read(//c/c/Users/USER/Desktop/pagina/astro-poc/node_modules/**)",
+      "Bash(xargs grep -l \"exchangeCodeForSession\")",
+      "Bash(npx @capacitor/assets generate --android)"
     ]
   }
 }

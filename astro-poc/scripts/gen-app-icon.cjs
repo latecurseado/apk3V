@@ -1,5 +1,5 @@
 /* Genera los assets fuente para @capacitor/assets (icono + splash) con sharp.
-   Marca Tres Valles: terracota cálido + monograma "TV" serif.
+   Marca Tres Valles: terracota cálido + monograma "T" serif (igual que el logo).
    Reemplaza assets/icon-only.png por tu logo 1024x1024 y re-corre si quieres. */
 const fs = require('fs');
 const path = require('path');
@@ -20,9 +20,8 @@ const monogramSvg = (size, withBg) => `
     </linearGradient>
   </defs>
   ${withBg ? `<rect width="${size}" height="${size}" rx="${size * 0.22}" fill="url(#g)"/>` : ''}
-  <text x="50%" y="53%" font-family="Georgia, 'Times New Roman', serif" font-size="${size * 0.5}"
-        font-weight="700" fill="#fff8ef" text-anchor="middle" dominant-baseline="middle"
-        letter-spacing="-${size * 0.02}">TV</text>
+  <text x="50%" y="54%" font-family="Georgia, 'Times New Roman', serif" font-size="${size * 0.62}"
+        font-weight="700" fill="#fff8ef" text-anchor="middle" dominant-baseline="middle">T</text>
 </svg>`;
 
 const splashSvg = (w, h, dark) => `
@@ -31,8 +30,8 @@ const splashSvg = (w, h, dark) => `
   <g transform="translate(${w / 2}, ${h / 2})">
     <rect x="-220" y="-220" width="440" height="440" rx="120"
           fill="${dark ? '#221f19' : '#fff'}"/>
-    <text x="0" y="14" font-family="Georgia, serif" font-size="240" font-weight="700"
-          fill="${dark ? '#e8893f' : '#c2410c'}" text-anchor="middle" dominant-baseline="middle">TV</text>
+    <text x="0" y="20" font-family="Georgia, serif" font-size="300" font-weight="700"
+          fill="${dark ? '#e8893f' : '#c2410c'}" text-anchor="middle" dominant-baseline="middle">T</text>
     <text x="0" y="330" font-family="Georgia, serif" font-size="74" font-weight="600"
           fill="${dark ? '#f3eee6' : '#1c1916'}" text-anchor="middle">Tres Valles</text>
   </g>
