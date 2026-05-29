@@ -18,6 +18,17 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- Deep-link OAuth: Supabase redirige a mx.tresvalles.app://login-callback
+                 tras el login con Google. Sin este intent-filter, Android no sabe
+                 devolver el flujo a la app y termina en el navegador/sitio web.
+                 (singleTask + el listener App.appUrlOpen en NativeBridge cierran el ciclo.) -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="mx.tresvalles.app" />
+            </intent-filter>
         </activity>
 
         <provider

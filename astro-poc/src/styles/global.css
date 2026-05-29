@@ -11279,4 +11279,16 @@ html.is-native .create-fab {
 
     /* Cabeceras/hero más compactas en pantalla chica (menos aire desperdiciado). */
     .hero, .hub-hero { padding: 32px 16px 26px; margin-bottom: 22px; }
+
+    /* — Anti-desbordo horizontal del feed (contenido recortado a la derecha) —
+       El track 1fr de la grilla NO baja de su contenido mínimo → la columna se
+       hace más ancha que la pantalla y `overflow-x:clip` la corta. minmax(0,1fr)
+       permite que la columna encoja hasta el ancho real. */
+    .disc-layout { grid-template-columns: minmax(0, 1fr); gap: 0; max-width: 100%; }
+    .disc-main { min-width: 0; max-width: 100%; }
+    .forum-list, .thread-card { min-width: 0; max-width: 100%; }
+    .thread-card { padding: 14px 14px; }
+    .thread-content { overflow-wrap: anywhere; word-break: break-word; }
+    /* Imágenes/videos/embeds nunca empujan el ancho */
+    .thread-card img, .thread-card video, .thread-card iframe { max-width: 100%; height: auto; }
 }
