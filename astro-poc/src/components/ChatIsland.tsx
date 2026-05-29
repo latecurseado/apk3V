@@ -476,7 +476,7 @@ export default function ChatIsland() {
     }
 
     return (
-        <div class="chat-layout">
+        <div class={`chat-layout ${(activeId || activeGroup || activeBot) ? 'open' : ''}`}>
             {/* ─── Sidebar de conversaciones ─── */}
             <aside class="chat-sidebar">
                 <div class="disc-sidebar-head">
@@ -679,6 +679,19 @@ export default function ChatIsland() {
                     <>
                         {/* Header */}
                         <div class="chat-header">
+                            <button
+                                class="chat-back disc-icon-btn"
+                                onClick={() => {
+                                    setActiveId(null);
+                                    const u = new URL(window.location.href);
+                                    u.searchParams.delete('c');
+                                    window.history.pushState({}, '', u);
+                                }}
+                                title="Volver a conversaciones"
+                                aria-label="Volver a conversaciones"
+                            >
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
                             <a class="chat-header-user" href={`/perfil?u=${activeThread.other?.username || ''}`}>
                                 <div class={`chat-thread-avatar-wrap ${activeThread.other && onlineIds.has(activeThread.other.id) ? 'online' : ''}`}>
                                     <Avatar user={activeThread.other as any} size={40} />

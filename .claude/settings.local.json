@@ -105,7 +105,9 @@
       "Read(//c/c/Users/USER/Desktop/pagina/astro-poc/node_modules/**)",
       "Bash(xargs grep -l \"exchangeCodeForSession\")",
       "Bash(npx @capacitor/assets generate --android)",
-      "Bash(GIT_TERMINAL_PROMPT=0 git -c user.name=rcrizallid02 -c user.email=rcrizallid02@gmail.com commit -m ' *)"
+      "Bash(GIT_TERMINAL_PROMPT=0 git -c user.name=rcrizallid02 -c user.email=rcrizallid02@gmail.com commit -m ' *)",
+      "Bash(cd /c/Users/USER/Desktop/pagina/astro-poc/src/components && grep -nE 'class=\"chat-[a-z-]+\"' ChatIsland.tsx | head -60)",
+      "Read(//c/c/Users/USER/Desktop/pagina/astro-poc/src/components/**)"
     ]
   }
 }

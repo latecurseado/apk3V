@@ -3525,11 +3525,16 @@ main.wide {
 }
 .chat-composer input:focus { border-color: var(--accent); }
 
+/* Botón "atrás" del chat · sólo visible en móvil (vuelve a la lista). */
+.chat-back { display: none; }
+
 @media (max-width: 760px) {
     .chat-layout { grid-template-columns: 1fr; }
+    /* Lista (sin conversación) → muestra la barra lateral, oculta la ventana. */
     .chat-main { display: none; }
-    .chat-layout:has(.chat-thread-row.active) .chat-sidebar { display: none; }
-    .chat-layout:has(.chat-thread-row.active) .chat-main { display: flex; }
+    /* Conversación abierta (.open) → ventana a pantalla completa, oculta la lista. */
+    .chat-layout.open .chat-sidebar { display: none; }
+    .chat-layout.open .chat-main { display: flex; }
 }
 
 /* ============ ATTACHMENTS ============ */
@@ -9983,14 +9988,49 @@ input[type="date"], input[type="time"], input[type="datetime-local"] {
     .modal-body { padding-bottom: max(20px, env(safe-area-inset-bottom)); }
 }
 
-/* Chat composer · sticky abajo + safe-area iOS para notch/home-indicator */
+/* ── Chat en móvil · conversación a pantalla completa ── */
 @media (max-width: 720px) {
+    /* Dentro de una conversación abierta, la barra inferior global estorba al
+       composer: la ocultamos y la ventana del chat manda (tiene su botón atrás). */
+    body:has(.chat-layout.open) .mob-nav { display: none; }
+
+    /* La ventana ocupa el alto real. dvh sigue al teclado: al abrirlo, la ventana
+       encoge y el composer sube (no queda tapado por el teclado). */
+    .chat-layout.open .chat-main {
+        height: calc(100vh - var(--header-h));
+        height: calc(100dvh - var(--header-h));
+        max-height: none;
+        border: none;
+        border-radius: 0;
+    }
+    /* En la app nativa la topbar incluye el notch (safe-area-top): hay que restarlo
+       o el composer se empuja fuera de pantalla. */
+    html.is-native .chat-layout.open .chat-main {
+        height: calc(100dvh - var(--header-h) - env(safe-area-inset-top));
+    }
+
+    /* Composer cómodo, siempre visible, respetando el home-indicator. */
     .chat-composer, .bot-chat-composer, .group-chat-composer {
-        padding-bottom: max(12px, env(safe-area-inset-bottom));
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
     }
-    .chat-main {
-        padding-bottom: env(safe-area-inset-bottom);
+
+    /* Botón atrás visible; nombre se trunca; acciones no se cortan (scroll si hace falta). */
+    .chat-back { display: inline-flex; width: 36px; height: 36px; flex-shrink: 0; }
+    .chat-header { gap: 8px; }
+    .chat-header-user { flex: 1; min-width: 0; }
+    .chat-header-user strong,
+    .chat-header-user small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .chat-header-actions {
+        flex-shrink: 0;
+        gap: 2px;
+        max-width: 58%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
     }
+    .chat-header-actions::-webkit-scrollbar { display: none; }
+    .chat-header-actions .disc-icon-btn { width: 34px; height: 34px; flex-shrink: 0; }
+
     /* iOS notch sup */
     .topbar { padding-top: env(safe-area-inset-top); }
 }
@@ -11290,9 +11330,9 @@ html.is-native .create-fab {
     body { padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
     body > main      { padding: 14px 14px 20px; }
     body > main.wide { padding: 12px 12px 20px; }
-    /* El chat ocupa toda la altura y reserva su propio hueco (-60px) para la barra. */
+    /* El chat ocupa TODA la pantalla (sin márgenes alrededor del layout). */
     body:has(.chat-layout) { padding-bottom: 0; }
-    body > main:has(.chat-layout) { padding-bottom: 0; }
+    body > main:has(.chat-layout) { padding: 0; }
 
     /* El bot (chibi) por ENCIMA del bottom-nav, sin tapar nada. */
     .ai-bubble {
