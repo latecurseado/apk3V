@@ -100,7 +100,8 @@
       "Bash(git -c user.name=\"rcrizallid02\" -c user.email=\"rcrizallid02@gmail.com\" commit -q -m \"Fix crash al inicio: quitar push nativo \\(sin Firebase reventaba la app\\)\")",
       "Bash(grep -oE 'class=\"[a-zA-Z0-9_ -]+\"' __TRACKED_VAR__.tsx)",
       "Bash(cd /c/Users/USER/Desktop/pagina/astro-poc/src/styles && grep -nE '^\\\\.thread-card|^\\\\.forum-list|^\\\\.disc-main|^\\\\.thread-content|^\\\\.thread-body|^\\\\.thread-text|^\\\\.shorts-strip|^\\\\.short-card' global.css | head -40)",
-      "Read(//c/c/Users/USER/Desktop/pagina/astro-poc/src/styles/**)"
+      "Read(//c/c/Users/USER/Desktop/pagina/astro-poc/src/styles/**)",
+      "Bash(grep -nE '^\\\\.seg-control|^\\\\.stories-bar|^\\\\.story-|^\\\\.shorts-strip-section|^\\\\.shorts-strip\\\\b|^\\\\.short-card|^\\\\.inline-composer|^\\\\.create-bar|^\\\\.create-fab|^\\\\.disc-main >|^\\\\.disc-main \\\\{|^\\\\.disc-main,' global.css)"
     ]
   }
 }

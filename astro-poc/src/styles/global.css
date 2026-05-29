@@ -11204,7 +11204,9 @@ button:disabled, button.busy {
    ╚═══════════════════════════════════════════════════════════╝ */
 html, body {
     overscroll-behavior: none;          /* mata el rebote/rubber-band y el pull-to-refresh del navegador */
-    overflow-x: clip;                   /* `clip` recorta hasta elementos position:fixed (los cajones off-canvas) */
+    overflow-x: hidden;                 /* fallback: WebViews viejos que no soportan `clip` */
+    overflow-x: clip;                   /* moderno: recorta hasta elementos position:fixed (cajones off-canvas) */
+    width: 100%;
     max-width: 100%;
 }
 @media (max-width: 720px) {
@@ -11280,15 +11282,24 @@ html.is-native .create-fab {
     /* Cabeceras/hero más compactas en pantalla chica (menos aire desperdiciado). */
     .hero, .hub-hero { padding: 32px 16px 26px; margin-bottom: 22px; }
 
-    /* — Anti-desbordo horizontal del feed (contenido recortado a la derecha) —
-       El track 1fr de la grilla NO baja de su contenido mínimo → la columna se
-       hace más ancha que la pantalla y `overflow-x:clip` la corta. minmax(0,1fr)
-       permite que la columna encoja hasta el ancho real. */
-    .disc-layout { grid-template-columns: minmax(0, 1fr); gap: 0; max-width: 100%; }
-    .disc-main { min-width: 0; max-width: 100%; }
-    .forum-list, .thread-card { min-width: 0; max-width: 100%; }
+    /* — Anti-desbordo horizontal (contenido recortado a la derecha) —
+       Causa: un track `1fr` de grilla NO baja de su contenido mínimo → la columna
+       se hace más ancha que la pantalla y se recorta. minmax(0,1fr) + min-width:0
+       deja que todo encoja hasta el ancho real de la pantalla. */
+    html { scrollbar-gutter: auto; }    /* sin reservar ~15px muertos a la derecha */
+
+    .disc-layout { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .disc-layout, .disc-main, .forum-list, .thread-card,
+    .seg-control, .shorts-strip-section, .stories-bar,
+    .inline-composer, .create-bar, .hub-grid, .hub-section {
+        min-width: 0;
+        max-width: 100%;
+    }
     .thread-card { padding: 14px 14px; }
     .thread-content { overflow-wrap: anywhere; word-break: break-word; }
-    /* Imágenes/videos/embeds nunca empujan el ancho */
-    .thread-card img, .thread-card video, .thread-card iframe { max-width: 100%; height: auto; }
+    /* Media (imágenes/videos/embeds) nunca empuja el ancho */
+    .thread-card img, .thread-card video, .thread-card iframe,
+    .thread-content img, .thread-content video { max-width: 100%; height: auto; }
+    /* Bloques de código de posts del bot: scroll interno, no desbordan la tarjeta */
+    .thread-content.rich pre { max-width: 100%; overflow-x: auto; }
 }
