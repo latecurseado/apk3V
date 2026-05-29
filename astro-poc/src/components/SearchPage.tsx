@@ -13,6 +13,22 @@ const TABS: { id: Tab; label: string; icon: string }[] = [
     { id: 'noticias',  label: 'Noticias',  icon: 'fa-newspaper' },
 ];
 
+// Accesos directos · los mismos de la barra del Inicio (oculta en móvil).
+const QUICK_LINKS: { href: string; icon: string; label: string }[] = [
+    { href: '/',                  icon: 'fa-house',            label: 'La Plaza (Inicio)' },
+    { href: '/foros',             icon: 'fa-grip',             label: 'Todos los rincones' },
+    { href: '/reels',             icon: 'fa-bolt',             label: 'Cortos' },
+    { href: '/explora',           icon: 'fa-mountain',         label: 'Explora' },
+    { href: '/explora#hub-videos',  icon: 'fa-circle-play',    label: 'Videos' },
+    { href: '/explora#hub-galeria', icon: 'fa-images',         label: 'Galería' },
+    { href: '/explora#hub-mapa',    icon: 'fa-map-location-dot', label: 'Mapa' },
+    { href: '/marketplace',       icon: 'fa-store',            label: 'El Tianguis' },
+    { href: '/chat',              icon: 'fa-message',          label: 'El Recado (chats)' },
+    { href: '/notificaciones',    icon: 'fa-bell',             label: 'Notificaciones' },
+    { href: '/marcadores',        icon: 'fa-bookmark',         label: 'Marcadores' },
+    { href: '/perfil',            icon: 'fa-user',             label: 'Mi Rancho (perfil)' },
+];
+
 export default function SearchPage() {
     const [q, setQ] = useState('');
     const [tab, setTab] = useState<Tab>('todos');
@@ -54,6 +70,7 @@ export default function SearchPage() {
     };
 
     return (
+        <div class="search-layout">
         <div class="search-page">
             <div class="search-page-input">
                 <i class="fas fa-magnifying-glass"></i>
@@ -177,6 +194,24 @@ export default function SearchPage() {
                     )}
                 </div>
             )}
+        </div>
+
+        {/* Accesos directos · lista lateral (en móvil se oculta al buscar) */}
+        <aside class="search-shortcuts" data-searching={q.trim() ? '1' : '0'}>
+            <div class="disc-sidebar-head">
+                <h3><i class="fas fa-compass"></i> Accesos directos</h3>
+            </div>
+            <div class="forum-nav">
+                <div class="forum-nav-group">
+                    {QUICK_LINKS.map(l => (
+                        <a key={l.href} class="forum-nav-item" href={l.href}>
+                            <i class={`fas ${l.icon}`}></i>
+                            <span>{l.label}</span>
+                        </a>
+                    ))}
+                </div>
+            </div>
+        </aside>
         </div>
     );
 }

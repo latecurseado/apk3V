@@ -1518,7 +1518,36 @@ main.wide {
 .gs-see-all:hover { background: rgba(var(--accent-rgb), 0.15); }
 
 /* ============ PÁGINA /buscar ============ */
-.search-page { max-width: 880px; margin: 0 auto; }
+/* Layout: buscador (centro) + accesos directos (lista lateral derecha). */
+.search-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: 20px;
+    align-items: start;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+.search-page { min-width: 0; max-width: 880px; }
+
+/* Lista lateral de accesos directos (reusa estilos de .forum-nav del Inicio). */
+.search-shortcuts {
+    position: sticky;
+    top: calc(var(--header-h) + 12px);
+    background: var(--bg-glass);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 10px;
+}
+.search-shortcuts .disc-sidebar-head { margin-bottom: 8px; }
+
+@media (max-width: 920px) {
+    .search-layout { grid-template-columns: 1fr; }
+    .search-shortcuts { position: static; }   /* en móvil: debajo del buscador */
+}
+@media (max-width: 720px) {
+    /* Al estar buscando, ocultamos los accesos para no estorbar a los resultados. */
+    .search-shortcuts[data-searching="1"] { display: none; }
+}
 
 .search-page-input {
     display: flex;
