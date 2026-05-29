@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'preact/hooks';
+import { Capacitor } from '@capacitor/core';
 
 interface BeforeInstallEvent extends Event {
     prompt(): Promise<void>;
@@ -10,11 +11,10 @@ export default function PwaInstall() {
     const [installed, setInstalled] = useState(false);
 
     useEffect(() => {
-        // Registrar SW + AUTO-ACTUALIZACIÓN.
-        // Cuando se publica una versión nueva, el SW nuevo entra en "installed"
-        // mientras el viejo aún controla la página → recargamos UNA vez para que
-        // el usuario vea siempre lo último (sin tener que limpiar caché a mano).
-        if ('serviceWorker' in navigator) {
+        // En la APP NATIVA (Capacitor) NO registramos service worker: los assets
+        // ya van empaquetados, no aporta nada y su auto-recarga tiraba la sesión
+        // ("entra y me saca"). En web sí, con auto-actualización.
+        if ('serviceWorker' in navigator && !Capacitor.isNativePlatform()) {
             navigator.serviceWorker.register('/sw.js').then((reg) => {
                 // Si aparece un SW nuevo, fuerza su activación y recarga al tomar control.
                 reg.addEventListener('updatefound', () => {
