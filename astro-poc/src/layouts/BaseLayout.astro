@@ -157,16 +157,21 @@ const navItems: ReadonlyArray<{ id: string; href: string; icon: string; label: s
             })();
         </script>
 
-        <!-- Navegación en la app (Capacitor): el servidor del webview sólo resuelve
-             directorios CON barra final (/buscar/ → /buscar/index.html). Sin la barra,
-             /buscar no resuelve y la navegación falla. Normalizamos los enlaces internos
-             a "/ruta/" en fase de captura, ANTES de que ViewTransitions los tome.
-             En web es inofensivo (Cloudflare resuelve ambos). -->
+        <!-- Navegación en la app (Capacitor): el servidor del webview sirve el
+             index.html del HOME para cualquier ruta que no sea un archivo real
+             (fallback tipo SPA), así que /buscar, /chat, etc. terminan mostrando
+             el home. Solución a prueba de balas: apuntar al archivo real
+             /ruta/index.html (siempre existe y siempre se sirve). Lo hacemos en
+             fase de captura, ANTES de que ViewTransitions tome el clic.
+             En web es inofensivo (Cloudflare sirve /ruta/index.html igual). -->
         <script is:inline>
             (function () {
-                if (window.__tvNavSlashFix) return;
-                window.__tvNavSlashFix = true;
+                if (window.__tvNavFileFix) return;
+                window.__tvNavFileFix = true;
                 document.addEventListener('click', function (e) {
+                    // Sólo en la app nativa (en web Cloudflare resuelve /ruta sin problema).
+                    var cap = window.Capacitor;
+                    if (!cap || !cap.isNativePlatform || !cap.isNativePlatform()) return;
                     var a = e.target && e.target.closest ? e.target.closest('a') : null;
                     if (!a) return;
                     var href = a.getAttribute('href');
@@ -174,9 +179,11 @@ const navItems: ReadonlyArray<{ id: string; href: string; icon: string; label: s
                     var i = href.search(/[?#]/);
                     var path = i === -1 ? href : href.slice(0, i);
                     var rest = i === -1 ? '' : href.slice(i);
-                    if (path.endsWith('/')) return;             // ya tiene barra
-                    if (/\.[a-z0-9]+$/i.test(path)) return;     // es un archivo (tiene extensión)
-                    a.setAttribute('href', path + '/' + rest);
+                    if (path === '/' ) return;                  // home: la raíz ya sirve index.html
+                    if (/\.[a-z0-9]+$/i.test(path)) return;     // ya apunta a un archivo (tiene extensión)
+                    if (/\/index\.html$/.test(path)) return;    // ya normalizado
+                    path = path.replace(/\/$/, '');             // quita barra final si la hubiera
+                    a.setAttribute('href', path + '/index.html' + rest);
                 }, true);
             })();
         </script>

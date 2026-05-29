@@ -36,7 +36,9 @@ export default function MobileBottomNav({ onCompose }: Props) {
         return () => { supabase.removeChannel(ch); };
     }, [user?.id]);
 
-    const isActive = (p: string) => path === p;
+    // Normaliza /perfil/index.html y /perfil/ → /perfil (por el fix de navegación nativa).
+    const norm = (p: string) => p.replace(/\/index\.html$/, '').replace(/\/+$/, '') || '/';
+    const isActive = (p: string) => norm(path) === norm(p);
 
     const handleCompose = () => {
         if (!requireAuthOrPrompt('publicar', user?.id ?? null)) return;
