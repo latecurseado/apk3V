@@ -162,7 +162,7 @@ const navItems: ReadonlyArray<{ id: string; href: string; icon: string; label: s
     <body>
         <NavProgress client:load transition:persist="nav-progress" />
         <header class="topbar" transition:persist="topbar">
-            <a href="/" class="logo">Tres Valles</a>
+            <a href="/" class="logo" aria-label="Tres Valles · Inicio">T</a>
             <GlobalSearch client:load transition:persist="global-search" />
             <nav class="topnav">
                 {navItems.map(item => (

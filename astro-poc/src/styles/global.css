@@ -117,7 +117,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* Dark theme · topbar es oscuro · su contenido en crema */
-[data-theme="dark"] .topbar .logo { color: var(--text-on-bg); }
+[data-theme="dark"] .topbar .logo { color: #fff; }
 [data-theme="dark"] .topbar .disc-icon-btn,
 [data-theme="dark"] .topbar .gs-input {
     color: var(--text-on-bg);
@@ -156,31 +156,29 @@ html { scrollbar-gutter: stable; overflow-y: scroll; }
     .topbar .gs-wrap { max-width: 620px; }
 }
 
+/* Logo · monograma "T" blanca en cuadro terracota (estilo ícono de la app).
+   Funciona igual en modo claro y oscuro (la T siempre blanca sobre el acento). */
 .logo {
     font-family: var(--font-display, 'Fraunces', serif);
-    font-size: 1.42rem;
-    font-weight: 600;
+    font-size: 1.28rem;
+    font-weight: 700;
     font-optical-sizing: auto;
-    color: var(--text);
-    letter-spacing: -0.01em;
+    color: #fff;
     text-decoration: none;
     display: inline-flex;
-    align-items: baseline;
-    gap: 1px;
+    align-items: center;
+    justify-content: center;
+    width: 38px; height: 38px;
+    background: var(--accent-grad, var(--accent));
+    border-radius: 11px;
     line-height: 1;
+    box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.32);
+    transition: transform 0.25s var(--ease-out, ease), box-shadow 0.25s ease;
 }
-/* Glifo · punto verde caña antes del nombre (como una semilla/marca) */
-.logo::before {
-    content: '';
-    display: inline-block;
-    width: 9px; height: 9px;
-    border-radius: 50% 50% 50% 0;  /* gota / hoja de caña */
-    background: var(--accent);
-    margin-right: 7px;
-    transform: rotate(45deg);
-    align-self: center;
+.logo:hover {
+    transform: scale(1.06) rotate(-3deg);
+    box-shadow: 0 6px 16px rgba(var(--accent-rgb), 0.45);
 }
-.logo:hover::before { transform: rotate(135deg); transition: transform 0.4s; }
 
 /* Tipografía display · títulos con carácter en TODA la app */
 .hub-hero h1, .hero h1,
@@ -10075,7 +10073,7 @@ input[type="date"], input[type="time"], input[type="datetime-local"] {
 /* Topbar más compacta en mobile pero todavía clickeable */
 @media (max-width: 720px) {
     .topbar { height: 56px; padding: 0 10px; gap: 6px; }
-    .topbar .logo { font-size: 1.05rem; }
+    .topbar .logo { width: 34px; height: 34px; font-size: 1.12rem; border-radius: 10px; }
     .topbar > * { min-height: 40px; }
 }
 
