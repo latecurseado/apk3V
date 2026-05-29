@@ -1,0 +1,140 @@
+============================================================
+VIDEOS POR DEFECTO — Tres Valles
+============================================================
+
+Esta carpeta contiene los videos que aparecen en el apartado
+"En reproducción" de Explora Tres Valles. Soporta DOS TIPOS:
+
+  1) VIDEOS LOCALES (.mp4 / .webm guardados aquí mismo)
+  2) VIDEOS DE YOUTUBE (referenciados por su ID, embebidos)
+
+Además, CADA video debe llevar **crédito al autor** original.
+Es obligatorio si reutilizas contenido de otra fuente
+(YouTube, TVMÁS RTV, gobierno del estado, etc.).
+
+------------------------------------------------------------
+FORMATO DEL manifest.json
+------------------------------------------------------------
+
+Para un VIDEO DE YOUTUBE:
+
+    {
+        "youtube_id": "ABC123xyz45",
+        "title": "Título visible",
+        "description": "Descripción corta (opcional)",
+        "author": "Nombre del canal o autor",
+        "source_url": "https://www.youtube.com/@elcanal",
+        "year": 2024
+    }
+
+Para sacar el `youtube_id`: si la URL es
+https://www.youtube.com/watch?v=ABC123xyz45 → el ID es
+"ABC123xyz45" (lo que está después de "v=").
+
+Para un VIDEO LOCAL:
+
+    {
+        "file": "mi-video.mp4",
+        "title": "Título visible",
+        "description": "Descripción opcional",
+        "author": "Nombre de quien grabó",
+        "source_url": "",
+        "year": 2025
+    }
+
+------------------------------------------------------------
+CRÉDITOS — POLÍTICA
+------------------------------------------------------------
+
+SIEMPRE incluye "author" cuando el video no es propio. Esto
+respeta el trabajo del creador original y evita problemas
+legales. El crédito aparece visiblemente bajo el reproductor
+con un link a su canal/sitio (campo "source_url").
+
+Ejemplo del crédito en pantalla:
+    "Video por TVMÁS RTV ↗ · 2021 · vía YouTube"
+
+Si el video es de un canal de YouTube, lo correcto es usar
+"youtube_id" (no descargar el video). Eso embebe el video
+directamente desde YouTube — el contador de vistas, los
+ingresos por publicidad y el algoritmo siguen yendo al
+autor, que es lo justo.
+
+------------------------------------------------------------
+DIFERENCIAS ENTRE LOCAL Y YOUTUBE
+------------------------------------------------------------
+
+LOCAL (.mp4):
+- Funciona 100% offline (PWA descarga el archivo)
+- Tú decides el peso, calidad, duración
+- Tras terminar, AVANZA AUTOMÁTICAMENTE al siguiente
+- Sirve para grabaciones propias o material liberado
+
+YOUTUBE (youtube_id):
+- Requiere conexión a internet
+- No descargas nada — es un embed liviano
+- Crédito automático al canal original
+- Para avanzar al siguiente, click manual en "Ver todos"
+  (los iframes de YouTube no exponen evento "ended" sin
+   meter la API completa de YT)
+
+------------------------------------------------------------
+CÓMO AÑADIR UN VIDEO DE YOUTUBE
+------------------------------------------------------------
+
+1) Copia la URL del video. Ejemplo:
+   https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+2) Saca el ID (los 11 caracteres después de "v="):
+   dQw4w9WgXcQ
+
+3) Edita manifest.json y agrega:
+
+   {
+       "youtube_id": "dQw4w9WgXcQ",
+       "title": "Recorrido por Tres Valles",
+       "description": "Material del canal local",
+       "author": "Nombre del canal",
+       "source_url": "https://www.youtube.com/@nombredelcanal",
+       "year": 2023
+   }
+
+4) Refresca la página (Ctrl+Shift+R).
+
+------------------------------------------------------------
+CÓMO AÑADIR UN VIDEO LOCAL
+------------------------------------------------------------
+
+1) Copia el archivo aquí dentro:
+   src/main/videos-default/<tu-video>.mp4
+
+   Formatos aceptados: .mp4 (recomendado), .webm
+   Tamaño recomendado: máx 50 MB. Si pesa más, comprímelo
+   con HandBrake o ffmpeg antes de subir.
+
+2) Edita manifest.json y agrega una entrada con "file":
+
+   {
+       "file": "tu-video.mp4",
+       "title": "Título",
+       "description": "Descripción",
+       "author": "Tu nombre o quien grabó",
+       "source_url": "",
+       "year": 2025
+   }
+
+3) Refresca la página.
+
+------------------------------------------------------------
+CONSEJOS DE COMBINACIÓN
+------------------------------------------------------------
+
+- Mezcla locales + YouTube en el mismo manifest. La app los
+  trata uniformemente (con la salvedad del autoplay-next que
+  solo funciona automático para los locales).
+- Pon primero los videos institucionales con buenos créditos
+  (TVMÁS, gobierno, prensa local) y al final los grabados
+  por la comunidad.
+- Si no sabes a quién dar crédito, escribe "Autor desconocido"
+  en lugar de dejarlo vacío. Marca claramente que se busca al
+  creador para reconocerlo.

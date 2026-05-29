@@ -1,0 +1,20 @@
+---
+interface Props {
+    icon: string;
+    title: string;
+    description: string;
+}
+const { icon, title, description } = Astro.props;
+---
+<div class="stub-state">
+    <i class={`fas ${icon}`}></i>
+    <h2>{title}</h2>
+    <p>{description}</p>
+    <p style="margin-top: 14px; font-size: 0.82rem; color: var(--text-muted);">
+        Esta sección sigue corriendo en el sitio vanilla actual.
+        Migración pendiente a Astro + islas Preact.
+    </p>
+    <a class="contact-btn" href="/explora" style="margin-top: 20px;">
+        <i class="fas fa-mountain"></i> Ver "Explora Tres Valles"
+    </a>
+</div>

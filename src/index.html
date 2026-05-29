@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tres Valles | Portal Comunitario · Veracruz</title>
+
+    <!-- ============================================================
+         SEO básico — descripción que sale en resultados de Google,
+         palabras clave para el municipio, autor y idioma.
+         ============================================================ -->
+    <meta name="description" content="Portal comunitario de Tres Valles, Veracruz. Foro de discusión, noticias locales, directorio de negocios, mapa interactivo y galería de la Cuenca del Papaloapan.">
+    <meta name="keywords" content="Tres Valles, Veracruz, Cuenca del Papaloapan, foro comunitario, noticias locales, directorio negocios, ingenio Tres Valles, Sotavento, portal municipal">
+    <meta name="author" content="Comunidad Tres Valles">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta http-equiv="content-language" content="es-MX">
+    <link rel="canonical" href="https://tresvalles.pages.dev/">
+
+    <!-- Datos estructurados (Schema.org) — ayuda a Google a entender que es un sitio comunitario -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Tres Valles · Portal Comunitario",
+        "url": "https://tresvalles.pages.dev/",
+        "description": "Portal comunitario del municipio de Tres Valles, Veracruz. Foro, noticias, directorio y galería.",
+        "inLanguage": "es-MX",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://tresvalles.pages.dev/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        },
+        "about": {
+            "@type": "Place",
+            "name": "Tres Valles, Veracruz",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Tres Valles",
+                "addressRegion": "Veracruz",
+                "addressCountry": "MX"
+            }
+        }
+    }
+    </script>
+
+    <!-- Verificación de Google Search Console — propietario del sitio -->
+    <meta name="google-site-verification" content="iIGQeyLOg0r4_AMFwJHZ0ft7dp0_peElqwbDr0CfOx4" />
+    <link rel="icon" type="image/png" sizes="48x48" href="main/icons/icon-48.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="main/icons/icon-96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="main/icons/icon-192.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="main/icons/icon-192.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="main/icons/icon-512.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00d2ff">
+
+    <!-- Meta tags para previsualización al compartir (Open Graph + Twitter Card) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Tres Valles">
+    <meta property="og:title" content="Tres Valles · Portal Comunitario">
+    <meta property="og:description" content="Foro, noticias locales, mapa interactivo y directorio de negocios de Tres Valles, Veracruz.">
+    <meta property="og:image" content="main/icons/icon-1024.png">
+    <meta property="og:url" content="https://tresvalles.pages.dev/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Tres Valles · Portal Comunitario">
+    <meta name="twitter:description" content="Foro, noticias locales, mapa interactivo y directorio de negocios de Tres Valles, Veracruz.">
+    <meta name="twitter:image" content="main/icons/icon-1024.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Tres Valles">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+    <!-- ============================================================
+         CSS CRÍTICO INLINE (siempre presente, sin depender de archivo externo)
+         Esto garantiza que la página tenga estilos básicos AUNQUE el style.css
+         externo falle por completo. El style.css externo se carga después y
+         agrega los efectos premium (glassmorphism, glows, animaciones).
+         ============================================================ -->
+    <style id="critical-css">
+:root { --bg:#0a0a0c; --bg-card:#13131a; --bg-elev:#1a1a25; --text:#e6e6e6; --text-dim:#9aa0a8; --text-muted:#64748b; --accent:#00d2ff; --accent-2:#3a7bd5; --border:rgba(255,255,255,0.08); --border-strong:rgba(255,255,255,0.14); --accent-grad:linear-gradient(135deg,#00d2ff,#3a7bd5); --danger:#ef4444; --success:#22c55e; --warn:#f59e0b; }
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; }
+body { font-family: 'Montserrat', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+button { font-family: inherit; cursor: pointer; }
+input, textarea, select { font-family: inherit; }
+img { max-width: 100%; }
+
+/* Header / navbar */
+header { position: sticky; top: 0; z-index: 100; background: rgba(10,10,12,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+.navbar { display: flex; align-items: center; gap: 14px; padding: 10px 18px; max-width: 1400px; margin: 0 auto; }
+.nav-left, .nav-right { display: flex; align-items: center; gap: 8px; }
+.nav-center { flex: 1; max-width: 600px; margin: 0 auto; }
+.logo { font-size: 1.3rem; font-weight: 900; color: var(--text); display: inline-flex; align-items: center; gap: 6px; }
+.logo span { background: var(--accent-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* Search */
+.search-wrap { position: relative; }
+.search-box { background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 999px; padding: 7px 14px; display: flex; align-items: center; gap: 8px; transition: border-color 0.15s; }
+.search-box:focus-within { border-color: var(--accent); }
+.search-box input { background: transparent; border: 0; color: var(--text); flex: 1; outline: none; font-size: 0.88rem; }
+.search-box i { color: var(--text-dim); }
+.cp-trigger { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 6px; padding: 2px 6px; color: var(--text-dim); font-size: 0.7rem; }
+kbd { font-family: monospace; font-size: 0.7rem; padding: 1px 5px; background: rgba(255,255,255,0.06); border-radius: 3px; }
+
+/* Layout */
+.layout-main { display: grid; grid-template-columns: 260px 1fr; gap: 20px; padding: 20px; max-width: 1400px; margin: 0 auto; align-items: start; }
+@media (max-width: 1024px) { .layout-main { grid-template-columns: 220px 1fr; padding: 14px; gap: 14px; } }
+@media (max-width: 768px) { .layout-main { grid-template-columns: 1fr; } #sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 280px; z-index: 200; transform: translateX(-100%); transition: transform 0.25s; box-shadow: 4px 0 20px rgba(0,0,0,0.5); } #sidebar:not(.sidebar-hidden) { transform: translateX(0); } #sidebar-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 199; } body.sidebar-open #sidebar-backdrop { display: block; } }
+
+/* Sidebar */
+#sidebar { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 18px; height: fit-content; position: sticky; top: 80px; max-height: calc(100vh - 100px); overflow-y: auto; }
+.sidebar-user-card { display: flex; align-items: center; gap: 10px; padding: 10px; background: rgba(0,210,255,0.06); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 14px; }
+.sidebar-user-card.hidden { display: none; }
+.sidebar-user-card img, .uc-pfp-wrap img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); }
+.uc-pfp-wrap { position: relative; flex-shrink: 0; }
+.uc-info { flex: 1; min-width: 0; }
+.uc-name { font-weight: 700; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.uc-meta { font-size: 0.72rem; color: var(--text-dim); }
+.sidebar-create-btn { width: 100%; padding: 10px 14px; background: var(--accent-grad); color: #061c24; border: 0; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 8px; justify-content: center; margin-bottom: 14px; }
+.sidebar-nav { display: flex; flex-direction: column; gap: 2px; margin-bottom: 14px; }
+.sidebar-link-btn { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; color: var(--text); font-size: 0.85rem; transition: background 0.15s; }
+.sidebar-link-btn:hover { background: rgba(0,210,255,0.08); text-decoration: none; }
+.sidebar-link-btn.active { background: rgba(0,210,255,0.14); color: var(--accent); }
+.sidebar-link-btn i { width: 18px; text-align: center; }
+.sidebar-section { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+.sidebar-section.hidden { display: none; }
+.sidebar-section-title { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 10px; display: flex; align-items: center; gap: 6px; }
+.sidebar-show-more { background: transparent; border: 0; color: var(--accent); font-size: 0.7rem; cursor: pointer; margin-left: auto; }
+
+/* User pill */
+.user-pill { display: flex; align-items: center; gap: 10px; padding: 7px 8px; border-radius: 8px; cursor: pointer; transition: background 0.15s; margin-bottom: 2px; }
+.user-pill:hover { background: rgba(0,210,255,0.08); }
+.avatar-wrap { position: relative; width: 34px; height: 34px; flex-shrink: 0; }
+.avatar-wrap img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.user-pill-info { flex: 1; min-width: 0; }
+.user-pill-name { font-size: 0.82rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-pill-sub { font-size: 0.7rem; color: var(--text-dim); }
+.user-pill-actions { display: flex; gap: 4px; align-items: center; }
+.user-pill-action { background: var(--accent-grad); color: #061c24; border: 0; border-radius: 6px; padding: 4px 10px; font-weight: 700; font-size: 0.7rem; }
+.user-pill-action.following { background: var(--text-dim); }
+.pill-icon-btn { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--text); display: inline-flex; align-items: center; justify-content: center; font-size: 0.66rem; }
+
+/* Buttons */
+.btn-primary, .btn-submit { background: var(--accent-grad); color: #061c24; border: 0; border-radius: 8px; padding: 9px 18px; font-weight: 700; font-size: 0.85rem; transition: transform 0.15s, box-shadow 0.15s; }
+.btn-primary:hover, .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,210,255,0.3); }
+.btn-icon { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--text); display: inline-flex; align-items: center; justify-content: center; position: relative; }
+.btn-icon:hover { background: rgba(0,210,255,0.14); }
+.btn-small { background: var(--accent-grad); color: #061c24; border: 0; border-radius: 6px; padding: 6px 12px; font-weight: 700; font-size: 0.76rem; display: inline-flex; align-items: center; gap: 6px; }
+.btn-small:hover { transform: translateY(-1px); }
+.btn-secondary { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; font-weight: 600; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 6px; }
+.btn-secondary:hover { background: rgba(0,210,255,0.1); }
+.btn-ghost { background: rgba(255,255,255,0.04); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; font-size: 0.78rem; }
+.btn-success { background: linear-gradient(135deg,#22c55e,#10b981); color: white; border: 0; border-radius: 6px; padding: 6px 12px; font-weight: 700; font-size: 0.78rem; }
+.badge { background: var(--danger); color: white; font-size: 0.62rem; padding: 1px 6px; border-radius: 999px; font-weight: 700; position: absolute; top: -4px; right: -4px; }
+
+/* Cards */
+.glass-card, .thread-card, .news-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; transition: border-color 0.15s, transform 0.15s; }
+.thread-card:hover, .news-card:hover { border-color: var(--border-strong); }
+.thread-card:active { transform: scale(0.998); }
+.empty-state { text-align: center; padding: 50px 20px; color: var(--text-dim); }
+.empty-state i { font-size: 3rem; margin-bottom: 14px; opacity: 0.4; display: block; }
+
+/* En móvil: thread cards edge-to-edge estilo Instagram (sin border lateral, padding compacto) */
+@media (max-width: 768px) {
+    #feed-container { padding: 0; gap: 0; }
+    .thread-card, .news-card {
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        margin-bottom: 0;
+        border-bottom: 1px solid var(--border);
+        padding: 14px 14px 12px;
+    }
+    .thread-card:last-child, .news-card:last-child { border-bottom: none; }
+    /* Imágenes y videos edge-to-edge */
+    .thread-content img, .thread-content video, .thread-content iframe {
+        margin-left: -14px;
+        margin-right: -14px;
+        max-width: calc(100% + 28px);
+        width: calc(100% + 28px);
+        border-radius: 0;
+    }
+}
+
+/* Modals — desktop: card centrada · mobile: bottom-sheet que sube */
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px; overflow-y: auto; animation: modalFadeIn 0.18s ease-out; }
+.modal.hidden { display: none; }
+.modal-content { max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; animation: modalScaleIn 0.22s cubic-bezier(0.16, 1, 0.3, 1); }
+.close-btn { position: absolute; top: 14px; right: 14px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--text); width: 30px; height: 30px; border-radius: 50%; font-size: 1rem; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; }
+.close-btn:hover { background: var(--danger); color: white; }
+
+@keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modalScaleIn { from { opacity: 0; transform: scale(0.92) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+@keyframes sheetSlideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+/* Mobile bottom-sheet: el modal sube desde abajo, full width, esquinas redondeadas solo arriba */
+@media (max-width: 768px) {
+    .modal { align-items: flex-end; padding: 0; }
+    .modal-content {
+        max-width: 100%;
+        width: 100%;
+        max-height: 92vh;
+        border-radius: 20px 20px 0 0;
+        border-bottom: none;
+        border-left: none;
+        border-right: none;
+        animation: sheetSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 18px 18px calc(18px + env(safe-area-inset-bottom));
+    }
+    /* Handle visual arriba del sheet — pista táctil de que se puede arrastrar */
+    .modal-content::before {
+        content: '';
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 36px;
+        height: 4px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 2px;
+        pointer-events: none;
+    }
+    .modal-content > :first-child { margin-top: 12px; }
+    .close-btn { top: 16px; right: 16px; }
+}
+
+/* Forms */
+.input-modern, input[type=text], input[type=email], input[type=password], input[type=date], input[type=url], input[type=search], textarea, select { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; color: var(--text); font-size: 0.88rem; width: 100%; outline: none; transition: border-color 0.15s; }
+.input-modern:focus, input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+
+/* Toasts */
+#toast-container { position: fixed; top: 80px; right: 20px; z-index: 3000; }
+.toast { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; margin-bottom: 8px; opacity: 0; transform: translateX(20px); transition: all 0.3s; min-width: 220px; max-width: 360px; font-size: 0.85rem; }
+.toast.show { opacity: 1; transform: translateX(0); }
+.toast.success { border-left: 3px solid var(--success); }
+.toast.error { border-left: 3px solid var(--danger); }
+.toast.warning { border-left: 3px solid var(--warn); }
+.toast.info { border-left: 3px solid var(--accent); }
+
+/* Splash */
+.splash { position: fixed; inset: 0; background: var(--bg); z-index: 5000; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+.splash.hide { opacity: 0; pointer-events: none; transition: opacity 0.4s; }
+.splash-title { font-size: 3rem; font-weight: 900; margin: 0; background: var(--accent-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.splash-tagline { color: var(--text-dim); margin-top: 10px; font-size: 0.95rem; }
+.splash-hint { color: var(--accent); font-size: 0.78rem; margin-top: 30px; opacity: 0.7; animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+
+/* FAB */
+#fab-new-thread { position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px; border-radius: 50%; background: var(--accent-grad); color: #061c24; border: 0; font-size: 1.4rem; box-shadow: 0 8px 20px rgba(0,210,255,0.3); z-index: 500; cursor: pointer; }
+#fab-new-thread:hover { transform: scale(1.05); }
+#fab-new-thread.hidden { display: none; }
+
+/* Hide hamburger on desktop */
+#toggle-sidebar { display: none; background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--text); width: 38px; height: 38px; border-radius: 8px; }
+@media (max-width: 768px) { #toggle-sidebar { display: inline-flex; align-items: center; justify-content: center; } }
+
+/* ============================================================
+   BOTTOM NAVIGATION — Instagram / Facebook style
+   Visible solo en móvil. Desktop: nav lateral en sidebar.
+   ============================================================ */
+.bottom-nav {
+    display: none;  /* default: oculto en desktop */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 150;
+    background: rgba(10,10,12,0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--border);
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom)) 4px;
+    justify-content: space-around;
+    align-items: center;
+    gap: 2px;
+}
+.bottom-nav .bn-item {
+    flex: 1;
+    min-height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.65rem;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: color 0.15s, background 0.15s;
+    position: relative;
+    padding: 4px 6px;
+    -webkit-tap-highlight-color: transparent;
+}
+.bottom-nav .bn-item i { font-size: 1.25rem; }
+.bottom-nav .bn-item:active { background: rgba(0,210,255,0.1); }
+.bottom-nav .bn-item.active { color: var(--accent); }
+.bottom-nav .bn-item.active i { transform: scale(1.1); transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.bottom-nav .bn-item i { transition: transform 0.2s; }
+/* Indicador activo arriba (línea cian) */
+.bottom-nav .bn-item.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 0 0 3px 3px;
+}
+.bottom-nav .bn-item-fab.active::before { display: none; }
+.bottom-nav .bn-item-fab {
+    background: var(--accent-grad);
+    color: #061c24;
+    border-radius: 14px;
+    width: 56px;
+    height: 44px;
+    flex: 0 0 auto;
+    margin: 0 4px;
+    box-shadow: 0 4px 14px rgba(0,210,255,0.4);
+}
+.bottom-nav .bn-item-fab i { font-size: 1.4rem; }
+.bottom-nav .bn-item-fab span { display: none; }
+.bn-badge {
+    position: absolute;
+    top: 4px;
+    right: calc(50% - 18px);
+    background: var(--danger);
+    color: white;
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 999px;
+    min-width: 16px;
+    text-align: center;
+}
+
+/* En móvil: mostrar bottom-nav, ajustar padding del feed para no taparlo */
+@media (max-width: 768px) {
+    .bottom-nav { display: flex; }
+    .layout-main { padding-bottom: 90px; }
+    /* Ocultar el FAB redundante en móvil — bottom-nav ya tiene el botón crear */
+    #fab-new-thread { display: none !important; }
+}
+
+/* ============================================================
+   📱 MOBILE SIGMA POLISH — header auto-hide, glassmorphism, etc
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Header auto-hide al scrollear — clase .nav-hidden se agrega vía JS */
+    header {
+        transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+        background: rgba(10, 10, 12, 0.88);
+        backdrop-filter: blur(18px) saturate(160%);
+        -webkit-backdrop-filter: blur(18px) saturate(160%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    body.nav-hidden header { transform: translateY(-100%); }
+    body.nav-hidden .bottom-nav {
+        transform: translateY(110%);
+        opacity: 0.85;
+    }
+    .bottom-nav {
+        transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s;
+        margin: 0 10px calc(10px + env(safe-area-inset-bottom)) 10px;
+        border-radius: 22px;
+        background: rgba(20, 20, 28, 0.78);
+        backdrop-filter: blur(22px) saturate(180%);
+        -webkit-backdrop-filter: blur(22px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+                    0 0 0 1px rgba(0, 210, 255, 0.05);
+        bottom: 0;
+        padding: 8px 4px calc(8px + env(safe-area-inset-bottom)) 4px;
+    }
+
+    /* Topbar más compacto: oculta el username texto, deja solo avatar */
+    .topbar-username { display: none !important; }
+    .topbar-cs-emoji { display: none; }
+    .topbar-gear { display: none; }
+    .topbar-user-btn {
+        padding: 2px !important;
+        background: transparent !important;
+        border: 0 !important;
+    }
+    .topbar-pfp { width: 34px; height: 34px; border: 2px solid var(--accent); }
+
+    /* Search compacto: el botón Ctrl+K se esconde */
+    .cp-trigger { display: none !important; }
+    .search-box {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 14px;
+        padding: 8px 12px;
+    }
+    .search-box input { font-size: 0.85rem; }
+
+    /* Cards con tap feedback más pulido */
+    .thread-card, .news-card {
+        transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s;
+    }
+    .thread-card:active, .news-card:active {
+        transform: scale(0.985);
+        background: rgba(0, 210, 255, 0.03);
+    }
+
+    /* Scroll smooth global en móvil */
+    html { scroll-behavior: smooth; }
+    body {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+    }
+
+    /* Animación al activar item del bottom-nav */
+    .bottom-nav .bn-item {
+        transition: color 0.2s, background 0.18s;
+    }
+    .bottom-nav .bn-item:active { background: rgba(0, 210, 255, 0.18); }
+    .bottom-nav .bn-item.active i {
+        animation: bnBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes bnBounce {
+        0%   { transform: scale(1); }
+        40%  { transform: scale(1.25); }
+        100% { transform: scale(1.1); }
+    }
+
+    /* Botones tap-feedback general */
+    button:active, a:active { transition: transform 0.1s; }
+    .btn-primary:active, .btn-submit:active, .btn-small:active {
+        transform: scale(0.96);
+    }
+
+    /* FAB del bottom-nav con glow extra cuando se toca */
+    .bottom-nav .bn-item-fab {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .bottom-nav .bn-item-fab:active {
+        transform: scale(0.92);
+        box-shadow: 0 2px 8px rgba(0, 210, 255, 0.6);
+    }
+}
+
+/* Toasts más elegantes en móvil — abajo en vez de arriba */
+@media (max-width: 768px) {
+    #toast-container {
+        top: auto !important;
+        bottom: 100px;
+        left: 16px;
+        right: 16px;
+    }
+    .toast {
+        min-width: 0;
+        max-width: 100%;
+        font-size: 0.82rem;
+        backdrop-filter: blur(16px);
+        background: rgba(20, 20, 28, 0.92);
+    }
+}
+
+/* ============================================================
+   FEED CENTRADO ESTILO INSTAGRAM/TWITTER
+   Mobile: full width. Desktop: max 600px centrado.
+   ============================================================ */
+@media (min-width: 1024px) {
+    #feed-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}
+
+/* En desktop ancho (≥1280px), espacio para sidebar derecho opcional */
+@media (min-width: 1280px) {
+    .layout-main {
+        grid-template-columns: 260px minmax(0, 600px) 280px;
+        justify-content: center;
+    }
+}
+
+/* Touch optimizations: min 44px tap targets */
+@media (max-width: 768px) {
+    .btn-icon, .btn-small, .sidebar-link-btn, .user-pill-action {
+        min-height: 40px;
+        min-width: 40px;
+    }
+    .pill-icon-btn { min-height: 36px; min-width: 36px; }
+    /* Smooth scroll en mobile */
+    html { -webkit-overflow-scrolling: touch; }
+    /* Tap highlight transparente para que se vean bonitos los press states */
+    a, button { -webkit-tap-highlight-color: transparent; }
+}
+
+/* En desktop: ocultar el bottom-nav explícitamente (por si algún CSS legacy lo activó) */
+@media (min-width: 769px) {
+    .bottom-nav { display: none !important; }
+}
+
+/* Notifications panel */
+.notifications-panel { position: fixed; top: 70px; right: 20px; width: 380px; max-height: 70vh; background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; overflow-y: auto; z-index: 200; transform: translateX(20px); opacity: 0; pointer-events: none; transition: all 0.25s; }
+.notifications-panel.visible { transform: translateX(0); opacity: 1; pointer-events: auto; }
+.notifications-backdrop { display: none; }
+
+/* Auth modal — layout split (form izq, branding der) */
+.auth-modal-content { max-width: 820px !important; padding: 0 !important; overflow: hidden !important; background: var(--bg-elev); }
+.auth-split { display: flex; min-height: 480px; max-height: 92vh; }
+.auth-form-side { flex: 1; padding: 36px 32px; display: flex; flex-direction: column; min-width: 0; overflow-y: auto; }
+.auth-brand-side { flex: 0 0 300px; position: relative; overflow: hidden; background: linear-gradient(135deg, #0a0a14 0%, #1a0e2e 50%, #0a1a2e 100%); padding: 36px 28px; display: flex; flex-direction: column; justify-content: space-between; border-left: 1px solid var(--border); }
+.auth-brand-title { font-size: 1.8rem; font-weight: 900; margin: 0 0 6px; background: var(--accent-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.auth-brand-tagline { color: var(--text-dim); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 24px; }
+.ab-features { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+.ab-features li { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--text); }
+.ab-features li i { width: 32px; height: 32px; background: rgba(0,210,255,0.14); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; }
+.ab-footer { color: var(--text-dim); font-size: 0.72rem; text-align: center; margin-top: 20px; }
+.auth-view { display: block; }
+.auth-view.hidden { display: none !important; }
+.auth-view h3 { margin: 0 0 6px; font-size: 1.35rem; color: var(--text); }
+.auth-view p { margin: 0 0 14px; }
+.auth-view input { margin-bottom: 10px; }
+.auth-primary { width: 100%; margin-top: 4px; }
+.sep { display: flex; align-items: center; gap: 10px; margin: 16px 0; color: var(--text-dim); font-size: 0.78rem; }
+.sep::before, .sep::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.switch-text { margin-top: 18px; text-align: center; font-size: 0.85rem; color: var(--text-dim); }
+.switch-text span, .forgot-link span { color: var(--accent); cursor: pointer; font-weight: 600; }
+.switch-text span:hover, .forgot-link span:hover { text-decoration: underline; }
+.forgot-link { text-align: center; margin-top: 6px; font-size: 0.82rem; }
+.google-btn-host { display: flex; justify-content: center; min-height: 40px; }
+@media (max-width: 700px) {
+    .auth-split { flex-direction: column; min-height: auto; }
+    .auth-brand-side { flex: 0 0 auto; order: -1; border-left: none; border-bottom: 1px solid var(--border); padding: 22px; }
+    .auth-form-side { padding: 24px; }
+    .ab-features { display: none; }
+    .ab-footer { display: none; }
+}
+
+/* Hidden utility */
+.hidden { display: none !important; }
+.glass-card.hidden, .modal.hidden { display: none !important; }
+
+/* Settings/profile basic */
+.settings-section { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.tab-btn { background: transparent; border: 0; padding: 10px 16px; color: var(--text-dim); font-weight: 600; font-size: 0.85rem; border-bottom: 2px solid transparent; }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-content { display: none; padding: 16px 0; }
+.tab-content.active { display: block; }
+
+/* Feed */
+#feed-container { display: flex; flex-direction: column; gap: 14px; animation: routeFadeIn 0.25s ease-out; }
+.thread-content { line-height: 1.5; word-break: break-word; }
+.thread-content img, .thread-content video { max-width: 100%; border-radius: 10px; margin: 8px 0; }
+
+/* Transición entre rutas — fade-in suave cada que renderiza algo nuevo */
+@keyframes routeFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Sidebar drawer mobile — animación más suave + backdrop blur */
+@media (max-width: 768px) {
+    #sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 280px;
+        max-width: 80vw;
+        z-index: 200;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 6px 0 30px rgba(0,0,0,0.5);
+        border-radius: 0;
+        border-left: 0;
+        border-top: 0;
+        border-bottom: 0;
+        max-height: 100vh;
+    }
+    #sidebar:not(.sidebar-hidden) { transform: translateX(0); }
+    #sidebar-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        z-index: 199;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s;
+    }
+    body.sidebar-open #sidebar-backdrop {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+/* Admin-only hidden by default */
+.admin-only { display: none; }
+body.is-admin .admin-only { display: revert; }
+body.is-admin .admin-only.btn-icon, body.is-admin .admin-only.btn-primary { display: inline-flex; }
+.media-only { display: none; }
+body.is-media .media-only, body.is-admin .media-only { display: inline-flex; }
+
+/* Hub / Explora */
+.hub-hero { padding: 30px 20px; text-align: center; background: linear-gradient(135deg, rgba(0,210,255,0.08), rgba(58,123,213,0.04)); border-radius: 16px; margin-bottom: 18px; border: 1px solid var(--border); }
+.hub-hero h1 { margin: 0 0 8px; font-size: 2rem; }
+.hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.hub-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; cursor: pointer; transition: transform 0.15s, border-color 0.15s; }
+.hub-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+.hub-card-icon { font-size: 1.5rem; color: var(--accent); margin-bottom: 6px; }
+.hub-card h3 { margin: 0 0 4px; font-size: 0.95rem; }
+.hub-card p { margin: 0; font-size: 0.78rem; color: var(--text-dim); }
+.hub-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 14px; }
+.hub-section h2 { margin: 0 0 10px; font-size: 1.2rem; color: var(--accent); }
+.hub-section-lead { color: var(--text-dim); line-height: 1.6; font-size: 0.92rem; }
+
+/* Gallery */
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
+.gallery-item { aspect-ratio: 1/1; background: var(--bg-elev); border-radius: 8px; overflow: hidden; cursor: pointer; position: relative; }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.25s; }
+.gallery-item:hover img { transform: scale(1.05); }
+.gallery-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.85)); font-size: 0.72rem; }
+
+/* Videos default */
+.videos-default-featured { background: #000; border-radius: 14px; overflow: hidden; margin-bottom: 12px; }
+.videos-default-video { width: 100%; aspect-ratio: 16/9; max-height: 60vh; background: #000; display: block; }
+.videos-default-info { padding: 12px 16px; background: var(--bg-card); border-top: 1px solid var(--border); }
+.videos-default-credit { display: flex; align-items: center; gap: 8px; padding: 8px 12px; margin: 10px 0 6px; background: rgba(255,215,0,0.08); border-left: 3px solid #ffd700; border-radius: 6px; font-size: 0.82rem; }
+
+/* Botón Panel Admin destacado en sidebar */
+.sidebar-admin-btn {
+    background: linear-gradient(135deg, rgba(255,215,0,0.12), rgba(255,140,0,0.06)) !important;
+    border: 1px solid rgba(255,215,0,0.3) !important;
+    color: #ffd700 !important;
+    font-weight: 700 !important;
+    margin-top: 8px;
+    transition: all 0.2s !important;
+}
+.sidebar-admin-btn:hover, .sidebar-admin-btn.active {
+    background: linear-gradient(135deg, rgba(255,215,0,0.22), rgba(255,140,0,0.14)) !important;
+    border-color: rgba(255,215,0,0.6) !important;
+    box-shadow: 0 4px 14px rgba(255,215,0,0.18);
+    transform: translateY(-1px);
+}
+.sidebar-admin-btn i { color: #ffd700 !important; }
+
+/* Panel Admin como ruta (no modal) */
+.admin-route { display: flex; flex-direction: column; gap: 16px; }
+.admin-header-route { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; padding: 18px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; }
+.admin-tabs-route { display: flex; gap: 4px; padding: 8px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.admin-tabs-route .admin-tab { background: transparent; border: 0; padding: 9px 14px; border-radius: 10px; color: var(--text-dim); font-weight: 600; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: background 0.15s, color 0.15s; white-space: nowrap; flex-shrink: 0; }
+.admin-tabs-route .admin-tab:hover { background: rgba(0,210,255,0.08); color: var(--text); }
+.admin-tabs-route .admin-tab.active { background: rgba(0,210,255,0.18); color: var(--accent); }
+.admin-content { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; min-height: 300px; }
+@media (max-width: 600px) {
+    .admin-tabs-route .admin-tab span { display: none; }
+    .admin-tabs-route .admin-tab { padding: 10px 14px; font-size: 1rem; }
+    .admin-tabs-route .admin-tab i { font-size: 1.1rem; }
+}
+
+/* Perfil de usuario — banner + pfp + actions */
+.xp-route-content { background: var(--bg-elev); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+.xp-topbar { display: flex; align-items: center; gap: 14px; padding: 12px 18px; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 5; }
+.xp-back { background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--text); width: 36px; height: 36px; border-radius: 50%; }
+.xp-topbar-info b { display: block; font-size: 0.95rem; }
+.xp-topbar-info small { color: var(--text-dim); font-size: 0.75rem; }
+.xp-banner {
+    width: 100%;
+    height: 220px;
+    background-color: #1a1a2e;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(0, 210, 255, 0.6), transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.55), transparent 50%),
+        linear-gradient(135deg, #00d2ff 0%, #3a7bd5 35%, #8b5cf6 65%, #ec4899 100%);
+    background-size: cover, cover, cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    overflow: hidden;
+}
+/* Sutil overlay sólo en el bottom para legibilidad de pfp/botones */
+.xp-banner::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.35));
+    pointer-events: none;
+}
+/* Animación sutil de luz en el banner default */
+.xp-banner::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.06), transparent 40%);
+    animation: bannerShimmer 8s ease-in-out infinite;
+    pointer-events: none;
+}
+@keyframes bannerShimmer {
+    0%, 100% { transform: translate(-15%, -10%); }
+    50%      { transform: translate(15%, 10%); }
+}
+.xp-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding: 0 24px; margin-top: -72px; position: relative; z-index: 2; }
+.xp-pfp-wrap { position: relative; display: inline-block; line-height: 0; }
+.xp-pfp { width: 138px; height: 138px; border-radius: 50%; border: 5px solid var(--bg-elev); object-fit: cover; background: var(--bg-card); box-shadow: 0 6px 20px rgba(0,0,0,0.5); display: block; }
+/* Status dot — overlap visual bottom-right de la PFP, NO debajo */
+.presence-dot { position: absolute; border-radius: 50%; z-index: 3; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.4); }
+.presence-dot.online   { background: #22c55e; }
+.presence-dot.away     { background: #f59e0b; }
+.presence-dot.busy     { background: #ef4444; }
+.presence-dot.offline,
+.presence-dot.invisible { background: #64748b; }
+.xp-pfp-wrap .presence-dot {
+    width: 26px;
+    height: 26px;
+    border: 4px solid var(--bg-elev);
+    bottom: 10px;
+    right: 10px;
+}
+.uc-pfp-wrap .presence-dot { width: 14px; height: 14px; border: 2px solid var(--bg); bottom: -2px; right: -2px; }
+.topbar-pfp-wrap .presence-dot { width: 11px; height: 11px; border: 2px solid var(--bg); bottom: -1px; right: -1px; }
+.avatar-wrap .presence-dot { width: 12px; height: 12px; border: 2px solid var(--bg-card); bottom: -1px; right: -1px; }
+.xp-actions { display: flex; gap: 8px; align-items: center; padding-bottom: 12px; flex-wrap: wrap; justify-content: flex-end; max-width: 100%; }
+.xp-btn { padding: 9px 18px; border: 1px solid var(--border); border-radius: 999px; background: rgba(255,255,255,0.08); color: var(--text); font-size: 0.84rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: transform 0.15s, box-shadow 0.15s; white-space: nowrap; }
+.xp-btn:hover { transform: translateY(-1px); }
+.xp-btn-primary { background: var(--accent-grad); color: #061c24; border: 0; box-shadow: 0 2px 10px rgba(0,210,255,0.25); }
+.xp-btn-primary:hover { box-shadow: 0 4px 14px rgba(0,210,255,0.4); }
+.xp-btn-outline { background: transparent; border: 1px solid var(--border); }
+.xp-btn-outline:hover { background: rgba(0,210,255,0.08); border-color: var(--accent); }
+.xp-btn i { font-size: 0.78rem; }
+@media (max-width: 600px) {
+    .xp-actions { padding-right: 0; gap: 6px; }
+    .xp-btn { padding: 8px 14px; font-size: 0.78rem; }
+}
+.xp-identity { padding: 10px 24px 0; display: flex; flex-direction: column; gap: 4px; }
+.xp-name { margin: 0; font-size: 1.45rem; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.xp-handle { color: var(--text-dim); font-size: 0.85rem; }
+
+/* Burbuja de custom status — pildora cyan al lado del username o debajo */
+.custom-status-bubble {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    margin-top: 4px;
+    background: rgba(0,210,255,0.1);
+    border: 1px solid rgba(0,210,255,0.25);
+    border-radius: 999px;
+    font-size: 0.82rem;
+    color: var(--text);
+    width: fit-content;
+    max-width: 100%;
+}
+.custom-status-bubble .cs-emoji { font-size: 1rem; line-height: 1; }
+.custom-status-bubble .cs-text { color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px; }
+.xp-identity .custom-status-bubble { align-self: flex-start; }
+
+/* Badges (verificado, oro, media) */
+.badge-verified, .badge-gold, .badge-media { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; font-size: 0.62rem; flex-shrink: 0; }
+.badge-verified { background: linear-gradient(135deg, #00d2ff, #3a7bd5); color: #fff; }
+.badge-gold     { background: linear-gradient(135deg, #ffd700, #ff8c00); color: #6b3500; }
+.badge-media    { background: linear-gradient(135deg, #8b5cf6, #6366f1); color: #fff; }
+.xp-bio { padding: 6px 24px 0; color: var(--text); line-height: 1.5; }
+.xp-meta-row { padding: 8px 24px; color: var(--text-dim); font-size: 0.85rem; display: flex; gap: 14px; flex-wrap: wrap; }
+.xp-stats { padding: 8px 24px 14px; display: flex; gap: 18px; color: var(--text-dim); font-size: 0.85rem; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+.xp-stats b { color: var(--text); font-weight: 700; }
+.xp-tabs { display: flex; border-bottom: 1px solid var(--border); position: sticky; top: 56px; background: var(--bg-elev); z-index: 4; }
+.xp-tab { flex: 1; background: transparent; border: 0; padding: 13px 8px; color: var(--text-dim); font-weight: 600; font-size: 0.85rem; border-bottom: 2px solid transparent; cursor: pointer; }
+.xp-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.xp-feed { padding: 14px 24px 24px; }
+.xp-feed-item { padding: 14px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+.xp-empty { text-align: center; padding: 40px 20px; color: var(--text-dim); }
+@media (max-width: 600px) {
+    .xp-banner { height: 160px; }
+    .xp-header { padding: 0 14px; margin-top: -56px; }
+    .xp-pfp { width: 108px; height: 108px; border-width: 4px; }
+    .xp-identity, .xp-bio, .xp-meta-row, .xp-stats, .xp-feed { padding-left: 14px; padding-right: 14px; }
+}
+    </style>
+    <link rel="stylesheet" href="main/css/style.css?v=64" id="main-stylesheet">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="main/js/supabase-client.js" defer></script>
+</head>
+<body>
+
+<!-- Splash Screen interactivo -->
+<div id="splash-screen" class="splash">
+    <div class="splash-bg"></div>
+    <div class="splash-content">
+        <div class="splash-logo-wrap">
+            <div class="splash-orb"></div>
+            <h1 class="splash-title">
+                <span class="st-letter" style="--d:0">T</span><span class="st-letter" style="--d:1">r</span><span class="st-letter" style="--d:2">e</span><span class="st-letter" style="--d:3">s</span><span class="st-space"></span><span class="st-letter" style="--d:4">V</span><span class="st-letter" style="--d:5">a</span><span class="st-letter" style="--d:6">l</span><span class="st-letter" style="--d:7">l</span><span class="st-letter" style="--d:8">e</span><span class="st-letter" style="--d:9">s</span>
+            </h1>
+            <p class="splash-tagline">Portal comunitario · Tres Valles, Veracruz</p>
+        </div>
+        <div class="splash-bar">
+            <div class="splash-bar-fill"></div>
+        </div>
+        <p class="splash-hint">Click o presiona cualquier tecla para entrar</p>
+    </div>
+    <div class="splash-particles"></div>
+</div>
+
+<header id="main-header">
+    <nav class="navbar">
+        <div class="nav-left">
+            <button id="toggle-sidebar" class="btn-icon">
+                <i class="fas fa-bars"></i>
+         </button>
+    
+         <a href="#" class="logo" onclick="App.ui.navigate('inicio'); return false;">
+                <span>Tres Valles</span>
+            </a>
+        </div>
+        
+        <div class="nav-center">
+            <div class="search-wrap">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="global-search" placeholder="Buscar hilos, usuarios, negocios..." autocomplete="off">
+                    <button type="button" id="search-clear" class="search-clear hidden" onclick="App.ui.clearSearch()" title="Limpiar">&times;</button>
+                    <button type="button" class="cp-trigger" title="Abrir paleta de comandos (Ctrl+K)" onclick="App.commandPalette.open()" aria-label="Abrir paleta de comandos">
+                        <kbd>Ctrl</kbd><kbd>K</kbd>
+                    </button>
+                </div>
+                <div id="search-dropdown" class="search-dropdown hidden"></div>
+            </div>
+        </div>
+        <div class="nav-right">
+            <button class="btn-icon media-only" title="Repostear noticia" onclick="App.news.populateOutletPicker(); document.getElementById('news-paste-modal').classList.remove('hidden')">
+                <i class="fas fa-paste"></i>
+            </button>
+            <button id="chat-trigger" class="btn-icon" onclick="App.chat.openPanel()" title="Mensajes privados">
+                <i class="fas fa-message"></i>
+                <span id="chat-badge" class="badge" style="display:none;">0</span>
+            </button>
+            <button id="notification-bell" class="btn-icon" onclick="App.ui.toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span id="notification-badge" class="badge">0</span>
+            </button>
+            <button id="btn-login-trigger" class="btn-primary">Acceder</button>
+        </div>
+    </nav>
+</header>
+
+<!-- Backdrop del panel de notificaciones (móvil) -->
+<div id="notifications-backdrop" class="notifications-backdrop" onclick="App.ui.toggleNotifications(false)"></div>
+
+<!-- Panel de Notificaciones -->
+<div id="notifications-panel" class="notifications-panel">
+    <div class="panel-header">
+        <h3><i class="fas fa-bell"></i> Notificaciones</h3>
+        <button class="panel-close-btn" onclick="App.ui.toggleNotifications(false)" aria-label="Cerrar notificaciones">
+            <i class="fas fa-xmark"></i>
+        </button>
+    </div>
+    <div id="notifications-list"></div>
+</div>
+
+<div class="layout-main">
+
+<!-- Backdrop oscuro que se muestra detrás del drawer del sidebar en móvil -->
+<div id="sidebar-backdrop" onclick="App.ui.toggleSidebar()" aria-hidden="true"></div>
+
+<aside id="sidebar" class="sidebar-hidden">
+    <button id="sidebar-collapse" class="sidebar-collapse-btn" onclick="App.ui.toggleSidebarCollapse()" title="Colapsar / expandir">
+        <i class="fas fa-angle-left"></i>
+    </button>
+
+    <div id="sidebar-user-card" class="sidebar-user-card hidden"></div>
+
+    <button class="sidebar-create-btn" onclick="App.ui.openEditor()" title="Nueva publicación">
+        <i class="fas fa-pen-to-square"></i>
+        <span class="sb-label">Crear publicación</span>
+    </button>
+
+    <nav class="sidebar-nav">
+        <h4 class="sidebar-section-title sidebar-panel-title"><span class="sb-label">Panel de Control</span></h4>
+        <a href="#" onclick="App.ui.navigate('inicio'); return false;" class="sidebar-link-btn active" data-route="inicio" title="Inicio">
+            <i class="fas fa-home"></i> <span class="sb-label">Inicio</span>
+        </a>
+        <a href="#" onclick="App.ui.navigate('foro'); return false;" class="sidebar-link-btn" data-route="foro" title="Foro">
+            <i class="fas fa-comments"></i> <span class="sb-label">Foro</span>
+        </a>
+        <a href="#" onclick="App.ui.navigate('notificaciones'); return false;" class="sidebar-link-btn hide-on-mobile" data-route="notificaciones" title="Notificaciones">
+            <i class="fas fa-bell"></i> <span class="sb-label">Notificaciones</span>
+            <span id="sidebar-noti-badge" class="sb-noti-badge" style="display:none;">0</span>
+        </a>
+        <a href="#" onclick="App.ui.navigate('red'); return false;" class="sidebar-link-btn" data-route="red" title="Mi Red">
+            <i class="fas fa-user-group"></i> <span class="sb-label">Mi Red</span>
+        </a>
+        <a href="#" onclick="App.ui.navigate('noticias'); return false;" class="sidebar-link-btn" data-route="noticias" title="Noticias">
+            <i class="fas fa-newspaper"></i> <span class="sb-label">Noticias</span>
+        </a>
+        <a href="#" onclick="App.ui.navigate('explora'); return false;" class="sidebar-link-btn highlight-link" data-route="explora" title="Explora Tres Valles">
+            <i class="fas fa-mountain"></i> <span class="sb-label">Explora Tres Valles</span>
+        </a>
+        <a href="#" onclick="App.ui.navigate('admin'); return false;" class="sidebar-link-btn admin-only sidebar-admin-btn" data-route="admin" title="Panel de administración">
+            <i class="fas fa-shield-halved"></i> <span class="sb-label">Panel Admin</span>
+        </a>
+    </nav>
+
+    <div class="sidebar-section hidden" id="sidebar-friends-section">
+        <h4 class="sidebar-section-title">
+            <i class="fas fa-user-group" style="color:#22c55e;"></i> <span class="sb-label">Amigos</span>
+        </h4>
+        <div id="sidebar-friends"></div>
+    </div>
+
+    <div class="sidebar-section hidden" id="sidebar-following-section">
+        <h4 class="sidebar-section-title">
+            <i class="fas fa-user-check" style="color:var(--accent);"></i> <span class="sb-label">Siguiendo</span>
+            <button id="sidebar-show-more" class="sidebar-show-more" onclick="App.ui.toggleFollowingExpanded()">Ver más</button>
+        </h4>
+        <div id="sidebar-following"></div>
+    </div>
+
+    <div class="sidebar-section hidden" id="sidebar-others-section">
+        <h4 class="sidebar-section-title">
+            <i class="fas fa-users" style="color:var(--text-dim);"></i> <span class="sb-label">Otros usuarios</span>
+            <button id="sidebar-others-more" class="sidebar-show-more" onclick="App.ui.toggleOthersExpanded()">Ver más</button>
+        </h4>
+        <div id="sidebar-others"></div>
+    </div>
+
+    <!-- OPCIONES PÚBLICAS — solo cambio de tema (el modo móvil se activa solo en celular real) -->
+    <div class="sidebar-section sidebar-options-section">
+        <h4 class="sidebar-section-title"><span class="sb-label">Apariencia</span></h4>
+        <div class="sidebar-options-row">
+            <button id="theme-quick-btn" class="opt-icon-btn" onclick="App.ui.cycleQuickTheme()" title="Cambiar tema">
+                <i class="fas fa-palette"></i>
+            </button>
+        </div>
+    </div>
+</aside>
+
+<div id="auth-modal" class="modal hidden">
+    <div class="modal-content auth-modal-content">
+        <button class="close-btn" onclick="App.ui.closeAuth()">&times;</button>
+
+        <div class="auth-split">
+            <!-- LADO IZQUIERDO: FORMULARIO -->
+            <div class="auth-form-side">
+                <div id="view-login" class="auth-view">
+                    <h3>Bienvenido a Tres Valles</h3>
+                    <p style="color: var(--text-dim); font-size: 0.85em; margin-bottom: 18px;">
+                        Inicia sesión para participar en la comunidad.
+                    </p>
+
+                    <div id="google-btn-container" class="google-btn-host"></div>
+
+                    <div class="sep"><span>o con tu cuenta local</span></div>
+
+                    <input type="text" id="login-user" placeholder="Email o nombre de usuario" autocomplete="username" class="input-modern">
+                    <input type="password" id="login-pass" placeholder="Contraseña" autocomplete="current-password" class="input-modern">
+                    <button onclick="App.auth.login()" class="btn-submit auth-primary">Ingresar</button>
+
+                    <p class="forgot-link">
+                        <span onclick="App.ui.switchAuth('forgot')">¿Olvidaste tu contraseña?</span>
+                    </p>
+
+                    <p class="switch-text">
+                        ¿Aún no tienes cuenta? <span onclick="App.ui.switchAuth('register')">Crear cuenta</span>
+                    </p>
+                </div>
+
+                <div id="view-register" class="auth-view hidden">
+                    <h3>Únete a Tres Valles</h3>
+                    <p style="color: var(--text-dim); font-size: 0.85em; margin-bottom: 18px;">
+                        Crea tu cuenta y empieza a publicar.
+                    </p>
+
+                    <div id="google-btn-register" class="google-btn-host"></div>
+
+                    <div class="sep"><span>o regístrate manualmente</span></div>
+
+                    <form id="reg-form" onsubmit="event.preventDefault(); App.auth.register();">
+                        <input type="text" id="reg-name" placeholder="Nombre completo" autocomplete="name" required class="input-modern">
+                        <input type="email" id="reg-email" placeholder="Correo electrónico" autocomplete="email" required class="input-modern">
+                        <label class="reg-field-label" for="reg-birthdate">Fecha de nacimiento</label>
+                        <input type="date" id="reg-birthdate" autocomplete="bday" required class="input-modern">
+                        <input type="password" id="reg-pass" placeholder="Contraseña (mín. 6 caracteres)" autocomplete="new-password" required class="input-modern">
+                        <input type="password" id="reg-pass-confirm" placeholder="Confirma la contraseña" autocomplete="new-password" required class="input-modern">
+                        <button type="submit" class="btn-submit auth-primary">Finalizar Registro</button>
+                    </form>
+
+                    <p class="switch-text">
+                        ¿Ya tienes cuenta? <span onclick="App.ui.switchAuth('login')">Inicia sesión aquí</span>
+                    </p>
+                </div>
+
+                <!-- VISTA: SOLICITAR ENLACE DE RECUPERACIÓN -->
+                <div id="view-forgot" class="auth-view hidden">
+                    <h3>Recuperar contraseña</h3>
+                    <p style="color: var(--text-dim); font-size: 0.85em; margin-bottom: 18px;">
+                        Escribe tu email y te enviaremos un enlace para restablecer tu contraseña.
+                    </p>
+
+                    <form onsubmit="event.preventDefault(); App.auth.requestPasswordReset();">
+                        <input type="email" id="forgot-email" placeholder="Tu correo electrónico" autocomplete="email" required class="input-modern">
+                        <button type="submit" class="btn-submit auth-primary">
+                            <i class="fas fa-paper-plane"></i> Enviar enlace
+                        </button>
+                    </form>
+
+                    <p id="forgot-msg" class="forgot-msg hidden"></p>
+
+                    <p class="forgot-link" style="margin-top:14px;">
+                        <span onclick="App.auth.startQuestionsRecovery()">¿No tienes acceso a tu email? Usa preguntas de seguridad</span>
+                    </p>
+
+                    <p class="switch-text">
+                        <span onclick="App.ui.switchAuth('login')">← Volver al login</span>
+                    </p>
+                </div>
+
+                <!-- VISTA: PREGUNTAS DE SEGURIDAD (recuperación sin email) -->
+                <div id="view-questions" class="auth-view hidden">
+                    <h3>Preguntas de seguridad</h3>
+                    <p style="color: var(--text-dim); font-size: 0.85em; margin-bottom: 18px;">
+                        Responde las 3 preguntas que configuraste. Si todas son correctas, te enviaremos el enlace de reset al email de la cuenta.
+                    </p>
+
+                    <form onsubmit="event.preventDefault(); App.auth.submitQuestionsRecovery();">
+                        <label class="reg-field-label" id="rq-q1-label">—</label>
+                        <input type="text" id="rq-a1" autocomplete="off" required class="input-modern">
+
+                        <label class="reg-field-label" id="rq-q2-label">—</label>
+                        <input type="text" id="rq-a2" autocomplete="off" required class="input-modern">
+
+                        <label class="reg-field-label" id="rq-q3-label">—</label>
+                        <input type="text" id="rq-a3" autocomplete="off" required class="input-modern">
+
+                        <button type="submit" class="btn-submit auth-primary">
+                            <i class="fas fa-shield-halved"></i> Verificar y recuperar
+                        </button>
+                    </form>
+
+                    <p class="switch-text">
+                        <span onclick="App.ui.switchAuth('login')">← Volver al login</span>
+                    </p>
+                </div>
+
+                <!-- VISTA: ESTABLECER NUEVA CONTRASEÑA (tras click en email de recuperación) -->
+                <div id="view-reset" class="auth-view hidden">
+                    <h3>Nueva contraseña</h3>
+                    <p style="color: var(--text-dim); font-size: 0.85em; margin-bottom: 18px;">
+                        Escribe tu nueva contraseña. Después podrás iniciar sesión con ella.
+                    </p>
+
+                    <form onsubmit="event.preventDefault(); App.auth.doPasswordReset();">
+                        <input type="password" id="reset-pass" placeholder="Nueva contraseña (mín. 6 caracteres)" autocomplete="new-password" required class="input-modern">
+                        <input type="password" id="reset-pass-confirm" placeholder="Confirma la nueva contraseña" autocomplete="new-password" required class="input-modern">
+                        <button type="submit" class="btn-submit auth-primary">
+                            <i class="fas fa-check"></i> Cambiar contraseña
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- LADO DERECHO: BRANDING -->
+            <div class="auth-brand-side">
+                <div class="ab-orb"></div>
+                <div class="ab-orb ab-orb-2"></div>
+                <div class="ab-content">
+                    <div class="ab-logo">Tres Valles</div>
+                    <p class="ab-tag">Portal comunitario · Tres Valles, Veracruz</p>
+                    <ul class="ab-features">
+                        <li><i class="fas fa-comments"></i> <span>Comparte y comenta hilos</span></li>
+                        <li><i class="fas fa-newspaper"></i> <span>Noticias oficiales locales</span></li>
+                        <li><i class="fas fa-user-group"></i> <span>Conecta con tu comunidad</span></li>
+                        <li><i class="fas fa-mountain"></i> <span>Explora datos del municipio</span></li>
+                    </ul>
+                    <div class="ab-footer">
+                        <i class="fas fa-shield-halved"></i>
+                        <small>Tu sesión queda solo en este navegador</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Configuración y Privacidad -->
+<div id="settings-modal" class="modal hidden">
+    <div class="modal-content glass-card" style="width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto;">
+        <button class="close-btn" onclick="App.ui.closeSettings()">&times;</button>
+        
+        <div class="settings-tabs">
+            <button class="tab-btn active" data-target="profile" onclick="App.ui.switchSettingsTab('profile')">
+                👤 Perfil
+            </button>
+            <button class="tab-btn" data-target="theme" onclick="App.ui.switchSettingsTab('theme')">
+                🎨 Tema
+            </button>
+            <button class="tab-btn" data-target="activity" onclick="App.ui.switchSettingsTab('activity')">
+                📊 Actividad
+            </button>
+            <button class="tab-btn" data-target="network" onclick="App.ui.switchSettingsTab('network'); App.ui.renderSettingsNetwork();">
+                👥 Red
+            </button>
+            <button id="tab-btn-media" class="tab-btn admin-only" data-target="media" onclick="App.ui.switchSettingsTab('media')" style="display:none;">
+                📡 Medios
+            </button>
+            <button class="tab-btn danger" onclick="App.auth.logout()">
+                🚪 Cerrar Sesión
+            </button>
+            <button class="tab-btn danger" data-target="danger" onclick="App.ui.switchSettingsTab('danger')">
+                ⚠️ Peligro
+            </button>
+        </div>
+
+        <!-- TAB: Perfil -->
+        <div class="tab-content active" data-tab="profile">
+            <h3>Editar Perfil</h3>
+
+            <div id="profile-preview" class="profile-preview">
+                <div class="pp-banner"></div>
+                <img class="pp-pfp" alt="">
+            </div>
+
+            <input type="text" id="settings-name" placeholder="Tu nombre" class="input-modern" style="width: 100%;">
+            <textarea id="settings-bio" placeholder="Tu biografía" class="input-modern" style="width: 100%; height: 80px;"></textarea>
+
+            <div class="settings-files">
+                <label class="settings-file-btn">
+                    <i class="fas fa-camera"></i> Cambiar foto
+                    <input type="file" id="settings-pfp" accept="image/*" onchange="App.editor.handleProfilePic(this)" hidden>
+                </label>
+                <label class="settings-file-btn">
+                    <i class="fas fa-image"></i> Cambiar banner
+                    <input type="file" id="settings-banner" accept="image/*" onchange="App.editor.handleBanner(this)" hidden>
+                </label>
+                <button type="button" class="settings-file-btn" onclick="App.editor.removeBanner()" style="color:#ff4757;">
+                    <i class="fas fa-eraser"></i> Quitar banner
+                </button>
+            </div>
+
+            <button class="btn-submit" onclick="App.settings.updateProfile(document.getElementById('settings-name').value, document.getElementById('settings-bio').value, App.tempProfilePic, App.tempBanner)">
+                Guardar Cambios
+            </button>
+
+            <!-- SECCIÓN: Estado (online status estilo Discord) -->
+            <div class="settings-security-section settings-status-section">
+                <h4><i class="fas fa-circle-dot"></i> Estado</h4>
+                <p class="settings-section-hint">Aparece junto a tu foto de perfil para que otros sepan si estás conectado.</p>
+
+                <label class="status-toggle-row">
+                    <input type="checkbox" id="status-show-online" onchange="App.presence.setShowOnline(this.checked)">
+                    <span>Mostrar estado de conexión</span>
+                </label>
+
+                <div class="status-presets">
+                    <button type="button" class="status-preset-btn" data-status="online" onclick="App.presence.setOnlineStatus('online'); App.ui.refreshStatusUI();">
+                        <span class="status-dot online"></span> Disponible
+                    </button>
+                    <button type="button" class="status-preset-btn" data-status="away" onclick="App.presence.setOnlineStatus('away'); App.ui.refreshStatusUI();">
+                        <span class="status-dot away"></span> Ausente
+                    </button>
+                    <button type="button" class="status-preset-btn" data-status="busy" onclick="App.presence.setOnlineStatus('busy'); App.ui.refreshStatusUI();">
+                        <span class="status-dot busy"></span> No molestar
+                    </button>
+                    <button type="button" class="status-preset-btn" data-status="invisible" onclick="App.presence.setOnlineStatus('invisible'); App.ui.refreshStatusUI();">
+                        <span class="status-dot offline"></span> Invisible
+                    </button>
+                </div>
+
+                <div class="custom-status-form">
+                    <label class="custom-status-label">Estado personalizado</label>
+
+                    <div class="emoji-picker-row">
+                        <button type="button" id="emoji-picker-trigger" class="emoji-picker-trigger" onclick="App.ui.toggleEmojiPicker()" title="Elegir emoji">
+                            <span id="emoji-picker-preview">🙂</span>
+                        </button>
+                        <input type="text" id="custom-status-text" maxlength="100" placeholder="¿Qué estás haciendo?" class="input-modern">
+                        <input type="hidden" id="custom-status-emoji">
+                    </div>
+
+                    <div id="emoji-picker-grid" class="emoji-picker-grid hidden">
+                        <button type="button" class="emoji-tile" data-emoji="🎮" onclick="App.ui.pickStatusEmoji('🎮', 'Jugando')">🎮</button>
+                        <button type="button" class="emoji-tile" data-emoji="💼" onclick="App.ui.pickStatusEmoji('💼', 'Trabajando')">💼</button>
+                        <button type="button" class="emoji-tile" data-emoji="📚" onclick="App.ui.pickStatusEmoji('📚', 'Estudiando')">📚</button>
+                        <button type="button" class="emoji-tile" data-emoji="🎧" onclick="App.ui.pickStatusEmoji('🎧', 'Escuchando música')">🎧</button>
+                        <button type="button" class="emoji-tile" data-emoji="🍕" onclick="App.ui.pickStatusEmoji('🍕', 'Comiendo')">🍕</button>
+                        <button type="button" class="emoji-tile" data-emoji="☕" onclick="App.ui.pickStatusEmoji('☕', 'Tomando café')">☕</button>
+                        <button type="button" class="emoji-tile" data-emoji="💤" onclick="App.ui.pickStatusEmoji('💤', 'Dormido')">💤</button>
+                        <button type="button" class="emoji-tile" data-emoji="🏃" onclick="App.ui.pickStatusEmoji('🏃', 'Haciendo ejercicio')">🏃</button>
+                        <button type="button" class="emoji-tile" data-emoji="📺" onclick="App.ui.pickStatusEmoji('📺', 'Viendo TV')">📺</button>
+                        <button type="button" class="emoji-tile" data-emoji="🚗" onclick="App.ui.pickStatusEmoji('🚗', 'Manejando')">🚗</button>
+                        <button type="button" class="emoji-tile" data-emoji="🎉" onclick="App.ui.pickStatusEmoji('🎉', 'De fiesta')">🎉</button>
+                        <button type="button" class="emoji-tile" data-emoji="🌴" onclick="App.ui.pickStatusEmoji('🌴', 'De vacaciones')">🌴</button>
+                        <button type="button" class="emoji-tile" data-emoji="❤️" onclick="App.ui.pickStatusEmoji('❤️', 'Enamorado')">❤️</button>
+                        <button type="button" class="emoji-tile" data-emoji="😴" onclick="App.ui.pickStatusEmoji('😴', 'Descansando')">😴</button>
+                        <button type="button" class="emoji-tile" data-emoji="🧠" onclick="App.ui.pickStatusEmoji('🧠', 'Pensando')">🧠</button>
+                        <button type="button" class="emoji-tile" data-emoji="🔥" onclick="App.ui.pickStatusEmoji('🔥', 'En racha')">🔥</button>
+                        <button type="button" class="emoji-tile" data-emoji="🙂" onclick="App.ui.pickStatusEmoji('🙂', '')">🙂</button>
+                        <button type="button" class="emoji-tile" data-emoji="" onclick="App.ui.pickStatusEmoji('', '')" title="Sin emoji">∅</button>
+                    </div>
+
+                    <div class="custom-status-actions">
+                        <button type="button" class="btn-secondary" onclick="App.ui.saveCustomStatus()">
+                            <i class="fas fa-check"></i> Guardar estado
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="App.ui.clearStatusFields()">
+                            <i class="fas fa-eraser"></i> Limpiar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN: Preguntas de seguridad -->
+            <div class="settings-security-section">
+                <h4><i class="fas fa-shield-halved"></i> Preguntas de seguridad</h4>
+                <p class="settings-section-hint">
+                    Configura 3 preguntas que solo tú sepas. Si pierdes el acceso al email, las usas para recuperar la cuenta. Te daremos un código de respaldo único.
+                </p>
+                <form onsubmit="event.preventDefault(); App.auth.saveSecurityQuestions();" class="settings-pwd-form">
+                    <input type="text" id="sec-q1" maxlength="120" placeholder="Pregunta 1 (ej: nombre de mi mascota)" class="input-modern">
+                    <input type="text" id="sec-a1" maxlength="80" placeholder="Respuesta 1" class="input-modern" autocomplete="off">
+
+                    <input type="text" id="sec-q2" maxlength="120" placeholder="Pregunta 2 (ej: ciudad donde nací)" class="input-modern">
+                    <input type="text" id="sec-a2" maxlength="80" placeholder="Respuesta 2" class="input-modern" autocomplete="off">
+
+                    <input type="text" id="sec-q3" maxlength="120" placeholder="Pregunta 3 (ej: comida favorita)" class="input-modern">
+                    <input type="text" id="sec-a3" maxlength="80" placeholder="Respuesta 3" class="input-modern" autocomplete="off">
+
+                    <button type="submit" class="btn-submit btn-secondary">
+                        <i class="fas fa-shield-halved"></i> Guardar preguntas y generar código
+                    </button>
+                </form>
+            </div>
+
+            <!-- SECCIÓN: Cambiar contraseña -->
+            <div class="settings-security-section">
+                <h4><i class="fas fa-lock"></i> Seguridad</h4>
+                <p class="settings-section-hint">Cambia tu contraseña sin necesidad de recibir un email.</p>
+                <form onsubmit="event.preventDefault(); App.auth.changePassword();" class="settings-pwd-form">
+                    <input type="password" id="pwd-new" placeholder="Nueva contraseña (mín. 6)" autocomplete="new-password" class="input-modern">
+                    <input type="password" id="pwd-confirm" placeholder="Confirmar nueva contraseña" autocomplete="new-password" class="input-modern">
+                    <button type="submit" class="btn-submit btn-secondary">
+                        <i class="fas fa-key"></i> Cambiar contraseña
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- TAB: Tema -->
+        <div class="tab-content" data-tab="theme">
+            <h3>Selector de Tema</h3>
+            <div class="theme-selector">
+                <button class="theme-option" onclick="App.settings.changeTheme('cyber-cian')" style="border:#00d2ff 2px solid;background:linear-gradient(135deg,#00d2ff,#3a7bd5);">🔵 Cyber-Cian</button>
+                <button class="theme-option" onclick="App.settings.changeTheme('dark')" style="border:#f39c12 2px solid;background:#1a1a1a;">🖤 Dark</button>
+                <button class="theme-option" onclick="App.settings.changeTheme('light')" style="border:#5e72e4 2px solid;background:#fff;color:#2d3748;">💡 Light</button>
+                <button class="theme-option" onclick="App.settings.changeTheme('retro')" style="border:#ff006e 2px solid;background:linear-gradient(135deg,#ff006e,#8338ec);">🌀 Retro</button>
+                <button class="theme-option" onclick="App.settings.changeTheme('sunset')" style="border:#ff8c00 2px solid;background:linear-gradient(135deg,#ff8c00,#ff006e);">🌅 Sunset</button>
+                <button class="theme-option" onclick="App.settings.changeTheme('ocean')" style="border:#06b6d4 2px solid;background:linear-gradient(135deg,#06b6d4,#0e4d92);">🌊 Ocean</button>
+                <button class="theme-option" onclick="App.settings.changeTheme('forest')" style="border:#22c55e 2px solid;background:linear-gradient(135deg,#22c55e,#0f766e);">🌲 Forest</button>
+                <button class="theme-option" onclick="App.settings.changeTheme('synthwave')" style="border:#f0f 2px solid;background:linear-gradient(135deg,#ff006e,#00d2ff);">🎵 Synthwave</button>
+                <button class="theme-option" onclick="App.settings.changeTheme('crimson')" style="border:#dc2626 2px solid;background:linear-gradient(135deg,#dc2626,#7f1d1d);">🩸 Crimson</button>
+                <button class="theme-option" onclick="App.settings.changeTheme('lavender')" style="border:#a78bfa 2px solid;background:linear-gradient(135deg,#a78bfa,#6d28d9);">💜 Lavender</button>
+                <button class="theme-option" onclick="App.settings.changeTheme('mono')" style="border:#fff 2px solid;background:#0a0a0a;color:#fff;">⚪ Mono</button>
+                <button class="theme-option" onclick="App.settings.changeTheme('mint')" style="border:#10b981 2px solid;background:linear-gradient(135deg,#10b981,#06b6d4);">🍃 Mint</button>
+            </div>
+        </div>
+
+        <!-- TAB: Actividad -->
+        <div class="tab-content" data-tab="activity">
+            <h3>Historial de Actividad</h3>
+            <div class="activity-section">
+                <h4><i class="fas fa-pen-to-square"></i> Mis Publicaciones</h4>
+                <div id="my-threads" class="activity-list"></div>
+            </div>
+            <div class="activity-section">
+                <h4><i class="fas fa-comment"></i> Mis Comentarios</h4>
+                <div id="my-comments" class="activity-list"></div>
+            </div>
+            <div class="activity-section">
+                <h4><i class="fas fa-heart"></i> Mis Likes</h4>
+                <div id="my-likes" class="activity-list"></div>
+            </div>
+            <div class="activity-section">
+                <h4><i class="fas fa-face-smile"></i> Mis Reacciones</h4>
+                <div id="my-reacts" class="activity-list"></div>
+            </div>
+            <div class="activity-section">
+                <h4><i class="fas fa-bookmark"></i> Guardados</h4>
+                <div id="my-saved" class="activity-list"></div>
+            </div>
+        </div>
+
+        <!-- TAB: Red -->
+        <div class="tab-content" data-tab="network">
+            <h3>Mi Red</h3>
+            <div class="settings-network-tabs">
+                <button class="snw-tab active" onclick="App.ui.renderSettingsNetwork('followers')">Seguidores</button>
+                <button class="snw-tab" onclick="App.ui.renderSettingsNetwork('following')">Siguiendo</button>
+            </div>
+            <div id="settings-network-list"></div>
+        </div>
+
+        <!-- TAB: Medios (admin) -->
+        <div class="tab-content" data-tab="media">
+            <h3>📡 Medios de comunicación verificados</h3>
+            <p style="color:var(--text-dim);font-size:0.85rem;">Gestiona las fuentes oficiales del foro de Noticias.</p>
+
+            <h4 style="margin-top:18px;">Outlets registrados</h4>
+            <div id="outlets-list"></div>
+
+            <h4 style="margin-top:18px;">Agregar outlet</h4>
+            <input type="text" id="new-outlet-name" placeholder="Nombre del medio" class="input-modern">
+            <input type="url" id="new-outlet-url" placeholder="URL oficial (https://...)" class="input-modern">
+            <button class="btn-submit" onclick="App.ui.addOutletFromForm()">Añadir outlet</button>
+
+            <h4 style="margin-top:24px;">Promover usuario a medio verificado</h4>
+            <input type="text" id="promote-media-name" placeholder="Nombre exacto del usuario" class="input-modern">
+            <button class="btn-submit" onclick="App.auth.promoteToMedia(document.getElementById('promote-media-name').value.trim()); App.ui.renderMediaTab();">Promover a medio</button>
+
+            <h4 style="margin-top:24px;">📊 Directorio de negocios</h4>
+            <p style="color:var(--text-dim);font-size:0.82rem;">
+                <span id="biz-count">0</span> negocios actualmente registrados.
+                <span id="biz-template-count">0</span> son plantillas (sin <code>_template</code> sería real).
+            </p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+                <label class="settings-file-btn" style="flex:1;">
+                    <i class="fas fa-file-csv"></i> Importar CSV
+                    <input type="file" accept=".csv" onchange="App.admin.importBusinessesCSV(this)" hidden>
+                </label>
+                <label class="settings-file-btn" style="flex:1;">
+                    <i class="fas fa-file-code"></i> Importar JSON
+                    <input type="file" accept=".json" onchange="App.admin.importBusinessesJSON(this)" hidden>
+                </label>
+                <button type="button" class="settings-file-btn" onclick="App.admin.exportBusinessesCSV()" style="flex:1;">
+                    <i class="fas fa-download"></i> Exportar CSV
+                </button>
+            </div>
+            <small style="display:block;color:var(--text-muted);font-size:0.7rem;margin-top:6px;">
+                Formato CSV: <code>name,category,address,phone,lat,lng</code> (lat/lng opcionales)
+            </small>
+            <button class="btn-danger" style="margin-top:12px;" onclick="App.admin.purgeTemplateBusinesses()">
+                🧹 Eliminar solo los negocios template
+            </button>
+
+            <h4 style="margin-top:24px; color:var(--danger);">⚠️ Limpieza de noticias sin fuente</h4>
+            <p style="color:var(--text-dim);font-size:0.82rem;">
+                Borra todas las noticias generadas automáticamente que no tengan URL fuente verificable
+                (incluye las plantillas inventadas de versiones anteriores).
+            </p>
+            <button class="btn-danger" onclick="App.news.purgeUnsourced()">Eliminar noticias sin fuente</button>
+        </div>
+
+        <!-- TAB: Zona de Peligro -->
+        <div class="tab-content" data-tab="danger">
+            <h3 style="color: #FF6B6B;">⚠️ Zona de Peligro</h3>
+            <p style="color: var(--text-dim);">Estas acciones no se pueden deshacer.</p>
+
+            <button class="btn-danger" onclick="if(confirm('¿Estás seguro de que quieres eliminar tu cuenta?')) App.settings.deleteAccount()">
+                🗑️ Eliminar Mi Cuenta
+            </button>
+
+            <div class="admin-only" style="display:none;margin-top:24px;padding-top:18px;border-top:2px solid var(--danger);">
+                <h4 style="color:#FF6B6B;margin:0 0 6px;">🛡️ Acciones de administrador</h4>
+                <p style="color:var(--text-dim);font-size:0.82rem;">Solo visible para tu cuenta admin.</p>
+
+                <button class="btn-danger" style="margin-top:8px;" onclick="App.admin.purgeThreadsOnly()">
+                    🧹 Borrar todos los hilos y noticias
+                </button>
+
+                <button class="btn-danger" style="margin-top:8px;background:#8b0000;" onclick="App.admin.purgeAll()">
+                    💥 BORRAR TODO el contenido del sitio
+                </button>
+                <small style="display:block;color:var(--text-muted);font-size:0.72rem;margin-top:4px;">
+                    Borra hilos, galería y notificaciones. NO borra cuentas, outlets ni configuración.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main id="content-area" class="container">
+    <div id="forum-controls">
+        <button id="new-thread-btn" class="btn-add" onclick="App.ui.openEditor()">
+            <i class="fas fa-plus"></i> Nuevo Hilo
+        </button>
+    </div>
+
+    <div id="feed-container"></div>
+</main>
+
+</div><!-- /.layout-main -->
+
+<!-- Modal: Crear nueva publicación -->
+<div id="thread-creator-modal" class="modal hidden">
+    <div class="modal-content glass-card editor-modal">
+        <button class="close-btn" onclick="App.ui.closeEditor()">&times;</button>
+        <h3 style="margin-top: 0; color: var(--accent);">Crear Publicación</h3>
+
+        <div id="editor-context-hint" class="editor-context-hint"></div>
+
+        <div class="editor-toolbar" id="editor-toolbar">
+            <div class="tb-group">
+                <button type="button" onclick="App.editor.exec('bold')" title="Negrita (Ctrl+B)"><b>B</b></button>
+                <button type="button" onclick="App.editor.exec('italic')" title="Cursiva (Ctrl+I)"><i>I</i></button>
+                <button type="button" onclick="App.editor.exec('underline')" title="Subrayado (Ctrl+U)"><u>U</u></button>
+                <button type="button" onclick="App.editor.exec('strikeThrough')" title="Tachado"><s>S</s></button>
+            </div>
+
+            <div class="tb-group">
+                <button type="button" onclick="App.editor.exec('justifyLeft')" title="Alinear izquierda"><i class="fas fa-align-left"></i></button>
+                <button type="button" onclick="App.editor.exec('justifyCenter')" title="Centrar"><i class="fas fa-align-center"></i></button>
+                <button type="button" onclick="App.editor.exec('justifyRight')" title="Alinear derecha"><i class="fas fa-align-right"></i></button>
+                <button type="button" onclick="App.editor.exec('justifyFull')" title="Justificar"><i class="fas fa-align-justify"></i></button>
+            </div>
+
+            <div class="tb-group">
+                <button type="button" onclick="App.editor.exec('insertUnorderedList')" title="Lista"><i class="fas fa-list-ul"></i></button>
+                <button type="button" onclick="App.editor.exec('insertOrderedList')" title="Lista numerada"><i class="fas fa-list-ol"></i></button>
+            </div>
+
+            <div class="tb-group">
+                <select onchange="App.editor.setFontSize(this.value); this.selectedIndex=0;" title="Tamaño de letra">
+                    <option value="">Tamaño</option>
+                    <option value="1">Muy pequeño</option>
+                    <option value="2">Pequeño</option>
+                    <option value="3">Normal</option>
+                    <option value="4">Mediano</option>
+                    <option value="5">Grande</option>
+                    <option value="6">Muy grande</option>
+                    <option value="7">Enorme</option>
+                </select>
+                <select onchange="App.editor.setFontFamily(this.value); this.selectedIndex=0;" title="Tipografía">
+                    <option value="">Tipografía</option>
+                    <option value="Montserrat, sans-serif">Montserrat</option>
+                    <option value="Arial, sans-serif">Arial</option>
+                    <option value="Georgia, serif">Georgia</option>
+                    <option value="'Times New Roman', serif">Times</option>
+                    <option value="'Courier New', monospace">Mono</option>
+                    <option value="'Comic Sans MS', cursive">Comic</option>
+                </select>
+                <input type="color" onchange="App.editor.setColor(this.value)" title="Color de texto" value="#00d2ff">
+            </div>
+
+            <div class="tb-group">
+                <label class="tb-file" title="Insertar imagen">
+                    <i class="fas fa-image"></i>
+                    <input type="file" accept="image/*" onchange="App.editor.insertImage(this)">
+                </label>
+                <label class="tb-file" title="Insertar video">
+                    <i class="fas fa-video"></i>
+                    <input type="file" accept="video/*" onchange="App.editor.insertVideo(this)">
+                </label>
+                <label class="tb-file" title="Adjuntar documento">
+                    <i class="fas fa-file"></i>
+                    <input type="file" accept=".pdf,.doc,.docx,.txt" onchange="App.editor.insertDocument(this)">
+                </label>
+                <button type="button" onclick="App.editor.promptLink()" title="Insertar link / YouTube"><i class="fas fa-link"></i></button>
+                <button type="button" onclick="App.editor.exec('removeFormat')" title="Limpiar formato"><i class="fas fa-eraser"></i></button>
+            </div>
+        </div>
+
+        <div id="editor-body" contenteditable="true" class="editor-body rich" placeholder="Escribe, formatea, arrastra imágenes o videos aquí..."></div>
+
+        <p class="editor-hint"><i class="fas fa-info-circle"></i> Arrastra imágenes o videos directamente al editor (máx 10MB cada uno)</p>
+
+        <label class="editor-notify">
+            <input type="checkbox" id="notify-followers">
+            <span><i class="fas fa-bell"></i> Notificar a mis seguidores cuando publique</span>
+        </label>
+
+        <div class="editor-actions">
+            <button id="submit-thread" class="btn-submit">
+                <i class="fas fa-paper-plane"></i> Publicar Hilo
+            </button>
+            <button class="btn-cancel" onclick="App.ui.closeEditor()">
+                Cancelar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Pegar noticia manual (admin / medio) -->
+<div id="news-paste-modal" class="modal hidden">
+    <div class="modal-content news-paste-card">
+        <button class="close-btn" onclick="document.getElementById('news-paste-modal').classList.add('hidden')">&times;</button>
+        <h3 class="news-paste-title"><i class="fas fa-newspaper"></i> Repostear noticia</h3>
+        <p class="news-paste-lead">
+            Copia un post de Facebook y pégalo aquí. Se publica al instante como noticia oficial con el badge del medio y enlace al post original.
+        </p>
+
+        <!-- Paso 1: ir a Facebook del outlet -->
+        <div class="news-paste-step">
+            <div class="news-paste-step-num">1</div>
+            <div class="news-paste-step-body">
+                <b>Abre Facebook del medio</b>
+                <small>Click → se abre en pestaña nueva. Copia el texto y la URL del post.</small>
+                <div id="news-paste-outlet-quick" class="news-paste-outlet-quick"></div>
+            </div>
+        </div>
+
+        <!-- Paso 2: pegar URL -->
+        <div class="news-paste-step">
+            <div class="news-paste-step-num">2</div>
+            <div class="news-paste-step-body">
+                <b>Pega la URL del post</b>
+                <input type="url" id="paste-news-source" class="input-modern" style="width:100%;margin-top:6px;"
+                       placeholder="https://www.facebook.com/.../posts/123456..."
+                       oninput="App.news.autodetectOutlet(this.value)">
+                <small id="paste-detect-info" class="news-paste-hint"></small>
+            </div>
+        </div>
+
+        <!-- Paso 3: pegar texto -->
+        <div class="news-paste-step">
+            <div class="news-paste-step-num">3</div>
+            <div class="news-paste-step-body">
+                <b>Pega el texto del post</b>
+                <button type="button" class="news-paste-clip-btn" onclick="App.news.pasteFromClipboard()" title="Auto-pegar desde portapapeles">
+                    <i class="fas fa-paste"></i> Pegar del portapapeles
+                </button>
+                <textarea id="paste-news-content" class="input-modern news-paste-textarea"
+                          placeholder="Pega aquí el contenido del post de Facebook (Ctrl+V)…"></textarea>
+            </div>
+        </div>
+
+        <!-- Configuración compacta -->
+        <div class="news-paste-config">
+            <label class="news-paste-config-row">
+                <span>Medio</span>
+                <select id="paste-news-outlet" class="input-modern"></select>
+            </label>
+            <label class="news-paste-config-row">
+                <span>Categoría</span>
+                <select id="paste-news-category" class="input-modern">
+                    <option value="noticias">📰 Noticias</option>
+                    <option value="economia">💼 Economía</option>
+                    <option value="deportes">⚽ Deportes</option>
+                    <option value="educacion">🎓 Educación</option>
+                    <option value="historia">📚 Historia</option>
+                </select>
+            </label>
+        </div>
+
+        <details class="news-paste-bulk-toggle">
+            <summary><i class="fas fa-layer-group"></i> Modo lote (varias noticias a la vez)</summary>
+            <label style="display:flex;align-items:center;gap:8px;margin-top:8px;color:var(--text-dim);font-size:0.82rem;cursor:pointer;">
+                <input type="checkbox" id="paste-news-bulk" style="cursor:pointer;">
+                Activar — separa cada noticia con <code>---</code> en una línea propia. La <b>primera línea</b> de cada bloque debe ser la URL.
+            </label>
+        </details>
+
+        <button class="btn-submit news-paste-submit" onclick="App.news.publishManual()">
+            <i class="fas fa-paper-plane"></i> Publicar noticia
+        </button>
+    </div>
+</div>
+
+<!-- Botón flotante: crear hilo -->
+<button id="fab-new-thread" class="fab" onclick="App.ui.openEditor()" title="Nueva publicación">
+    <i class="fas fa-plus"></i>
+</button>
+
+<!-- ============ BOTTOM NAV (solo móvil) — estilo Instagram/Facebook ============ -->
+<nav id="bottom-nav" class="bottom-nav" aria-label="Navegación principal móvil">
+    <a href="#" class="bn-item" data-route="inicio" onclick="App.ui.navigate('inicio'); return false;" aria-label="Inicio">
+        <i class="fas fa-house"></i>
+        <span>Inicio</span>
+    </a>
+    <a href="#" class="bn-item" data-route="explora" onclick="App.ui.navigate('explora'); return false;" aria-label="Explora">
+        <i class="fas fa-compass"></i>
+        <span>Explora</span>
+    </a>
+    <a href="#" class="bn-item bn-item-fab" onclick="App.ui.openEditor(); return false;" aria-label="Crear publicación">
+        <i class="fas fa-plus"></i>
+    </a>
+    <a href="#" class="bn-item" data-route="notificaciones" onclick="App.ui.navigate('notificaciones'); return false;" aria-label="Notificaciones">
+        <i class="fas fa-bell"></i>
+        <span>Notif</span>
+        <span id="bn-noti-badge" class="bn-badge" style="display:none;">0</span>
+    </a>
+    <a href="#" class="bn-item" data-route="perfil-self" onclick="if(App.db.session) App.ui.openUserProfile(App.db.session.id); else App.ui.openAuth(); return false;" aria-label="Mi perfil">
+        <i class="fas fa-user"></i>
+        <span>Perfil</span>
+    </a>
+</nav>
+
+<!-- ============ COMMAND PALETTE (Ctrl+K) ============ -->
+<div id="command-palette" class="cp-overlay hidden" role="dialog" aria-modal="true" aria-label="Paleta de comandos">
+    <div class="cp-backdrop" onclick="App.commandPalette.close()"></div>
+    <div class="cp-panel" role="combobox" aria-haspopup="listbox" aria-expanded="true">
+        <div class="cp-search">
+            <i class="fas fa-search cp-search-icon"></i>
+            <input id="cp-input" type="text" placeholder="Buscar páginas, personas, hilos, comercios o ejecutar acciones…" autocomplete="off" spellcheck="false" aria-controls="cp-results" />
+            <kbd class="cp-esc">ESC</kbd>
+        </div>
+        <div id="cp-results" class="cp-results" role="listbox" aria-label="Resultados"></div>
+        <div class="cp-footer">
+            <span><kbd>↑</kbd><kbd>↓</kbd> navegar</span>
+            <span><kbd>↵</kbd> abrir</span>
+            <span><kbd>Tab</kbd> autocompletar</span>
+            <span class="cp-footer-spacer"></span>
+            <span class="cp-brand"><i class="fas fa-bolt"></i> Tres Valles</span>
+        </div>
+    </div>
+</div>
+
+<!-- Contenedor de toasts -->
+<div id="toast-container"></div>
+
+<script src="main/js/script.js"></script>
+</body>
+</html> 

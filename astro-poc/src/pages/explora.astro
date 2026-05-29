@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HubCard from '../components/HubCard.astro';
+import ContactButton from '../components/ContactButton.astro';
+import VisitCounter from '../components/VisitCounter.tsx';
+import VideoCarousel from '../components/VideoCarousel.tsx';
+import ImageStrip from '../components/ImageStrip.tsx';
+import HubMap from '../components/HubMap.tsx';
+import PageSections from '../components/PageSections.tsx';
+
+const cards = [
+    { icon: 'fa-circle-play',      title: 'Videos',            description: 'Documentales y recorridos.',                       target: 'hub-videos' },
+    { icon: 'fa-images',           title: 'Galería',           description: 'Imágenes del municipio.',                          target: 'hub-galeria' },
+    { icon: 'fa-map-location-dot', title: 'Mapa',              description: 'Mapa interactivo con puntos clave.',               target: 'hub-mapa' },
+    { icon: 'fa-landmark',         title: 'Historia',          description: 'De campamento ferrocarrilero a Municipio Libre.',  target: 'hub-historia' },
+    { icon: 'fa-shield-halved',    title: 'Logo y simbología', description: 'Caña, ganadería y vías del tren en el escudo.',    target: 'hub-logo' },
+    { icon: 'fa-store',            title: 'Economía',          description: 'Agroindustria, comercio y servicios.',             target: 'hub-economia' },
+    { icon: 'fa-industry',         title: 'Ingenio',           description: 'PIASA, 13,000 t/día y 6,000 cañeros.',             target: 'hub-cana' },
+    { icon: 'fa-train',            title: 'Ferrocarril',       description: 'El origen del pueblo.',                            target: 'hub-ferrocarril' },
+    { icon: 'fa-mountain-sun',     title: 'Geografía',         description: '378 km², clima cálido-húmedo.',                    target: 'hub-geografia' },
+    { icon: 'fa-cubes-stacked',    title: 'Geología',          description: 'Suelos aluviales del Papaloapan.',                 target: 'hub-geologia' },
+    { icon: 'fa-leaf',             title: 'Naturaleza',        description: 'Ríos, esteros y biodiversidad.',                   target: 'hub-natura' },
+    { icon: 'fa-utensils',         title: 'Gastronomía',       description: 'Mojarras, picadas, nieves.',                       target: 'hub-gastronomia' },
+    { icon: 'fa-music',            title: 'Música',            description: 'Territorio del son jarocho.',                      target: 'hub-musica' },
+    { icon: 'fa-mask',             title: 'Tradiciones',       description: 'Carnaval, Cristo Rey, Día de Muertos.',            target: 'hub-tradiciones' },
+    { icon: 'fa-futbol',           title: 'Deporte',           description: 'Béisbol, fútbol y voleibol.',                      target: 'hub-deporte' },
+    { icon: 'fa-graduation-cap',   title: 'Educación',         description: 'CBTis, TEBAEV, Casa de la Cultura.',               target: 'hub-educacion' },
+    { icon: 'fa-house-chimney',    title: 'Comunidades',       description: 'Novara, Los Naranjos, Poblado Tres.',              target: 'hub-comunidades' },
+    { icon: 'fa-route',            title: 'Cómo llegar',       description: 'Veracruz, Tuxtepec, Tierra Blanca.',               target: 'hub-llegar' },
+    { icon: 'fa-book',             title: 'Bibliografía',      description: 'Fuentes oficiales y académicas.',                  target: 'hub-bibliografia' },
+];
+---
+<BaseLayout title="Explora Tres Valles · Patrimonio, gente y fuerza productiva" active="explora">
+    <section class="hub-hero">
+        <span class="eyebrow">Portal comunitario · Veracruz</span>
+        <h1>Explora Tres Valles</h1>
+        <p>Patrimonio, gente y fuerza productiva del corazón de la Cuenca del Papaloapan.</p>
+        <div class="hub-hero-divider"></div>
+    </section>
+
+    <div class="hub-grid">
+        {cards.map(card => <HubCard {...card} />)}
+    </div>
+
+    <!-- VIDEOS — primero, grande, auto-rotación -->
+    <section id="hub-videos">
+        <div class="media-header">
+            <h2><i class="fas fa-circle-play"></i> Videos</h2>
+            <span class="media-hint">Cambia cada 12s · click en la miniatura para elegir</span>
+        </div>
+        <VideoCarousel client:load />
+    </section>
+
+    <!-- GALERÍA — strip horizontal -->
+    <section id="hub-galeria">
+        <div class="media-header">
+            <h2><i class="fas fa-images"></i> Galería</h2>
+            <span class="media-hint">Desliza · click para ampliar</span>
+        </div>
+        <ImageStrip client:load />
+    </section>
+
+    <!-- MAPA — Leaflet interactivo -->
+    <section id="hub-mapa" style="margin-bottom: 36px;">
+        <div class="media-header">
+            <h2><i class="fas fa-map-location-dot"></i> Mapa interactivo</h2>
+            <span class="media-hint">Click en cada marcador para ver el punto</span>
+        </div>
+        <HubMap client:visible />
+    </section>
+
+    <!-- ════════════ CONTENIDO EDITABLE (CMS) ════════════ -->
+    <PageSections pageSlug="explora" seedLabel="Inicializar 17 secciones por defecto" client:load />
+
+    <!-- PIE: contador + correo -->
+    <footer class="hub-footer">
+        <VisitCounter client:load />
+        <ContactButton />
+    </footer>
+</BaseLayout>

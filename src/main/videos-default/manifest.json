@@ -1,0 +1,13 @@
+{
+  "_comment": "Lista de videos default que aparecen en el apartado 'En reproducción' de Explora Tres Valles. Soporta dos tipos: (1) videos locales — pones el .mp4 en esta carpeta y usas el campo 'file'; (2) videos de YouTube — usas 'youtube_id' en lugar de 'file'. SIEMPRE incluye 'author' y 'source_url' para dar crédito al autor original.",
+  "videos": [
+    {
+      "youtube_id": "SwljRmZDFi0",
+      "title": "Orgullo Veracruzano · Tres Valles",
+      "description": "Acompaña a Felley a conocer el Municipio de Tres Valles, Veracruz.",
+      "author": "TVMÁS RTV",
+      "source_url": "https://www.youtube.com/@TVMASRTV",
+      "year": 2021
+    }
+  ]
+}

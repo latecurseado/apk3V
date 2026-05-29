@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(& \"c:\\\\Users\\\\USER\\\\Desktop\\\\pagina\\\\cloudflared.exe\" --version)",
+      "Read(//c/Users/USER/.claude/projects/c--Users-USER-Desktop-pagina/memory\" 2>/dev/**)",
+      "PowerShell(Test-NetConnection -ComputerName localhost -Port 8000 -InformationLevel Quiet -WarningAction SilentlyContinue)",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"https://collectors-arranged-headed-campbell.trycloudflare.com\" -UseBasicParsing -TimeoutSec 10 -MaximumRedirection 5; Write-Host \"Status: $\\($r.StatusCode\\) $\\($r.StatusDescription\\)\"; Write-Host \"Length: $\\($r.RawContentLength\\)\" } catch { Write-Host \"Error: $\\($_.Exception.Message\\)\" })",
+      "PowerShell(try { $r = Resolve-DnsName -Name 'collectors-arranged-headed-campbell.trycloudflare.com' -Server 1.1.1.1 -Type A -ErrorAction Stop; $r | Select-Object Name, IPAddress | Format-Table -AutoSize } catch { Write-Host \"Falla via 1.1.1.1: $\\($_.Exception.Message\\)\" })",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"https://collectors-arranged-head-campbell.trycloudflare.com\" -UseBasicParsing -TimeoutSec 10 -MaximumRedirection 5; Write-Host \"Status: $\\($r.StatusCode\\) $\\($r.StatusDescription\\)\"; Write-Host \"Content-Length: $\\($r.RawContentLength\\) bytes\"; $head = $r.Content.Substring\\(0, [Math]::Min\\(200, $r.Content.Length\\)\\); Write-Host \"Preview: $head\" } catch { Write-Host \"Error: $\\($_.Exception.Message\\)\" })",
+      "PowerShell($src = \"c:\\\\Users\\\\USER\\\\Desktop\\\\pagina\\\\src\"; $zip = \"c:\\\\Users\\\\USER\\\\Desktop\\\\pagina\\\\tres-valles-deploy.zip\"; if \\(Test-Path $zip\\) { Remove-Item $zip -Force }; Add-Type -AssemblyName System.IO.Compression.FileSystem; [System.IO.Compression.ZipFile]::CreateFromDirectory\\($src, $zip, [System.IO.Compression.CompressionLevel]::Optimal, $false\\); $z = [System.IO.Compression.ZipFile]::OpenRead\\($zip\\); Write-Host \"Verificacion \\(primeras entradas\\):\"; $z.Entries | Select-Object -First 10 FullName, Length | Format-Table -AutoSize; $z.Dispose\\(\\); $info = Get-Item $zip; Write-Host \\(\"ZIP nuevo: {0} \\({1:N0} KB\\)\" -f $info.FullName, \\($info.Length/1KB\\)\\))",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"https://tresvalles.pages.dev/manifest.json\" -UseBasicParsing -TimeoutSec 8; Write-Host \"Manifest status: $\\($r.StatusCode\\)\"; if \\($r.Content -match '\"share_target\"'\\) { Write-Host \"[OK] El manifest deployado tiene share_target — version nueva\" } else { Write-Host \"[!] Falta share_target — quizas el ZIP nuevo no se ha subido aun\" } } catch { Write-Host \"Error: $\\($_.Exception.Message\\)\" })",
+      "Bash(unzip -l tres-valles-deploy.zip)",
+      "Bash(powershell -NoProfile -Command \"Compress-Archive -Path * -DestinationPath ../tres-valles-deploy.zip -Force\")",
+      "Bash(unzip -p ../tres-valles-deploy.zip service-worker.js)",
+      "Bash(unzip -p tres-valles-deploy.zip main/videos-default/manifest.json)",
+      "Bash(unzip -p tres-valles-deploy.zip service-worker.js)",
+      "Bash(unzip -p tres-valles-deploy.zip \"main\\\\\\\\videos-default\\\\\\\\manifest.json\")",
+      "Read(//tmp/**)",
+      "Bash(node -c src/main/js/script.js)",
+      "Bash(unzip -l ../tres-valles-deploy.zip)",
+      "Bash(python build-zip.py)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\USER\\.claude\\projects\\c--Users-USER-Desktop-pagina\\memory",
+      "c:\\Users\\USER\\Desktop\\pagina"
+    ]
+  }
+}

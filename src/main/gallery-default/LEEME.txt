@@ -1,0 +1,74 @@
+============================================================
+GALERÍA POR DEFECTO — Tres Valles
+============================================================
+
+Esta carpeta contiene las imágenes que aparecen en la sección
+"Galería" (Explora Tres Valles) cuando un usuario entra por
+primera vez o cuando no hay fotos subidas todavía.
+
+------------------------------------------------------------
+CÓMO AÑADIR UNA IMAGEN DEFAULT
+------------------------------------------------------------
+
+1) Copia la imagen aquí dentro:
+   src/main/gallery-default/<tu-imagen>.jpg
+
+   Formatos aceptados: .jpg .jpeg .png .webp .gif
+   Tamaño recomendado: máximo 1600px de ancho, 500 KB - 1 MB.
+   (Si pesan más se cargan lento.)
+
+2) Edita `manifest.json` y agrega una entrada nueva al array
+   "images" con el nombre exacto del archivo y un pie de foto:
+
+       {
+           "file": "mi-foto-nueva.jpg",
+           "caption": "Texto que aparecerá debajo de la imagen"
+       }
+
+   Acuérdate de la coma entre cada objeto del array (estilo JSON).
+
+3) Re-deploya la página (o solo refresca con Ctrl+Shift+R si
+   estás probando local). Las imágenes default aparecen
+   automáticamente al final de la galería, marcadas con un
+   pequeño tag "default" para distinguirlas de las que suben
+   los usuarios.
+
+------------------------------------------------------------
+CÓMO QUITAR UNA IMAGEN DEFAULT
+------------------------------------------------------------
+
+Borra el archivo de esta carpeta Y borra su entrada del
+manifest.json. Si solo borras una de las dos cosas:
+- Si borras solo el archivo → la app intentará cargarlo, fallará
+  silenciosamente y mostrará un placeholder. No rompe nada.
+- Si borras solo la entrada del manifest → el archivo seguirá
+  ahí pero la app no lo mostrará.
+
+------------------------------------------------------------
+ORDEN DE APARICIÓN
+------------------------------------------------------------
+
+En la galería visible:
+1) Primero aparecen las fotos subidas por usuarios (más recientes
+   primero), porque son contenido vivo de la comunidad.
+2) Luego, al final, las imágenes default de esta carpeta en el
+   orden en que están listadas en el manifest.json.
+
+Las default NO se mezclan con las del usuario para que sea claro
+qué es contenido propio y qué viene precargado.
+
+------------------------------------------------------------
+EJEMPLO DE manifest.json COMPLETO
+------------------------------------------------------------
+
+{
+    "images": [
+        { "file": "rio-amanecer.jpg",  "caption": "Río Tres Valles al amanecer" },
+        { "file": "mercado.jpg",       "caption": "Mercado central, sábado" },
+        { "file": "iglesia.jpg",       "caption": "Iglesia principal" },
+        { "file": "vista-aerea.webp",  "caption": "Vista aérea del valle" }
+    ]
+}
+
+(El campo "_comment" del manifest actual es solo para que veas
+el texto de ayuda cuando lo abras — la app lo ignora.)

@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Página no encontrada · Tres Valles">
+    <div class="stub-state error-404">
+        <div class="error-404-num">404</div>
+        <h2>Te perdiste por la cuenca</h2>
+        <p>
+            Esa página no existe o se mudó de foro. Si llegaste por un link
+            antiguo, probablemente ya no apunta a nada. Prueba con esto:
+        </p>
+
+        <div class="error-404-actions">
+            <a class="auth-btn primary" href="/"><i class="fas fa-house"></i> Inicio</a>
+            <a class="auth-btn ghost small" href="/buscar"><i class="fas fa-magnifying-glass"></i> Buscar</a>
+            <a class="auth-btn ghost small" href="/foros"><i class="fas fa-hashtag"></i> Foros</a>
+        </div>
+
+        <div class="error-404-grid">
+            <a class="error-404-card" href="/foro?f=general">
+                <i class="fas fa-comments"></i>
+                <strong>Foro general</strong>
+                <small>Lo que pasa hoy en Tres Valles</small>
+            </a>
+            <a class="error-404-card" href="/foro?f=noticias">
+                <i class="fas fa-newspaper"></i>
+                <strong>Noticias</strong>
+                <small>Actualizadas cada hora</small>
+            </a>
+            <a class="error-404-card" href="/foro?f=eventos">
+                <i class="fas fa-calendar-days"></i>
+                <strong>Eventos</strong>
+                <small>Qué hay esta semana</small>
+            </a>
+            <a class="error-404-card" href="/reels">
+                <i class="fas fa-mobile-screen"></i>
+                <strong>Reels</strong>
+                <small>Videos cortos del pueblo</small>
+            </a>
+            <a class="error-404-card" href="/explora">
+                <i class="fas fa-compass"></i>
+                <strong>Explora</strong>
+                <small>Mapa, negocios, galería</small>
+            </a>
+            <a class="error-404-card" href="/chat">
+                <i class="fas fa-message"></i>
+                <strong>Chat</strong>
+                <small>Mensajea con tu gente</small>
+            </a>
+        </div>
+
+        <p class="error-404-hint">
+            ¿Vienes a buscar algo en particular? Pulsa <kbd>Ctrl</kbd>+<kbd>K</kbd> desde cualquier página.
+        </p>
+    </div>
+</BaseLayout>
+
+<style>
+    .error-404 { max-width: 720px; margin: 60px auto; text-align: center; padding: 0 20px; }
+    .error-404-num {
+        font-size: 7rem;
+        font-weight: 900;
+        line-height: 1;
+        margin-bottom: 8px;
+        background: linear-gradient(135deg, #00d2ff, #a855f7, #ff0844);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    .error-404-actions {
+        display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+        margin: 18px 0 36px;
+    }
+    .error-404-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 12px;
+        margin-bottom: 30px;
+    }
+    .error-404-card {
+        background: var(--surface, rgba(255,255,255,0.03));
+        border: 1px solid var(--border, rgba(255,255,255,0.1));
+        border-radius: 12px;
+        padding: 18px 14px;
+        text-decoration: none;
+        color: var(--text);
+        display: flex; flex-direction: column; gap: 4px; align-items: flex-start;
+        transition: all 0.15s;
+    }
+    .error-404-card:hover {
+        border-color: var(--accent, #00d2ff);
+        transform: translateY(-2px);
+    }
+    .error-404-card i {
+        font-size: 1.4rem;
+        color: var(--accent, #00d2ff);
+        margin-bottom: 4px;
+    }
+    .error-404-card strong { font-size: 0.95rem; }
+    .error-404-card small { color: var(--text-dim); font-size: 0.78rem; }
+    .error-404-hint { color: var(--text-dim); font-size: 0.85rem; }
+    .error-404-hint kbd {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 4px;
+        padding: 1px 5px;
+        font-family: ui-monospace, monospace;
+    }
+</style>

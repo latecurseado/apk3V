@@ -1,0 +1,27 @@
+name = "tresvalles-news-bot"
+main = "worker.js"
+compatibility_date = "2024-09-01"
+
+# Corre diariamente a las 12:00 UTC (06:00 hora México) · noticias frescas
+# para cuando la gente abra el portal por la mañana.
+#
+# Para volver a cada hora: crons = ["7 * * * *"]
+# Para 2 veces al día (mañana + tarde): crons = ["0 12,22 * * *"]
+[triggers]
+crons = ["0 12 * * *"]
+
+# Variables NO secretas (puedes editarlas aquí):
+[vars]
+SUPABASE_URL = "https://iaqnnphzopxlkzylbals.supabase.co"
+# Filtros estrictos: el contenido DEBE contener alguno de estos términos
+# para ser considerado noticia de Tres Valles.
+STRICT_KEYWORDS = "Tres Valles,tres valles,TRES VALLES,Tres-Valles"
+# Términos negativos: si aparecen, descartamos (evita falsos positivos como
+# "Tres Valles" en La Rioja, España, o en Chile).
+NEGATIVE_KEYWORDS = "Rioja,España,Chile,Argentina,Colombia,Perú,Logroño"
+# Foco geográfico: si aparece junto a "Tres Valles", es señal positiva
+POSITIVE_CONTEXT = "Veracruz,Papaloapan,Cuenca,México,Mexicana,Mexicano,Cosamaloapan,Tlacotalpan,Otatitlán,Tuxtepec"
+
+# Secretos (configurar con: wrangler secret put NOMBRE)
+#   SUPABASE_ANON_KEY    → anon key del proyecto
+#   BOT_SECRET           → el mismo que setearás con set_bot_secret() en SQL

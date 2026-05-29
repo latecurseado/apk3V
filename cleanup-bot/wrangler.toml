@@ -1,0 +1,12 @@
+name = "tresvalles-cleanup-bot"
+main = "worker.js"
+compatibility_date = "2024-09-01"
+
+# Cron diario a las 4am UTC (10pm hora México · cuando hay menos tráfico)
+[triggers]
+crons = ["0 4 * * *"]
+
+[vars]
+SUPABASE_URL = "https://iaqnnphzopxlkzylbals.supabase.co"
+
+# Secret: wrangler secret put SUPABASE_SERVICE_KEY

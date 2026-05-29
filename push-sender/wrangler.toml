@@ -1,0 +1,18 @@
+name = "tresvalles-push-sender"
+main = "worker.js"
+compatibility_date = "2024-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Cron: cada minuto revisa notificaciones nuevas y manda push a las suscripciones
+[triggers]
+crons = ["* * * * *"]
+
+[vars]
+SUPABASE_URL = "https://iaqnnphzopxlkzylbals.supabase.co"
+VAPID_SUBJECT = "mailto:rcrizallid02@gmail.com"
+# VAPID_PUBLIC_KEY se inyecta como secret junto a la private
+
+# Secretos (configurar con: wrangler secret put NOMBRE)
+#   SUPABASE_SERVICE_KEY  → service_role key (NUNCA en el cliente)
+#   VAPID_PUBLIC_KEY      → base64url (la misma que en lib/push.ts)
+#   VAPID_PRIVATE_KEY     → base64url (genera con npx web-push generate-vapid-keys)

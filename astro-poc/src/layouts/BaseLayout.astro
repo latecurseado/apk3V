@@ -1,0 +1,301 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import WeatherWidget from '../components/WeatherWidget.tsx';
+import GlobalSearch from '../components/GlobalSearch.tsx';
+import ThemeToggle from '../components/ThemeToggle.tsx';
+import Toaster from '../components/Toaster.tsx';
+import OnboardingTour from '../components/OnboardingTour.tsx';
+import NotificationsBell from '../components/NotificationsBell.tsx';
+import PresenceTracker from '../components/PresenceTracker.tsx';
+import PwaInstall from '../components/PwaInstall.tsx';
+import LocaleToggle from '../components/LocaleToggle.tsx';
+import AuthMenu from '../components/AuthMenu.tsx';
+import ChatIconButton from '../components/ChatIconButton.tsx';
+import AuthModalHost from '../components/AuthModalHost.tsx';
+import SettingsMenu from '../components/SettingsMenu.tsx';
+import MaintenanceGate from '../components/MaintenanceGate.tsx';
+import LightboxHost from '../components/LightboxHost.tsx';
+import MobileNavHost from '../components/MobileNavHost.tsx';
+import NavProgress from '../components/NavProgress.tsx';
+import KeyboardShortcuts from '../components/KeyboardShortcuts.tsx';
+import ScrollBehavior from '../components/ScrollBehavior.tsx';
+import AIAssistant from '../components/AIAssistant.tsx';
+import CallHost from '../components/CallHost.tsx';
+import OfflineBanner from '../components/OfflineBanner.tsx';
+import NativeBridge from '../components/NativeBridge.tsx';
+
+interface Props {
+    title?: string;
+    description?: string;
+    image?: string;
+    active?: 'inicio' | 'explora' | 'foro' | 'chat' | 'reels' | 'perfil';
+    wide?: boolean;
+}
+
+const {
+    title = 'Tres Valles · Portal Comunitario',
+    description = 'Portal comunitario de Tres Valles, Veracruz. Foro, noticias, mapa interactivo, galería y mucho más.',
+    image = '/icons/icon-512.png',
+    active = 'inicio',
+    wide = false,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site || 'https://tresvalles.pages.dev').toString();
+
+import '../styles/tokens.css';   // capa Tailwind v4 (tokens + utilities, sin preflight)
+import '../styles/global.css';
+
+// Topnav VACÍA. El logo enlaza al Inicio.
+// Reels se integró en la tira horizontal del Inicio (estilo YouTube).
+// Explora se accede desde la sidebar del Inicio (Accesos rápidos).
+// Chat sigue como icono junto a Notificaciones (topbar derecha).
+const navItems: ReadonlyArray<{ id: string; href: string; icon: string; label: string }> = [];
+---
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta name="theme-color" content="#17150f" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#f7f3ec" media="(prefers-color-scheme: light)" />
+        <link rel="canonical" href={canonicalUrl} />
+
+        <!-- Performance: preconnect a Supabase y CDNs críticos -->
+        <link rel="preconnect" href="https://iaqnnphzopxlkzylbals.supabase.co" crossorigin />
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+        <link rel="preconnect" href="https://unpkg.com" crossorigin />
+        <link rel="dns-prefetch" href="https://api.open-meteo.com" />
+        <link rel="dns-prefetch" href="https://i.ytimg.com" />
+
+        <!-- Identidad tipográfica · Fraunces (serif con alma) para títulos/wordmark -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" />
+
+        <!-- PWA -->
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Tres Valles" />
+
+        <!-- OpenGraph -->
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Tres Valles" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={new URL(image, Astro.site || 'https://tresvalles.pages.dev').toString()} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:locale" content="es_MX" />
+
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={new URL(image, Astro.site || 'https://tresvalles.pages.dev').toString()} />
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+
+        <!-- JSON-LD para SEO · WebSite + SearchAction -->
+        <script type="application/ld+json" set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Tres Valles",
+            "url": "https://tresvalles.pages.dev/",
+            "description": "Portal comunitario de Tres Valles, Veracruz",
+            "inLanguage": "es-MX",
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://tresvalles.pages.dev/buscar?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+            },
+        })} />
+        <script type="application/ld+json" set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Tres Valles · Portal Comunitario",
+            "url": "https://tresvalles.pages.dev/",
+            "logo": "https://tresvalles.pages.dev/icons/icon-512.png",
+            "areaServed": {
+                "@type": "City",
+                "name": "Tres Valles",
+                "addressRegion": "Veracruz",
+                "addressCountry": "MX",
+            },
+            "sameAs": [],
+        })} />
+
+        <!-- Aplica preferencias de estilo ANTES del primer paint (sin flash) -->
+        <script is:inline>
+            (function () {
+                try {
+                    var stored = localStorage.getItem('tv-theme');
+                    var theme = stored || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+                    document.documentElement.dataset.theme = theme;
+
+                    var fs = localStorage.getItem('tv-fs');
+                    if (fs === 'sm' || fs === 'md' || fs === 'lg') document.documentElement.dataset.fs = fs;
+
+                    if (localStorage.getItem('tv-rm') === '1') document.documentElement.dataset.rm = '1';
+
+                    var locale = localStorage.getItem('tv-locale');
+                    document.documentElement.lang = locale === 'en' ? 'en' : 'es-MX';
+
+                    /* Densidad · cómoda (default) / compacta */
+                    if (localStorage.getItem('tv-density') === 'compact') {
+                        document.documentElement.dataset.density = 'compact';
+                    }
+
+                    /* Skins retirados (rediseño 2026): la paleta nueva es la única.
+                       Limpiamos cualquier skin viejo guardado para que no quede colgado. */
+                    localStorage.removeItem('tv-skin');
+                } catch (e) { /* localStorage bloqueado */ }
+            })();
+        </script>
+
+        <ViewTransitions />
+    </head>
+    <body>
+        <NavProgress client:load transition:persist="nav-progress" />
+        <header class="topbar" transition:persist="topbar">
+            <a href="/" class="logo">Tres Valles</a>
+            <GlobalSearch client:load transition:persist="global-search" />
+            <nav class="topnav">
+                {navItems.map(item => (
+                    <a href={item.href} class={active === item.id ? 'active' : ''}>
+                        <i class={`fas ${item.icon} nav-icon`}></i>
+                        <span class="nav-label">{item.label}</span>
+                    </a>
+                ))}
+            </nav>
+            <WeatherWidget    client:idle transition:persist="weather" />
+            <ChatIconButton   client:idle transition:persist="chat-icon" />
+            <NotificationsBell client:idle transition:persist="notif-bell" />
+            <PwaInstall       client:idle transition:persist="pwa-install" />
+            <SettingsMenu     client:idle transition:persist="settings-menu" />
+            <AuthMenu         client:load transition:persist="auth-menu" />
+        </header>
+        <Toaster          client:idle transition:persist="toaster" />
+        <OnboardingTour   client:idle transition:persist="onboarding" />
+        <PresenceTracker  client:idle transition:persist="presence" />
+        <AuthModalHost    client:load transition:persist="auth-modal-host" />
+        <MaintenanceGate  client:load transition:persist="maintenance-gate" />
+        <MobileNavHost    client:idle transition:persist="mobile-nav" />
+        <KeyboardShortcuts client:idle transition:persist="kbd-shortcuts" />
+        <ScrollBehavior   client:idle transition:persist="scroll-behavior" />
+        <LightboxHost     client:idle transition:persist="lightbox-host" />
+        <AIAssistant      client:idle transition:persist="ai-assistant" />
+        <CallHost         client:idle transition:persist="call-host" />
+        <OfflineBanner    client:idle transition:persist="offline-banner" />
+        <NativeBridge     client:idle transition:persist="native-bridge" />
+        <main class={wide ? 'wide' : ''}>
+            <slot />
+        </main>
+        <footer class="site-footer" transition:persist="site-footer">
+            <small>
+                Portal comunitario · Tres Valles, Veracruz ·
+                <a href="https://es.wikipedia.org/wiki/Tres_Valles_(Veracruz)" target="_blank" rel="noopener">
+                    sobre el municipio
+                </a>
+            </small>
+        </footer>
+
+        <script is:inline>
+            // Estilos globales: tema, tamaño texto, reducir animaciones, idioma.
+            // Se aplican ANTES del paint para evitar FOUC en cada carga completa, y
+            // también en cada navegación SPA (astro:after-swap) por consistencia.
+            const applyGlobalStyles = () => {
+                try {
+                    const stored = localStorage.getItem('tv-theme');
+                    const theme = stored || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+                    document.documentElement.dataset.theme = theme;
+
+                    const fs = localStorage.getItem('tv-fs');
+                    if (fs === 'sm' || fs === 'md' || fs === 'lg') {
+                        document.documentElement.dataset.fs = fs;
+                    } else {
+                        delete document.documentElement.dataset.fs;
+                    }
+
+                    const rm = localStorage.getItem('tv-rm') === '1';
+                    if (rm) document.documentElement.dataset.rm = '1';
+                    else delete document.documentElement.dataset.rm;
+
+                    if (localStorage.getItem('tv-density') === 'compact') {
+                        document.documentElement.dataset.density = 'compact';
+                    } else {
+                        delete document.documentElement.dataset.density;
+                    }
+
+                    const locale = localStorage.getItem('tv-locale');
+                    document.documentElement.lang = locale === 'en' ? 'en' : 'es-MX';
+                } catch { /* localStorage bloqueado */ }
+            };
+            applyGlobalStyles();
+            document.addEventListener('astro:after-swap', applyGlobalStyles);
+        </script>
+
+        <script>
+            const initScrollFx = () => {
+                const els = document.querySelectorAll('.hub-section, .hub-card, .stat-pill, .topic-header, .thread-card, .hub-footer, .disc-topbar');
+                els.forEach(el => el.classList.add('fx'));
+                const io = new IntersectionObserver((entries) => {
+                    entries.forEach(e => {
+                        if (e.isIntersecting) {
+                            e.target.classList.add('in-view');
+                            io.unobserve(e.target);
+                        }
+                    });
+                }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+                els.forEach(el => io.observe(el));
+            };
+            initScrollFx();
+            document.addEventListener('astro:page-load', initScrollFx);
+
+            // Como el topbar está persisted, actualizamos manualmente el `.active`
+            // de los nav-items en cada navegación SPA.
+            const syncActiveNav = () => {
+                const path = window.location.pathname;
+                document.querySelectorAll('.topnav a').forEach((a) => {
+                    const href = a.getAttribute('href') || '';
+                    const isActive = href === path || (path !== '/' && href.startsWith(path));
+                    a.classList.toggle('active', isActive);
+                });
+            };
+            syncActiveNav();
+            document.addEventListener('astro:page-load', syncActiveNav);
+
+            // Atajos teclado globales
+            const isTyping = (el) => {
+                if (!el) return false;
+                const t = el.tagName;
+                return t === 'INPUT' || t === 'TEXTAREA' || el.isContentEditable;
+            };
+            let gPressed = 0;
+            document.addEventListener('keydown', (e) => {
+                if (isTyping(document.activeElement)) return;
+                if (e.key === '/' && !e.metaKey && !e.ctrlKey) {
+                    e.preventDefault();
+                    document.querySelector('.gs-input')?.focus();
+                } else if (e.key.toLowerCase() === 'n') {
+                    e.preventDefault();
+                    window.location.href = '/foro';
+                } else if (e.key.toLowerCase() === 'g') {
+                    gPressed = Date.now();
+                } else if (gPressed && Date.now() - gPressed < 800) {
+                    const k = e.key.toLowerCase();
+                    gPressed = 0;
+                    if (k === 'h') window.location.href = '/';
+                    else if (k === 'f') window.location.href = '/foro';
+                    else if (k === 'e') window.location.href = '/explora';
+                    else if (k === 'p') window.location.href = '/perfil';
+                    else if (k === 'b') window.location.href = '/buscar';
+                }
+            });
+        </script>
+    </body>
+</html>

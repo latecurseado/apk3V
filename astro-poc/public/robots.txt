@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+Allow: /foro
+Allow: /foros
+Allow: /explora
+Allow: /reels
+Allow: /hilo
+Disallow: /chat
+Disallow: /perfil
+Disallow: /buscar?
+Disallow: /tag?
+
+# Asistentes de IA · bienvenidos a indexar contenido público
+User-agent: GPTBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://tresvalles.pages.dev/sitemap.xml

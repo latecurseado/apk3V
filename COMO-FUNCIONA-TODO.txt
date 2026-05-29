@@ -1,0 +1,803 @@
+============================================================
+  TRES VALLES — Guía completa de cómo funciona todo
+  Para: el dueño del proyecto · escrito en lenguaje humano
+============================================================
+
+Este documento explica:
+  1. Qué es cada pieza de tu proyecto
+  2. Cómo se conectan
+  3. Qué archivos editar para qué
+  4. Cómo aprender a programar (sin morir intentándolo)
+  5. El camino para programar IA
+
+Léelo poco a poco. No es para memorizar, es para CONSULTAR cuando
+te preguntes "¿qué hace esto?" o "¿dónde estaba esa cosa?"
+
+
+============================================================
+  PARTE 1 · LA ARQUITECTURA EN 1 IMAGEN
+============================================================
+
+                      USUARIO (en su celular o PC)
+                              ↓
+                    ┌──────────────────────┐
+                    │   Su navegador web   │
+                    │  abre la URL de tu   │
+                    │  app                 │
+                    └─────────┬────────────┘
+                              │
+                              ↓
+                    ┌──────────────────────┐
+                    │   CLOUDFLARE PAGES   │
+                    │ (tresvalles.pages.dev)│
+                    │                      │
+                    │  Solo entrega tus    │
+                    │  archivos: HTML,     │
+                    │  CSS, JS, imágenes   │
+                    └─────────┬────────────┘
+                              │
+                  Una vez cargado el HTML/JS,
+                  el navegador habla con:
+                              │
+                              ↓
+                    ┌──────────────────────┐
+                    │      SUPABASE        │
+                    │                      │
+                    │  Guarda y devuelve:  │
+                    │  • cuentas users     │
+                    │  • posts/hilos       │
+                    │  • comentarios       │
+                    │  • likes/follows     │
+                    │  • mensajes privados │
+                    │  • baneos/strikes    │
+                    └──────────────────────┘
+
+Ese es todo el secreto. 3 piezas: tu código, hosting, base de datos.
+
+
+============================================================
+  PARTE 2 · QUÉ HACE CADA ARCHIVO DE TU PROYECTO
+============================================================
+
+Tu carpeta principal: c:/Users/USER/Desktop/pagina/
+
+──── ARCHIVOS QUE SE DEPLOYAN (van al zip) ────
+
+Carpeta: src/
+    └─ Todo lo que se sube a Cloudflare Pages
+
+src/index.html
+    Es el "hueso" de tu página. Define la estructura:
+    - El header (arriba con búsqueda)
+    - El sidebar (lateral con menú)
+    - Los modales (login, settings, admin panel)
+    - El bottom-nav móvil
+    También tiene CSS crítico inline (los estilos básicos van
+    aquí para que la página se vea aunque el archivo CSS
+    externo falle).
+
+src/main/css/style.css
+    Cómo se ve TODO. 7,000+ líneas de estilos:
+    - Colores (cyan, dark mode)
+    - Animaciones (slide-in, fade-in)
+    - Layouts (grid, flex)
+    - Responsive (móvil vs desktop)
+
+src/main/js/script.js
+    El cerebro de la app. ~8,500 líneas. Tiene módulos:
+    - App.auth: maneja login, registro, sesiones (Google OAuth + email)
+    - App.db: el estado en memoria de los datos (cache local)
+    - App.sb: lee y escribe a Supabase
+    - App.forum: crea, borra, renderea hilos
+    - App.social: likes, follows, friends, blocks, mutes, reactions
+    - App.chat: mensajes privados con realtime
+    - App.ui: pinta la interfaz, navegación entre rutas
+    - App.gallery, App.videosDefault: galería y videos
+    - App.friends: solicitudes de amistad con realtime
+    - App.presence: estado online/away/busy con heartbeat
+    - App.admin: usuarios, baneos, strikes, contenido
+    - App.search: búsqueda live de hilos/usuarios/negocios
+    - App.news: noticias externas con caché
+    - App.notifications: notificaciones inline + toasts
+    - App.settings: editar perfil, banner, foto, tema
+    - App.mediaOps: comprimir imágenes antes de subirlas
+
+src/main/js/supabase-client.js
+    Inicializa la conexión a Supabase con tu proyecto único.
+    Aquí está la "URL de Supabase" y la "anon key" pública.
+
+src/service-worker.js
+    Hace que la app cargue rápido y funcione sin internet.
+    Es el archivo que cachea cosas. Cuando cambias código,
+    incrementas la versión (tv-v90 → tv-v91) para que los
+    navegadores descarguen lo nuevo.
+
+    Estrategia actual: NETWORK-FIRST (red primero, cache si
+    falla). Antes era cache-first y eso causaba que los
+    deploys nuevos no se vieran hasta limpiar manualmente.
+    Y ahora también hace BYPASS TOTAL a *.supabase.co —
+    nunca cachea queries autenticadas porque eso colgaba
+    las peticiones del cliente.
+
+src/manifest.json
+    Le dice al celular "esto se puede instalar como app".
+
+src/main/icons/
+    Iconos para cuando se instala como app móvil.
+
+src/main/gallery-default/
+    Las fotos default que aparecen en la Galería de Explora.
+    Tiene un manifest.json que lista cuáles son y sus captions.
+
+src/main/videos-default/
+    Videos default. El manifest soporta videos locales
+    (.mp4) y videos de YouTube (con youtube_id).
+
+src/robots.txt + src/sitemap.xml
+    Le dicen a Google qué páginas indexar.
+
+──── ARCHIVOS QUE NO SE DEPLOYAN ────
+
+c:/Users/USER/Desktop/pagina/
+
+build-zip.py
+    Script en Python que empaca el src/ en un zip con
+    paths POSIX correctos (forward slashes, no backslashes).
+    Ejecutas: python build-zip.py
+
+tres-valles-deploy.zip
+    El archivo que SÍ subes a Cloudflare. Se regenera
+    cada vez que corres build-zip.py.
+
+supabase-schema-MASTER.sql ⭐ EL ÚNICO QUE IMPORTA
+    Schema completo y consolidado. Idempotente (puede correr
+    varias veces sin romper nada). Define TODO:
+    - Tablas: profiles, threads, comments, likes, reactions,
+      follows, bookmarks, blocks, mutes, notifications,
+      messages, friend_requests, bans, user_strikes,
+      outlets, businesses, gallery, community_videos,
+      admin_emails
+    - Funciones helper: is_admin, handle_new_user, etc.
+    - Trigger handle_new_user que crea profile completo cada
+      vez que alguien se registra (auto-pone como owner si
+      el username es 'pimpiling')
+    - RLS policies (Row Level Security) en cada tabla
+    - RPCs (funciones llamables desde el cliente)
+    - Realtime habilitado en las tablas relevantes
+    Hay que ejecutarlo UNA vez en Supabase → SQL Editor.
+    Si actualizas el schema, lo corres de nuevo.
+
+supabase-seed-test-users.sql
+    Crea las 10 cuentas de prueba (charli, gleep, etc.).
+    Útil para probar el foro sin tener que crear cuentas
+    a mano. NO ejecutar en producción real.
+
+(Hay otros .sql sueltos de versiones anteriores que se
+pueden ignorar — el MASTER ya los incluye todos.)
+
+start-server.bat
+    Doble click para correr la página localmente
+    (http://localhost:8000) sin necesidad de Cloudflare.
+
+cloudflared.exe + start-tunnel.bat
+    Para crear un túnel público desde tu máquina (no lo
+    usamos ahora porque está en Cloudflare Pages).
+
+COMO-PUBLICAR.md, GENERAR-APK.md, KEEPALIVE-SETUP.md
+    Documentos de ayuda para tareas específicas.
+
+CONFIGURAR-GOOGLE-LOGIN.md (si lo creamos)
+    Guía paso a paso para Google OAuth.
+
+
+============================================================
+  PARTE 3 · ¿QUÉ HAGO CUANDO QUIERO CAMBIAR ALGO?
+============================================================
+
+──── Si el cambio es de código ────
+
+1. Yo (Claude) edito los archivos en src/ por ti.
+2. Tú abres PowerShell en la carpeta del proyecto:
+       cd C:\Users\USER\Desktop\pagina
+       python build-zip.py
+3. Eso genera un nuevo tres-valles-deploy.zip (~3.4 MB).
+4. Subes el zip a Cloudflare:
+   - https://dash.cloudflare.com → Pages → tresvalles
+   - Click "Create deployment"
+   - "Upload assets" → arrastra el zip
+   - Espera "Success" (~30 segundos)
+5. Limpia tu navegador:
+   - Abre: https://tresvalles.pages.dev/?nosw=1
+   - Eso desregistra el service worker viejo y refresca
+6. Listo, los cambios están vivos.
+
+──── Si el cambio es de base de datos ────
+
+1. Yo te paso un SQL.
+2. Tú lo pegas en Supabase Dashboard → SQL Editor.
+3. Click "Run".
+4. Listo.
+
+──── Si el cambio es de configuración (OAuth, emails) ────
+
+1. Yo te explico paso a paso qué hacer.
+2. Tú navegas en Google Cloud Console o Supabase Dashboard
+   y haces los clicks.
+3. Listo.
+
+
+============================================================
+  PARTE 4 · CONCEPTOS CLAVE QUE YA SABES (sin saberlo)
+============================================================
+
+Cuando hemos hablado, has aprendido todos estos conceptos:
+
+LOCALSTORAGE
+    Memoria del navegador. Cada navegador guarda cosas
+    como tu sesión. Es ÚNICA por dispositivo, no se sincroniza
+    entre dispositivos.
+
+BASE DE DATOS RELACIONAL (PostgreSQL)
+    Una hoja de cálculo gigante con tablas conectadas.
+    Tabla "profiles" tiene usuarios. Tabla "threads" tiene
+    posts y se conecta con profiles por author_id.
+
+ROW LEVEL SECURITY (RLS)
+    Reglas que dicen "este usuario solo puede ver/editar
+    estas filas". Por ejemplo: solo el dueño del perfil
+    puede editarlo.
+
+SERVICE WORKER
+    Un script que vive aparte y intercepta TODOS los fetches
+    del navegador. Útil para cache offline.
+
+PWA (Progressive Web App)
+    Una página web que se puede instalar como app en celular.
+
+OAUTH
+    Login con Google/Facebook/etc. Te conectas a un servicio
+    externo que dice "sí, este usuario es legítimo, puedes
+    confiarle".
+
+REALTIME / WEBSOCKETS
+    Conexión persistente entre navegador y servidor que
+    permite enviar datos en vivo. Cuando alguien comenta,
+    todos los demás lo ven al instante sin recargar.
+
+JSON
+    Forma de guardar datos en texto. Como un objeto:
+    { "nombre": "Pedro", "edad": 30 }
+
+API REST
+    Forma estándar de pedirle cosas a un servidor.
+    "GET /threads" → "dame los hilos"
+    "POST /threads" → "crea un hilo nuevo"
+
+PROMESAS / async-await
+    Cómo JavaScript maneja cosas que tardan (como pedir
+    datos a un servidor). En lugar de congelar la página,
+    JS sigue funcionando y "promete" que después tendrá
+    el dato.
+
+DEPLOY
+    Subir tu código a un servidor para que esté en internet.
+
+CDN
+    Red de servidores en muchos países. Cuando un mexicano
+    abre tu página, le sirve un servidor en México. Cuando
+    un argentino la abre, uno en Argentina. Más rápido.
+
+
+============================================================
+  PARTE 5 · EL CAMINO PARA SER PROGRAMADOR
+============================================================
+
+──── La realidad ────
+
+Programar es como aprender un idioma nuevo. Toma TIEMPO y
+PRÁCTICA. Nadie aprende en 1 mes. Pero también:
+
+- No necesitas ser un genio. Solo paciencia.
+- No necesitas saber matemáticas avanzadas (al principio).
+- Lo más importante es la lógica de "cómo descomponer un
+  problema en pasos pequeños".
+
+──── Orden recomendado para aprender ────
+
+PASO 1 (1-3 meses): HTML + CSS
+    Aprende a hacer páginas estáticas. Cómo poner títulos,
+    imágenes, formularios. Cómo darles color. Cómo hacerlas
+    responsive.
+
+    Recursos GRATIS (en español):
+    - Mozilla MDN Web Docs: developer.mozilla.org/es/
+    - freeCodeCamp en YouTube
+    - "FaztCode" en YouTube
+
+    Hacer en 1 mes: tu propia página personal con foto y bio.
+
+PASO 2 (2-4 meses): JavaScript básico
+    Hacer que las páginas hagan cosas. Botones que cambian
+    el texto, formularios que validan, animaciones.
+
+    Conceptos clave:
+    - Variables (let, const)
+    - Funciones
+    - If, else, loops (for, while)
+    - Arrays y objetos
+    - Eventos (onclick, onsubmit)
+    - DOM (document.querySelector, etc.)
+
+    Hacer en 2 meses: una calculadora, un to-do list, un
+    contador, un juego simple (snake, memoria, etc.)
+
+PASO 3 (3-6 meses): JavaScript moderno + APIs
+    Aprender a CONSUMIR servicios. Pedir datos a internet,
+    mostrarlos. Promesas, async/await, fetch.
+
+    Probar APIs gratis:
+    - JSONPlaceholder (datos de prueba)
+    - PokéAPI (Pokémon)
+    - The Movie Database (películas)
+
+    Hacer: una app que muestra Pokémon, películas favoritas,
+    o el clima de tu ciudad.
+
+PASO 4 (3-6 meses): Bases de datos + Backend
+    Aprender que hay 2 lados: frontend (lo que el usuario
+    ve) y backend (servidor que guarda datos).
+
+    Opciones:
+    - Supabase (la más fácil, ya conoces)
+    - Firebase (Google)
+    - Node.js + Express + PostgreSQL (más complejo, más control)
+
+    Hacer: un foro, un blog, una agenda de contactos con
+    login y persistencia.
+
+PASO 5 (en cualquier momento): un framework
+    React, Vue, Astro, Svelte. Hacen aplicaciones grandes
+    más fáciles. React es el estándar de la industria.
+
+    Hacer: tu portal Tres Valles pero reescrito en React.
+
+PASO 6 (cuando ya domines lo anterior): Lenguajes "serios"
+    Python (para AI, datos, scripting)
+    TypeScript (JavaScript con tipos)
+    Go o Rust (para sistemas)
+
+──── ¿Cuánto tiempo total? ────
+
+Para sentirte cómodo programando: 1-2 años de práctica
+constante (1-2 horas al día). Para conseguir trabajo
+junior: 1-3 años. Para programar IA bien: 2-5 años más
+encima de eso.
+
+NO es desalentador, es real. Si empiezas hoy y le pones
+1 hora al día, en 1 año vas a poder construir cosas que
+hoy te parecen mágicas.
+
+
+============================================================
+  PARTE 6 · EL CAMINO PARA PROGRAMAR IA
+============================================================
+
+──── Qué significa "programar IA" ────
+
+Hay 2 caminos muy distintos:
+
+CAMINO A · USAR IA EXISTENTE
+    Conectar tu app a Claude, ChatGPT, Gemini, etc. vía API.
+    Tu app le manda un prompt, recibe una respuesta, la
+    muestra. Esto es lo que hace el 95% de la gente que
+    "programa IA" hoy.
+
+    Ejemplo: un chatbot, un asistente de escritura, una
+    app que resume noticias.
+
+    Habilidades necesarias:
+    - JavaScript o Python básico
+    - Saber consumir APIs (paso 3 de arriba)
+    - Saber escribir buenos prompts
+
+    Tiempo para empezar: 6 meses de programación general.
+
+CAMINO B · CREAR MODELOS DE IA DESDE CERO
+    Entrenar tu propia red neuronal, hacer que aprenda de
+    datos. Esto es lo que hacen ingenieros de Google,
+    OpenAI, Anthropic.
+
+    Ejemplo: crear un modelo que detecte enfermedades en
+    radiografías, traducir idiomas, generar imágenes.
+
+    Habilidades necesarias:
+    - Matemáticas (álgebra lineal, cálculo, probabilidad,
+      estadística)
+    - Python avanzado
+    - PyTorch o TensorFlow
+    - Conocer arquitecturas (transformers, CNNs, RNNs)
+    - Tener mucho poder de cómputo (GPUs)
+
+    Tiempo para empezar: 2-4 años de matemáticas + programación.
+
+──── Mi recomendación ────
+
+EMPIEZA CON CAMINO A. Es 100x más práctico para los
+próximos años. Casi todas las empresas que "usan IA"
+realmente solo usan APIs de OpenAI/Anthropic/Google.
+
+Cuando ya domines eso y sigas con curiosidad, te metes
+al CAMINO B.
+
+──── Recursos para IA ────
+
+GRATIS:
+- Andrew Ng — "Machine Learning" en Coursera (clásico)
+- Fast.ai — "Practical Deep Learning"
+- 3Blue1Brown en YouTube — visualizaciones de matemáticas
+  para AI (sus videos de neural networks son arte)
+- Hugging Face Course (gratis, en español parcialmente)
+- Karpathy en YouTube — "Neural Networks: Zero to Hero"
+
+DOCUMENTACIÓN:
+- Anthropic Docs (Claude API)
+- OpenAI Docs (GPT API)
+- PyTorch Tutorials
+
+
+============================================================
+  PARTE 7 · ESTADO ACTUAL DEL PROYECTO (2026-05-05)
+============================================================
+
+──── Lo que YA funciona ────
+
+[X] Login Google OAuth (joseph_pym_hermida ya entró)
+[X] Login con email + password
+[X] Foro completo (hilos, comentarios, likes, reacciones)
+[X] Notificaciones en vivo (realtime)
+[X] Chat privado (realtime)
+[X] Sistema de amistades (solicitudes, aceptar, rechazar)
+[X] Follows + bloqueos + silenciar
+[X] Galería de fotos por región
+[X] Videos por región (YouTube + locales)
+[X] Búsqueda live de hilos/usuarios/negocios
+[X] Panel admin (usuarios, baneos, strikes, contenido)
+[X] Sistema owner protegido (pimpiling no se puede tocar)
+[X] Sistema de strikes manual (sin auto-ban)
+[X] PWA instalable (móvil y desktop)
+[X] Service Worker network-first (deploys se ven al instante)
+[X] Mobile sigma polish (header auto-hide, bottom-nav glass)
+[X] Botón "Leer más" en posts largos
+[X] Indicador de presencia (online/away/busy)
+[X] Estado custom con emoji
+[X] Múltiples temas (cyber-cian, dark, retro, ocean, etc.)
+
+──── Lo que está PENDIENTE / con bugs cosméticos ────
+
+[ ] Banner del perfil no se renderiza visualmente aunque
+    está guardado en Supabase (112KB de base64). Bug por
+    investigar — probablemente el SW v90/v91 no quedó
+    activo y la query a profiles sigue cacheada con
+    datos viejos.
+
+[ ] Verificar que el sitemap.xml fue captado por Google
+    Search Console (toma días, paciencia).
+
+[ ] Decidir si las 10 cuentas de prueba se borran o se dejan.
+
+[ ] Compartir el link con personas cercanas para probar.
+
+──── ESTADO DEL DEPLOY ────
+
+URL en producción: https://tresvalles.pages.dev
+Service Worker actual: tv-v91 (en código fuente)
+Schema SQL: supabase-schema-MASTER.sql (idempotente)
+
+
+============================================================
+  PARTE 8 · CÓMO USAR A CLAUDE COMO TU MENTOR
+  (instrucciones específicas para aprender programación)
+============================================================
+
+Soy Claude, tu asistente. Mientras programas y aprendes,
+tienes una herramienta que la mayoría de programadores
+nuevos del mundo no tienen: yo. Aprovéchame BIEN.
+
+──── Las 5 reglas de oro ────
+
+1. PÍDEME QUE TE EXPLIQUE, NO QUE TE LO HAGA
+   MAL: "Hazme una calculadora en JavaScript"
+   BIEN: "Quiero hacer una calculadora. Explícame paso a
+         paso QUÉ funciones JS necesito y POR QUÉ"
+   Cuando me pides que te haga el trabajo, aprendes 0.
+   Cuando me pides que te explique, aprendes el concepto
+   y luego puedes resolverlo TÚ mismo.
+
+2. DESPUÉS DE QUE INTENTES, MUÉSTRAME TU CÓDIGO
+   Intenta primero por tu cuenta. Cuando esté roto, pégamelo
+   y dime: "esto no funciona, qué está mal?"
+   Yo te muestro el bug Y la lógica de cómo encontrarlo
+   por tu cuenta la próxima vez.
+
+3. PÍDEME EJERCICIOS A TU NIVEL
+   "Estoy en semana 2 de JS, dame 3 ejercicios de bucles
+   for con dificultad creciente"
+   Yo me adapto a tu nivel.
+
+4. CUANDO LEAS CÓDIGO QUE NO ENTIENDES, SUBE LA LÍNEA
+   Pégame una línea o función de Tres Valles y dime:
+   "explícame esto como si tuviera 10 años"
+   Yo desgloso CADA palabra. Es la mejor forma de leer código
+   real.
+
+5. PIDE FEEDBACK DE CALIDAD, NO SOLO "¿FUNCIONA?"
+   "Funciona, pero ¿cómo se podría escribir mejor?"
+   "¿Hay algo que un programador senior haría diferente?"
+   Eso eleva tu nivel.
+
+──── Plan concreto para los próximos 30 días ────
+
+SEMANA 1 — HTML básico
+   Lunes-Martes: aprender estructura (h1, p, div, img)
+   Miércoles-Jueves: aprender semántica (header, nav, main, section)
+   Viernes-Domingo: hacer una página personal (TÚ, sin mí)
+   Pídeme: "Quiero hacer una página personal con 3 secciones,
+            qué tags HTML necesito?"
+   Tarea final: compártemela y te doy feedback.
+
+SEMANA 2 — CSS básico
+   Lunes-Martes: colores, fonts, tamaños, padding/margin
+   Miércoles-Jueves: flexbox (la magia para layouts)
+   Viernes: media queries (responsive)
+   Sábado-Domingo: estilizar tu página de la semana 1
+   Pídeme: "Explícame flexbox con 3 ejemplos visuales"
+
+SEMANA 3 — JS para hacer páginas dinámicas
+   Lunes: variables, console.log, tipos básicos
+   Martes: if/else, comparaciones
+   Miércoles: for/while loops
+   Jueves: arrays y objetos
+   Viernes: querySelector + addEventListener
+   Sábado-Domingo: hacer un contador con +/- en tu página
+   Pídeme: "Escribí esto y no anda: [pega tu código]"
+
+SEMANA 4 — JS más real
+   Lunes-Martes: funciones (regular y arrow)
+   Miércoles: forEach, map, filter en arrays
+   Jueves: async/await + fetch
+   Viernes: localStorage
+   Sábado-Domingo: hacer un to-do list que guarda en
+   localStorage
+   Pídeme: "Quiero que el botón guarde en localStorage,
+            cómo escribo eso?"
+
+──── Cómo aprovechar Tres Valles para aprender ────
+
+Tu propio proyecto es la mejor escuela. Después del mes 1:
+
+EJERCICIO A: Cambiar un color
+   1. Abre src/main/css/style.css
+   2. Ctrl+F busca "--accent"
+   3. Cámbialo de color (ej: rojo)
+   4. python build-zip.py
+   5. Sube y mira tu sitio en otro color
+   Aprenderás: variables CSS, deploy real.
+
+EJERCICIO B: Cambiar un texto del foro
+   1. Abre src/main/js/script.js
+   2. Ctrl+F busca "Crear publicación"
+   3. Cámbialo a "Postear"
+   4. Deploy
+   Aprenderás: cómo navegar archivos grandes.
+
+EJERCICIO C: Agregar un emoji a un toast
+   1. Busca "App.ui.toast"
+   2. Encuentra una llamada (ej. cuando guardas perfil)
+   3. Cambia el mensaje por algo con emoji
+   Aprenderás: cómo se llaman las funciones entre módulos.
+
+EJERCICIO D: Leer y entender una función
+   1. Abre script.js
+   2. Busca "renderProfileRoute" — copia esa función entera
+   3. Pégamela y dime: "explícame esto línea por línea"
+   Aprenderás: a leer código de verdad.
+
+──── Cuando estés listo para apps tuyas ────
+
+Después de 2-3 meses de aprender, intenta proyectos así:
+
+PROYECTO 1: Página de "Recetas favoritas"
+   Listas de recetas, agregar/borrar, guardar en localStorage.
+   No usa servidor, no usa base de datos. Solo HTML+CSS+JS.
+
+PROYECTO 2: "Pokédex" usando una API
+   Llama a la PokéAPI, muestra Pokémon, paginación.
+   Aprendes: fetch, async, promesas, paginación.
+
+PROYECTO 3: Mini-foro tipo Tres Valles pero MÁS PEQUEÑO
+   Hilos sin login, guardado en localStorage. Sin Supabase
+   por ahora.
+
+PROYECTO 4: Lo mismo pero CON Supabase
+   Crea tu propio proyecto Supabase, conecta, agrega login,
+   tabla de posts. Ya tienes Tres Valles de referencia para
+   copiar patrones.
+
+PROYECTO 5: Reescribe Tres Valles en React
+   Cuando ya domines React, esto es el "boss final" que te
+   va a enseñar TODO lo que falta.
+
+──── Sobre IA específicamente ────
+
+Cuando hayas terminado los 5 proyectos de arriba (1 año
+de trabajo), agrega IA:
+
+PROYECTO IA-1: Chatbot que llama a Claude API
+   - Pides API key en console.anthropic.com (gratis trial)
+   - Frontend HTML simple, JS llama a la API
+   - Aprenderás: fetch a APIs externas, manejo de keys
+
+PROYECTO IA-2: Asistente de noticias
+   - Pega texto largo, te lo resume con Claude
+   - Aprende: prompts efectivos, streaming responses
+
+PROYECTO IA-3: Tu propio chatbot con personalidad
+   - Diseña un agente con system prompts
+   - Lo embebes en una de tus apps anteriores
+
+──── Reglas para no rendirte ────
+
+* CUANDO TE ATORES: pídeme ayuda, no Google. Yo veo el
+  contexto entero. Google es para preguntas genéricas.
+
+* CUANDO ALGO NO FUNCIONA: el 90% de las veces es un typo
+  o un punto y coma. Lee el error en consola CON CALMA.
+
+* CUANDO TE FRUSTRES: cierra la laptop 30 minutos. Sal a
+  caminar. Vuelves con la cabeza fresca y ves el bug en 2
+  minutos. Pasa siempre.
+
+* CUANDO TENGAS UNA IDEA: anótala. La gente que llega
+  lejos es la que CONSTRUYE sus propias ideas, no la que
+  solo hace tutoriales.
+
+
+============================================================
+  PARTE 9 · QUÉ HACER ESTE MES (mantenimiento del proyecto)
+============================================================
+
+Si el proyecto Tres Valles solo lo quieres mantener:
+
+[ ] Compartir el link con 5-10 personas cercanas
+[ ] Registrar el sitio en Google Search Console
+[ ] Verificar que Google login funciona para usuarios nuevos
+[ ] Limpiar las 10 cuentas de prueba cuando ya no las uses
+[ ] Ver Supabase Reports para vigilar que no se pase del
+    free tier (500 MB de DB, 2 GB de transferencia/mes)
+[ ] Cuando quieras, retomar el bug del banner
+
+
+============================================================
+  PARTE 10 · CONSEJOS QUE NADIE TE DA
+============================================================
+
+1. NO TE FRUSTRES CUANDO ALGO NO FUNCIONA
+   Es 90% del trabajo de programar. Hasta los pros pasan
+   horas con un bug. Es normal.
+
+2. APRENDE A USAR GOOGLE COMO HERRAMIENTA
+   No memorices todo. Busca cuando necesites. "Cómo hacer
+   X en JavaScript" — te lleva a Stack Overflow o MDN.
+
+3. USA IA PARA APRENDER, NO PARA HACER
+   Pídele a Claude/ChatGPT que TE EXPLIQUE algo, no que
+   lo haga por ti. Si solo copias código sin entenderlo,
+   te quedas igual de novato.
+
+4. ENTREGA COSAS, AUNQUE SEAN UGLY
+   Mejor 100 proyectos feos terminados que 1 perfecto que
+   nunca se acaba. Cada proyecto te enseña algo.
+
+5. ÚNETE A COMUNIDADES EN ESPAÑOL
+   - r/programacion (Reddit)
+   - Discord de Cazu Coding, Codely TV
+   - Foros de freeCodeCamp en español
+
+6. NO CAIGAS EN "TUTORIAL HELL"
+   Ver tutoriales todo el día sin construir nada propio
+   es una trampa. 50% tutoriales, 50% proyectos propios.
+
+7. ESCRIBE CÓDIGO TODOS LOS DÍAS
+   Aunque sea 30 minutos. La consistencia gana.
+
+8. ABRE PROYECTOS DE OTROS Y LÉELOS
+   GitHub está lleno de código gratis. Lee, copia patrones,
+   adapta.
+
+
+============================================================
+  PARTE 11 · ATAJOS PARA TI HOY
+============================================================
+
+──── Comandos de PowerShell útiles ────
+
+Empacar el zip:
+    cd C:\Users\USER\Desktop\pagina
+    python build-zip.py
+
+Servir la página local (para ver cambios sin subir):
+    .\start-server.bat
+    Luego abre http://localhost:8000
+
+──── URLs importantes ────
+
+Tu sitio en producción:
+    https://tresvalles.pages.dev
+
+Cloudflare Pages dashboard:
+    https://dash.cloudflare.com → Pages → tresvalles
+
+Supabase dashboard:
+    https://supabase.com/dashboard
+
+Google Cloud Console (OAuth):
+    https://console.cloud.google.com
+
+Google Search Console:
+    https://search.google.com/search-console
+
+──── Tu cuenta de admin ────
+
+Username: pimpiling (es el OWNER, no se puede borrar)
+Email: pimpiling@tresvalles.local
+Para entrar: usa el email + tu contraseña
+
+──── Si algo se rompe ────
+
+Para limpiar el cache del navegador:
+    https://tresvalles.pages.dev/?nosw=1
+
+Para ver errores en la consola:
+    F12 → tab "Console"
+
+Para diagnosticar:
+    F12 → Console → pega:
+    console.log({
+        sesion: App.db.session?.name,
+        rol: App.db.session?.role,
+        threads: App.db.threads.length,
+        sw: caches.keys()
+    });
+
+
+============================================================
+  CIERRE
+============================================================
+
+Tu proyecto Tres Valles es complejo. Que lo tengas funcionando
+ya es un logro grande.
+
+Lo que sigue depende de ti:
+
+  → Si solo quieres mantenerlo y usarlo: súbelo, registra
+    Google Search Console, invita a 10 personas, deja que
+    crezca solo.
+
+  → Si quieres aprender a programar: usa Tres Valles como
+    "tu juguete" — modifica cosas, ve qué pasa, rompe cosas
+    a propósito y arréglalas.
+
+  → Si quieres llegar a programar IA: este es solo el
+    primer paso. Pero es UN paso real. La mayoría nunca
+    llegan a tener un proyecto deployado en internet. Tú sí.
+
+No hay prisa. La programación es un maratón.
+
+Si te sientes perdido, vuelve a este documento o pregúntame
+directo. No hay pregunta tonta.
+
+— Claude
+
+============================================================
+  ÚLTIMA ACTUALIZACIÓN: 2026-05-05
+============================================================

@@ -1,0 +1,32 @@
+# Dependencias e instalaciones
+node_modules/
+**/node_modules/
+
+# Builds web (se regeneran)
+astro-poc/dist/
+astro-poc/.astro/
+
+# Capacitor: assets web copiados (los regenera `cap sync`)
+astro-poc/android/app/src/main/assets/public/
+astro-poc/ios/App/App/public/
+
+# Android build (lo compila CI / Android Studio)
+**/build/
+**/.gradle/
+*.apk
+*.aab
+local.properties
+
+# iOS
+astro-poc/ios/App/Pods/
+*.xcuserstate
+
+# Zips de deploy (artefactos locales)
+*.zip
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/

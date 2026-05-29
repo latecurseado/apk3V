@@ -1,0 +1,286 @@
+/* ============================================================
+   Tres Valles · Capa de TOKENS · Tailwind CSS v4
+   ------------------------------------------------------------
+   Fuente única de verdad del sistema de diseño (rediseño 2026).
+   Adopción INCREMENTAL: importamos theme + utilities SIN preflight
+   para no resetear las 10.8k líneas de global.css existentes.
+   Las utilidades de Tailwind quedan en su @layer → el CSS legacy
+   (sin capa) sigue ganando, así nada existente se rompe. El markup
+   nuevo (Home customizer, etc.) usa utilidades + estos tokens.
+   ============================================================ */
+
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@theme {
+    /* ── Paleta "cálida moderna sobria" · neutros + ámbar/terracota ──
+       Marca/acento estables. Las SUPERFICIES por tema viven en global.css
+       (var(--bg), var(--bg-card), var(--text)…), no aquí. */
+    --color-sand:          #f7f3ec;   /* off-white cálido (fondo claro) */
+    --color-night:         #17150f;   /* fondo oscuro cálido */
+    --color-surface:       #262219;   /* superficie oscura (isla dark) */
+    --color-ink:           #1c1916;   /* tinta (texto en claro) */
+    --color-ink-dim:       #574f45;
+    --color-ink-muted:     #6f6557;
+    --color-amber:         #e8893f;   /* acento en oscuro */
+    --color-amber-soft:    rgba(232, 137, 63, 0.16);
+    --color-terracotta:    #c2410c;   /* acento en claro · ACCIÓN */
+    --color-terracotta-soft: rgba(194, 65, 12, 0.10);
+    --color-sage:          #84a981;   /* secundario / éxito */
+    --color-sage-soft:     rgba(132, 169, 129, 0.14);
+
+    /* ── Radios ── */
+    --radius-island:    18px;
+    --radius-island-lg: 24px;
+    --radius-pill:      999px;
+
+    /* ── Sombras / elevación ── */
+    --shadow-soft:  0 3px 14px rgba(0, 0, 0, 0.18);
+    --shadow-lift:  0 10px 32px rgba(0, 0, 0, 0.28);
+
+    /* ── Tipografía display ── */
+    --font-display: 'Fraunces', 'Georgia', serif;
+
+    /* ── Movimiento · UN solo lenguaje ──
+       Feedback ≤200ms = se siente cómodo, no lento. */
+    --ease-out-soft:  cubic-bezier(0.22, 1, 0.36, 1);   /* salidas/entradas suaves */
+    --ease-out-back:  cubic-bezier(0.34, 1.56, 0.64, 1); /* pop con rebote ligero */
+    --ease-in-out-smooth: cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+/* Duraciones de movimiento como custom props globales
+   (fuera del namespace @theme para usarlas en transiciones del CSS legacy también) */
+:root {
+    --motion-fast: 120ms;
+    --motion:      200ms;
+    --motion-slow: 320ms;
+}
+
+/* Si el usuario pide menos movimiento (data-rm="1"), colapsamos todas
+   las duraciones de tokens a ~0 · refuerza prefers-reduced-motion. */
+:root[data-rm='1'] {
+    --motion-fast: 0.01ms;
+    --motion:      0.01ms;
+    --motion-slow: 0.01ms;
+}
+
+/* ============================================================
+   HOME CUSTOMIZER · "Personaliza tu inicio"
+   Token-driven: usa las vars semánticas del tema (--bg-card, --border,
+   --text, --accent…) para combinar con las islas existentes, y los
+   tokens nuevos (--radius-island, --motion*, --ease-*) para forma/motion.
+   ============================================================ */
+.tvc-root { display: block; }
+
+.tvc-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+.tvc-head-title {
+    font-family: var(--font-display, 'Fraunces', serif);
+    font-weight: 600;
+    font-size: 1.02rem;
+    color: var(--text-on-bg, var(--text));
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.tvc-head-title i { color: var(--accent); }
+
+.tvc-edit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-strong, var(--border));
+    background: var(--bg-card);
+    color: var(--text-dim);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform var(--motion-fast) var(--ease-out-soft),
+                background var(--motion) var(--ease-out-soft),
+                color var(--motion) var(--ease-out-soft),
+                box-shadow var(--motion) var(--ease-out-soft);
+}
+.tvc-edit-btn:hover { box-shadow: var(--shadow-soft); color: var(--text); }
+.tvc-edit-btn:active { transform: scale(0.95); }
+.tvc-edit-btn.is-on {
+    background: var(--accent);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: var(--accent-glow, 0 0 0 transparent);
+}
+
+.tvc-list { display: flex; flex-direction: column; gap: 14px; }
+
+/* Tarjeta en modo edición */
+.tvc-slot {
+    border: 1px dashed var(--border-strong, var(--border));
+    border-radius: var(--radius-island);
+    background: color-mix(in srgb, var(--bg-card) 60%, transparent);
+    overflow: hidden;
+    touch-action: manipulation;
+}
+.tvc-slot--drag {
+    box-shadow: var(--shadow-lift);
+    border-style: solid;
+    border-color: var(--accent);
+}
+.tvc-slot-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px 6px 6px;
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in srgb, var(--accent) 6%, var(--bg-card));
+}
+.tvc-slot-name {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.tvc-slot-name i { color: var(--accent); font-size: 0.82em; }
+
+.tvc-handle {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px; height: 30px;
+    border: none;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: grab;
+    touch-action: none;
+    transition: background var(--motion-fast) var(--ease-out-soft),
+                color var(--motion-fast) var(--ease-out-soft);
+}
+.tvc-handle:hover { background: var(--accent-soft); color: var(--accent); }
+.tvc-handle:active { cursor: grabbing; }
+
+.tvc-remove {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px; height: 30px;
+    border: none;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background var(--motion-fast) var(--ease-out-soft),
+                color var(--motion-fast) var(--ease-out-soft),
+                transform var(--motion-fast) var(--ease-out-soft);
+}
+.tvc-remove:hover { background: var(--accent-soft); color: var(--accent); }
+.tvc-remove:active { transform: scale(0.88); }
+
+/* Cuerpo del widget en modo edición: no interactivo + atenuado */
+.tvc-slot-body {
+    padding: 10px;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.92;
+}
+
+/* Panel de "añadir" */
+.tvc-panel {
+    margin-top: 16px;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-island);
+    background: var(--bg-card);
+    box-shadow: var(--shadow-soft);
+}
+.tvc-panel-head {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+.tvc-panel-head i { color: var(--accent); }
+.tvc-panel-empty { font-size: 0.85rem; color: var(--text-muted); margin: 4px 0 12px; }
+
+.tvc-tray { display: flex; flex-direction: column; gap: 8px; }
+.tvc-chip {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    text-align: left;
+    padding: 9px 11px;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    background: var(--bg-elevated, var(--bg-card));
+    cursor: pointer;
+    transition: transform var(--motion-fast) var(--ease-out-soft),
+                border-color var(--motion) var(--ease-out-soft),
+                box-shadow var(--motion) var(--ease-out-soft);
+}
+.tvc-chip:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-soft);
+    transform: translateY(-1px);
+}
+.tvc-chip:active { transform: scale(0.98); }
+.tvc-chip-ico {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+.tvc-chip-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+.tvc-chip-txt b { font-size: 0.86rem; color: var(--text); }
+.tvc-chip-txt small { font-size: 0.74rem; color: var(--text-muted); }
+.tvc-chip-add { color: var(--text-muted); transition: color var(--motion-fast); }
+.tvc-chip:hover .tvc-chip-add { color: var(--accent); }
+
+.tvc-reset {
+    margin-top: 12px;
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 11px;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--motion-fast), color var(--motion-fast);
+}
+.tvc-reset:hover { background: var(--accent-soft); color: var(--accent); }
+
+.tvc-empty {
+    text-align: center;
+    padding: 26px 12px;
+    color: var(--text-muted);
+    border: 1px dashed var(--border-strong, var(--border));
+    border-radius: var(--radius-island);
+}
+.tvc-empty i { font-size: 1.6rem; opacity: 0.6; display: block; margin-bottom: 8px; }
+.tvc-empty p { margin: 0; font-size: 0.88rem; }

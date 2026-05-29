@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ThreadPage from '../components/ThreadPage.tsx';
+---
+<BaseLayout title="Hilo · Tres Valles" active="inicio">
+    <ThreadPage client:load />
+
+    <script>
+        // El componente dispara un CustomEvent 'threadLoaded' con título/descripción
+        // del hilo. Aquí actualizamos los meta-tags para que sean correctos al
+        // compartir el enlace.
+        document.addEventListener('threadLoaded', (e) => {
+            const detail = (e).detail || {};
+            if (detail.title) document.title = detail.title + ' · Tres Valles';
+            if (detail.description) {
+                document.querySelectorAll('meta[name="description"], meta[property="og:description"], meta[name="twitter:description"]')
+                    .forEach(m => m.setAttribute('content', detail.description));
+            }
+            if (detail.title) {
+                document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]')
+                    .forEach(m => m.setAttribute('content', detail.title));
+            }
+            if (detail.image) {
+                document.querySelectorAll('meta[property="og:image"], meta[name="twitter:image"]')
+                    .forEach(m => m.setAttribute('content', detail.image));
+            }
+        });
+    </script>
+</BaseLayout>

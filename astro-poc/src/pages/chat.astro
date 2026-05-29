@@ -1,0 +1,7 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ChatIsland from '../components/ChatIsland.tsx';
+---
+<BaseLayout title="Mensajes · Tres Valles" active="chat" wide>
+    <ChatIsland client:load />
+</BaseLayout>

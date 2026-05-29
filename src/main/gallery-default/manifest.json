@@ -1,0 +1,73 @@
+{
+  "_comment": "Lista de imágenes default que se cargan en la Galería de Tres Valles. Pon los archivos en esta misma carpeta y agrega una entrada aquí con su nombre + caption. Formatos soportados: .jpg .jpeg .png .webp .gif",
+  "images": [
+    {
+      "file": "Escudo_Tres_Valles.svg.png",
+      "caption": "Escudo oficial del municipio de Tres Valles — \"In Via Prosperitatis\""
+    },
+    {
+      "file": "PARQUEEDUA.png",
+      "caption": "Parque Central Miguel Hidalgo — corazón social y cultural"
+    },
+    {
+      "file": "Captura de pantalla 2026-04-30 073104.png",
+      "caption": "Monumento de bienvenida a Tres Valles"
+    },
+    {
+      "file": "Captura de pantalla 2026-04-30 073230.png",
+      "caption": "Tanque elevado emblemático con murales de Tres Valles"
+    },
+    {
+      "file": "Captura de pantalla 2026-04-30 073036.png",
+      "caption": "Planta Papelera Scribe — uno de los motores industriales"
+    },
+    {
+      "file": "WhatsApp Image 2026-04-30 at 7.30.16 AM (1).jpeg",
+      "caption": "Acceso al Ingenio Tres Valles — Grupo PIASA"
+    },
+    {
+      "file": "WhatsApp Image 2026-04-30 at 7.30.15 AM.jpeg",
+      "caption": "Vista del Ingenio Tres Valles desde la carretera"
+    },
+    {
+      "file": "WhatsApp Image 2026-04-30 at 7.30.16 AM.jpeg",
+      "caption": "Ingenio Tres Valles visto desde la parada de autobús"
+    },
+    {
+      "file": "Captura de pantalla 2026-04-30 073150.png",
+      "caption": "Vías del Ferrocarril del Istmo y puente peatonal histórico"
+    },
+    {
+      "file": "Captura de pantalla 2026-04-30 073339.png",
+      "caption": "Calle del centro con torre de alta tensión y vida cotidiana"
+    },
+    {
+      "file": "Captura de pantalla 2026-04-30 073412.png",
+      "caption": "Calle comercial del centro de Tres Valles"
+    },
+    {
+      "file": "Captura de pantalla 2026-04-30 073350.png",
+      "caption": "Calle típica del municipio"
+    },
+    {
+      "file": "Captura de pantalla 2026-04-30 073401.png",
+      "caption": "Avenida con cielo abierto característico de la planicie"
+    },
+    {
+      "file": "Captura de pantalla 2026-05-13 070746.png",
+      "caption": "Sucursal Coppel / BanCoppel en Tres Valles — comercio de cadena"
+    },
+    {
+      "file": "IMG_7805.jpeg",
+      "caption": "Pasillo del mercado municipal — locales de calzado y abarrotes"
+    },
+    {
+      "file": "IMG_7809.jpeg",
+      "caption": "Puesto de frutas y verduras en el mercado municipal"
+    },
+    {
+      "file": "images.jpg",
+      "caption": "Pasillo interior del mercado municipal"
+    }
+  ]
+}
