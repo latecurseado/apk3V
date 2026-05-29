@@ -104,7 +104,8 @@
       "Bash(grep -nE '^\\\\.seg-control|^\\\\.stories-bar|^\\\\.story-|^\\\\.shorts-strip-section|^\\\\.shorts-strip\\\\b|^\\\\.short-card|^\\\\.inline-composer|^\\\\.create-bar|^\\\\.create-fab|^\\\\.disc-main >|^\\\\.disc-main \\\\{|^\\\\.disc-main,' global.css)",
       "Read(//c/c/Users/USER/Desktop/pagina/astro-poc/node_modules/**)",
       "Bash(xargs grep -l \"exchangeCodeForSession\")",
-      "Bash(npx @capacitor/assets generate --android)"
+      "Bash(npx @capacitor/assets generate --android)",
+      "Bash(GIT_TERMINAL_PROMPT=0 git -c user.name=rcrizallid02 -c user.email=rcrizallid02@gmail.com commit -m ' *)"
     ]
   }
 }

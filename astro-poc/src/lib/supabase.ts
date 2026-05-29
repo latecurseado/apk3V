@@ -37,7 +37,11 @@ export const supabase = createClient(url ?? '', key ?? '', {
     auth: {
         persistSession: true,
         autoRefreshToken: true,
-        // En web detectamos el token en la URL (redirect de OAuth). En nativo NO:
+        // PKCE: el OAuth vuelve con `?code` (no con el token en el #hash, que es
+        // el flujo `implicit` por defecto). Necesario para que el deep-link nativo
+        // pueda canjear el code. En web, detectSessionInUrl canjea el code solo.
+        flowType: 'pkce',
+        // En web detectamos el code en la URL (redirect de OAuth). En nativo NO:
         // el OAuth vuelve por deep-link y lo canjea NativeBridge a mano.
         detectSessionInUrl: !native,
         ...(nativeStorage ? { storage: nativeStorage as any } : {}),

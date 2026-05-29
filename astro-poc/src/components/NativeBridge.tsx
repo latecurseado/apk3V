@@ -29,32 +29,43 @@ export default function NativeBridge() {
             const { App } = await import('@capacitor/app');
 
             // 1) OAuth deep-link (Google). Supabase nos devuelve a
-            //    mx.tresvalles.app://login-callback?code=... (o ?error=...).
+            //    mx.tresvalles.app://login-callback con ?code= (PKCE),
+            //    o #access_token= (implicit), o ?error= si algo falló.
             const urlSub = await App.addListener('appUrlOpen', async ({ url }) => {
-                if (!(url.includes('login-callback') || url.includes('code=') || url.includes('error='))) return;
+                if (!/login-callback|[?&#](code|error|access_token)=/.test(url)) return;
 
                 // Cierra el navegador del sistema cuanto antes.
                 try { const { Browser } = await import('@capacitor/browser'); await Browser.close(); } catch { /* */ }
 
-                // Extrae los parámetros del deep-link.
+                // ¿Error explícito de Google/Supabase?
+                const errM = url.match(/[?&#]error_description=([^&]+)/) || url.match(/[?&#]error=([^&]+)/);
+                if (errM) { toast.error('Google: ' + decodeURIComponent(errM[1].replace(/\+/g, ' '))); return; }
+
+                // Flujo PKCE: ?code=... → canjear por sesión (se pasa SOLO el code).
                 let code: string | null = null;
-                let errDesc: string | null = null;
-                try {
-                    const u = new URL(url);
-                    code = u.searchParams.get('code');
-                    errDesc = u.searchParams.get('error_description') || u.searchParams.get('error');
-                } catch { /* esquema raro → regex de respaldo abajo */ }
+                try { code = new URL(url).searchParams.get('code'); } catch { /* esquema raro */ }
                 if (!code) { const m = url.match(/[?&#]code=([^&]+)/); if (m) code = decodeURIComponent(m[1]); }
-                if (!errDesc) { const m = url.match(/[?&#]error_description=([^&]+)/); if (m) errDesc = decodeURIComponent(m[1].replace(/\+/g, ' ')); }
+                if (code) {
+                    const { error } = await supabase.auth.exchangeCodeForSession(code);
+                    if (error) toast.error('No se pudo iniciar sesión: ' + error.message);
+                    else toast.success('¡Sesión iniciada!');
+                    return;
+                }
 
-                if (errDesc) { toast.error('Google: ' + errDesc); return; }
-                if (!code) { toast.error('No llegó el código de Google. Revisa la Redirect URL en Supabase.'); return; }
+                // Flujo implicit (respaldo): #access_token=...&refresh_token=...
+                const at = url.match(/[#&]access_token=([^&]+)/);
+                const rt = url.match(/[#&]refresh_token=([^&]+)/);
+                if (at && rt) {
+                    const { error } = await supabase.auth.setSession({
+                        access_token: decodeURIComponent(at[1]),
+                        refresh_token: decodeURIComponent(rt[1]),
+                    });
+                    if (error) toast.error('No se pudo iniciar sesión: ' + error.message);
+                    else toast.success('¡Sesión iniciada!');
+                    return;
+                }
 
-                // IMPORTANTE: se pasa SOLO el `code`, NO la URL completa.
-                // exchangeCodeForSession manda el argumento tal cual como auth_code.
-                const { error } = await supabase.auth.exchangeCodeForSession(code);
-                if (error) toast.error('No se pudo iniciar sesión: ' + error.message);
-                else toast.success('¡Sesión iniciada!');
+                toast.error('No llegó el código de Google. Revisa la Redirect URL en Supabase.');
             });
             subs.push(urlSub);
 
