@@ -38,6 +38,11 @@ jobs:
       - name: Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Variables de entorno (Supabase · publishable key, segura)
+        run: |
+          echo "PUBLIC_SUPABASE_URL=https://iaqnnphzopxlkzylbals.supabase.co" > .env
+          echo "PUBLIC_SUPABASE_KEY=sb_publishable_gotsvOCmL336D_8l3YJvpw_oOx5pAHx" >> .env
+
       - name: Build web (Astro)
         run: npx astro build
 
