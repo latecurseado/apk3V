@@ -9988,33 +9988,48 @@ input[type="date"], input[type="time"], input[type="datetime-local"] {
     .modal-body { padding-bottom: max(20px, env(safe-area-inset-bottom)); }
 }
 
-/* ── Chat en móvil · conversación a pantalla completa ── */
+/* ── Chat en móvil · conversación = overlay a pantalla completa (fiable) ── */
 @media (max-width: 720px) {
-    /* Dentro de una conversación abierta, la barra inferior global estorba al
-       composer: la ocultamos y la ventana del chat manda (tiene su botón atrás). */
-    body:has(.chat-layout.open) .mob-nav { display: none; }
-
-    /* La ventana ocupa el alto real. dvh sigue al teclado: al abrirlo, la ventana
-       encoge y el composer sube (no queda tapado por el teclado). */
+    /* La conversación abierta cubre TODA la pantalla con position:fixed (no depende
+       de cálculos de alto ni de dvh). Es flex-column: header + mensajes + composer. */
     .chat-layout.open .chat-main {
-        height: calc(100vh - var(--header-h));
-        height: calc(100dvh - var(--header-h));
+        position: fixed;
+        inset: 0;
+        z-index: 500;
+        height: auto;
         max-height: none;
         border: none;
         border-radius: 0;
-    }
-    /* En la app nativa la topbar incluye el notch (safe-area-top): hay que restarlo
-       o el composer se empuja fuera de pantalla. */
-    html.is-native .chat-layout.open .chat-main {
-        height: calc(100dvh - var(--header-h) - env(safe-area-inset-top));
+        background: var(--bg);
+        padding: 0;
     }
 
-    /* Composer cómodo, siempre visible, respetando el home-indicator. */
+    /* Con el chat a pantalla completa ocultamos el resto del chrome para que no
+       estorbe (topbar, barra inferior, footer, bot). El botón atrás vuelve a la lista. */
+    body:has(.chat-layout.open) .topbar,
+    body:has(.chat-layout.open) .mob-nav,
+    body:has(.chat-layout.open) .site-footer,
+    body:has(.chat-layout.open) .ai-bubble,
+    body:has(.chat-layout.open) .ai-greeting { display: none !important; }
+
+    /* El header del chat respeta el notch (está pegado arriba). */
+    .chat-layout.open .chat-header { padding-top: max(12px, env(safe-area-inset-top)); }
+
+    /* Mensajes: scrollean; el composer queda fijo abajo. Imágenes/GIF no desbordan. */
+    .chat-messages { flex: 1; min-height: 0; }
+    .chat-msg { max-width: 82%; }
+    .chat-msg-image, .chat-msg-images img, .chat-msg img, .chat-msg video {
+        max-width: 100%; height: auto; max-height: 60vh;
+    }
+
+    /* Composer cómodo, sin desbordar, respetando el home-indicator. */
     .chat-composer, .bot-chat-composer, .group-chat-composer {
         padding-bottom: max(10px, env(safe-area-inset-bottom));
+        max-width: 100%;
     }
+    .chat-composer input { min-width: 0; }
 
-    /* Botón atrás visible; nombre se trunca; acciones no se cortan (scroll si hace falta). */
+    /* Botón atrás visible; nombre truncado; acciones no se cortan (scroll si hace falta). */
     .chat-back { display: inline-flex; width: 36px; height: 36px; flex-shrink: 0; }
     .chat-header { gap: 8px; }
     .chat-header-user { flex: 1; min-width: 0; }
@@ -10031,7 +10046,7 @@ input[type="date"], input[type="time"], input[type="datetime-local"] {
     .chat-header-actions::-webkit-scrollbar { display: none; }
     .chat-header-actions .disc-icon-btn { width: 34px; height: 34px; flex-shrink: 0; }
 
-    /* iOS notch sup */
+    /* iOS notch sup (sólo aplica fuera del chat a pantalla completa). */
     .topbar { padding-top: env(safe-area-inset-top); }
 }
 
