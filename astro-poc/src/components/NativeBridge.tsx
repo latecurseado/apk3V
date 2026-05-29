@@ -6,9 +6,10 @@ import { supabase } from '../lib/supabase';
  * Puente nativo (Capacitor). NO hace nada en web (gateado por isNativePlatform).
  * - Deep-link de OAuth: al volver de Google (mx.tresvalles.app://login-callback)
  *   intercambia el code por sesión y cierra el navegador del sistema.
- * - Push nativo: pide permiso, registra el token (FCM/APNs) y lo guarda en
- *   `device_push_tokens` para que un sender FCM/APNs pueda enviar.
  * - Botón atrás de Android: cierra modales / navega atrás.
+ *
+ * NOTA: el push nativo se quitó por ahora — sin `google-services.json` (Firebase)
+ * el plugin reventaba la app al iniciar. Se reactiva cuando se configure Firebase.
  */
 export default function NativeBridge() {
     useEffect(() => {
@@ -44,31 +45,7 @@ export default function NativeBridge() {
             });
             subs.push(backSub);
 
-            // 3) Push notifications
-            try {
-                const { PushNotifications } = await import('@capacitor/push-notifications');
-                let perm = await PushNotifications.checkPermissions();
-                if (perm.receive === 'prompt') perm = await PushNotifications.requestPermissions();
-                if (perm.receive === 'granted') {
-                    await PushNotifications.register();
-                    const regSub = await PushNotifications.addListener('registration', async (token) => {
-                        const { data: { user } } = await supabase.auth.getUser();
-                        if (!user) return;
-                        await supabase.from('device_push_tokens').upsert({
-                            user_id: user.id,
-                            token: token.value,
-                            platform: Capacitor.getPlatform(),
-                            updated_at: new Date().toISOString(),
-                        }, { onConflict: 'user_id,token' });
-                    });
-                    subs.push(regSub);
-                    const tapSub = await PushNotifications.addListener('pushNotificationActionPerformed', (action) => {
-                        const url = (action.notification?.data as any)?.url;
-                        if (url) window.location.href = url;
-                    });
-                    subs.push(tapSub);
-                }
-            } catch (e) { console.warn('[native] push:', e); }
+            // (Push nativo desactivado hasta configurar Firebase · evitaba el crash al inicio)
         })();
 
         return () => { subs.forEach(s => { try { s.remove(); } catch { /* */ } }); };
