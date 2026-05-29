@@ -11227,3 +11227,34 @@ html.is-native .ai-bubble,
 html.is-native .create-fab {
     bottom: calc(80px + env(safe-area-inset-bottom));
 }
+
+/* ╔═══════════════════════════════════════════════════════════╗
+   ║  MÓVIL · limpieza de flotantes + contenido visible          ║
+   ║  (corrige: bot tapado, doble botón crear, scroll cortado,   ║
+   ║   buscador inusable). !important para ganar a reglas previas)║
+   ╚═══════════════════════════════════════════════════════════╝ */
+@media (max-width: 720px) {
+    /* Un SOLO botón de crear: el "+" del bottom-nav. Fuera el FAB flotante (duplicado). */
+    .create-fab { display: none !important; }
+
+    /* El bot (chibi) solo, por ENCIMA del bottom-nav, sin tapar nada */
+    .ai-bubble {
+        bottom: calc(92px + env(safe-area-inset-bottom)) !important;
+        right: 14px !important;
+    }
+    .ai-greeting {
+        bottom: calc(160px + env(safe-area-inset-bottom)) !important;
+        right: 14px !important;
+        left: auto !important;
+        max-width: calc(100vw - 80px);
+    }
+
+    /* El contenido ya no queda tapado por el bottom-nav flotante */
+    main { padding-bottom: calc(98px + env(safe-area-inset-bottom)) !important; }
+    /* El chat tiene su propio alto · no le metas el padding (rompería el composer) */
+    main:has(.chat-layout) { padding-bottom: 0 !important; }
+
+    /* Búsqueda: en móvil se usa "Buscar" del bottom-nav. El buscador del topbar
+       se colapsaba a un icono con el input display:none → no se podía abrir. */
+    .topbar .gs-wrap { display: none !important; }
+}
